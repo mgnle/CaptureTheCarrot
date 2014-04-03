@@ -1,0 +1,1377 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharpNeatDomainsExtra</name>
+    </assembly>
+    <members>
+        <member name="T:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface">
+            <summary>
+            Interface onto a walker.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface.#ctor(Box2DX.Dynamics.Body,SharpNeat.DomainsExtra.WalkerBox2d.LegInterface,SharpNeat.DomainsExtra.WalkerBox2d.LegInterface)">
+            <summary>
+            Construct walker interface onto the provided walker body parts.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface.TorsoPosition">
+            <summary>
+            Gets the torso's position (center point of torso rectangle).
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface.TorsoVelocity">
+            <summary>
+            Gets the torso's velocity.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface.TorsoAngle">
+            <summary>
+            Gets the torso's angle.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface.TorsoAnglularVelocity">
+            <summary>
+            Gets the torso's angular velocity.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface.LeftLegIFace">
+            <summary>
+            Gets an interface onto the walker's left leg.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface.RightLegIFace">
+            <summary>
+            Gets an interface onto the walker's right leg.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface.JointMaxTorque">
+            <summary>
+            Gets the maximum torque allowable on a joint.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface.TotalAppliedTorque">
+            <summary>
+            Gets the sum total of absolute torque being applied to all joints
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.WalkerBox2d.WalkerController">
+            <summary>
+            Base/abstract class for walker controllers.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.WalkerBox2d.WalkerController._iface">
+            <summary>
+            The walker interface to be used for controlling the walker.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerController.#ctor(SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface)">
+            <summary>
+            Construct with the provided player interface.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerController.Step">
+            <summary>
+            Perform one controller step. Typically consisting of reading world and walker state
+            from the walker interface and updating the torques applied at each leg joint.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment">
+            <summary>
+            INeatExperiment for the inverted double pendulum task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.Initialize(System.String,System.Xml.XmlElement)">
+            <summary>
+            Initialize the experiment with some optional XML configutation data.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.LoadPopulation(System.Xml.XmlReader)">
+            <summary>
+            Load a population of genomes from an XmlReader and returns the genomes in a new list.
+            The genome factory for the genomes can be obtained from any one of the genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.SavePopulation(System.Xml.XmlWriter,System.Collections.Generic.IList{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Save a population of genomes to an XmlWriter.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.CreateGenomeDecoder">
+            <summary>
+            Create a genome decoder for the experiment.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.CreateGenomeFactory">
+            <summary>
+            Create a genome factory for the experiment.
+            Create a genome factory with our neat genome parameters object and the appropriate number of input and output neuron genes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.CreateEvolutionAlgorithm">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            Uses the experiments default population size defined in the experiment's config XML.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.CreateEvolutionAlgorithm(System.Int32)">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a population size parameter that specifies how many genomes to create in an initial randomly
+            generated population.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.CreateEvolutionAlgorithm(SharpNeat.Core.IGenomeFactory{SharpNeat.Genomes.Neat.NeatGenome},System.Collections.Generic.List{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a pre-built genome population and their associated/parent genome factory.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.CreateGenomeView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.CreateDomainView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying output for a domain (e.g. show best genome's output/performance/behaviour in the domain). 
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.Name">
+            <summary>
+            Gets the name of the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.Description">
+            <summary>
+            Gets human readable explanatory text for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.InputCount">
+            <summary>
+            Gets the number of inputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.OutputCount">
+            <summary>
+            Gets the number of outputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.DefaultPopulationSize">
+            <summary>
+            Gets the default population size to use for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.NeatEvolutionAlgorithmParameters">
+            <summary>
+            Gets the NeatEvolutionAlgorithmParameters to be used for the experiment. Parameters on this object can be 
+            modified. Calls to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in 
+            at the time of the call.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumExperiment.NeatGenomeParameters">
+            <summary>
+            Gets the NeatGenomeParameters to be used for the experiment. Parameters on this object can be modified. Calls
+            to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in at the time of the call.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment">
+            <summary>
+            INeatExperiment for the single pole balancing task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.Initialize(System.String,System.Xml.XmlElement)">
+            <summary>
+            Initialize the experiment with some optional XML configutation data.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.LoadPopulation(System.Xml.XmlReader)">
+            <summary>
+            Load a population of genomes from an XmlReader and returns the genomes in a new list.
+            The genome factory for the genomes can be obtained from any one of the genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.SavePopulation(System.Xml.XmlWriter,System.Collections.Generic.IList{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Save a population of genomes to an XmlWriter.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.CreateGenomeDecoder">
+            <summary>
+            Create a genome decoder for the experiment.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.CreateGenomeFactory">
+            <summary>
+            Create a genome factory for the experiment.
+            Create a genome factory with our neat genome parameters object and the appropriate number of input and output neuron genes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.CreateEvolutionAlgorithm">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            Uses the experiments default population size defined in the experiment's config XML.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.CreateEvolutionAlgorithm(System.Int32)">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a population size parameter that specifies how many genomes to create in an initial randomly
+            generated population.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.CreateEvolutionAlgorithm(SharpNeat.Core.IGenomeFactory{SharpNeat.Genomes.Neat.NeatGenome},System.Collections.Generic.List{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a pre-built genome population and their associated/parent genome factory.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.CreateGenomeView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.CreateDomainView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying output for a domain (e.g. show best genome's output/performance/behaviour in the domain). 
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.Name">
+            <summary>
+            Gets the name of the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.Description">
+            <summary>
+            Gets human readable explanatory text for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.InputCount">
+            <summary>
+            Gets the number of inputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.OutputCount">
+            <summary>
+            Gets the number of outputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.DefaultPopulationSize">
+            <summary>
+            Gets the default population size to use for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.NeatEvolutionAlgorithmParameters">
+            <summary>
+            Gets the NeatEvolutionAlgorithmParameters to be used for the experiment. Parameters on this object can be 
+            modified. Calls to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in 
+            at the time of the call.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpExperiment.NeatGenomeParameters">
+            <summary>
+            Gets the NeatGenomeParameters to be used for the experiment. Parameters on this object can be modified. Calls
+            to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in at the time of the call.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpEvaluator">
+            <summary>
+            Evaluator for the single pole balancing task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpEvaluator.#ctor">
+            <summary>
+            Construct evaluator with default task arguments/variables.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpEvaluator.#ctor(System.Int32,System.Int32,System.Single)">
+            <summary>
+            Construct evaluator with the provided task arguments/variables.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpEvaluator.Evaluate(SharpNeat.Phenomes.IBlackBox)">
+            <summary>
+            Evaluate the provided IBlackBox.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpEvaluator.Reset">
+            <summary>
+            Reset the internal state of the evaluation scheme if any exists.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpEvaluator.EvaluationCount">
+            <summary>
+            Gets the total number of evaluations that have been performed.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpEvaluator.StopConditionSatisfied">
+            <summary>
+            Gets a value indicating whether some goal fitness has been achieved and that
+            the the evolutionary algorithm/search should stop. This property's value can remain false
+            to allow the algorithm to run indefinitely.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.WalkerBox2d.NeuralNetController">
+            <summary>
+            A neural net based WalkerController.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.NeuralNetController.#ctor(SharpNeat.DomainsExtra.WalkerBox2d.WalkerInterface,SharpNeat.Phenomes.IBlackBox)">
+            <summary>
+            Construct with the provided player interface and black box controller.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumView">
+            <summary>
+            View class for the box2d single pole balancing domain.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.Box2D.Box2dDomainView">
+            <summary>
+            Abstract class for Box2D based problem domain visualization.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.Box2dDomainView._box">
+            <summary>
+            The black box controller used by the simulation thread.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.Box2dDomainView._simThread">
+            <summary>
+            Thread for running simulation.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.Box2dDomainView._simRunningFlag">
+            <summary>
+            Indicates is a simulation is running. Access is thread synchronised using Interlocked.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.Box2dDomainView._simStartEvent">
+            <summary>
+            Event that signals simulation thread to start a simulation.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.Box2dDomainView._simStopFlag">
+            <summary>
+            Signal sim thread to stop current simulation.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.Box2dDomainView._simWorld">
+            <summary>
+            The Box2D world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.#ctor(SharpNeat.Core.IGenomeDecoder{SharpNeat.Genomes.Neat.NeatGenome,SharpNeat.Phenomes.IBlackBox})">
+            <summary>
+            Construct with the provided IGenomeDecoder, this is used to decode genome(s) into IBlackBox controllers.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.RefreshView(System.Object)">
+            <summary>
+            Refresh/update the view with the provided genome.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.CreateSimulationWorld">
+            <summary>
+            Create a Box2D simulation world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.InvokeController">
+            <summary>
+            Invoke any required control logic in the Box2D world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.TestStopCondition">
+            <summary>
+            Test if the Box2D world has arrived at a stop condition.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.InitDebugDraw">
+            <summary>
+            Initialise debug drawing object (interface between Box2D world and openGL rendering).
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.SetView">
+            <summary>
+            Set the extents of the viewport and the box2D world. The extents of the two coordinate systems are set to
+            preserve the correct aspect ratio when renderign the Box2d world. This is done simply be always rendering 
+            the full height of the box2D world and varying the horizontal extents to maintain the aspect ratio as the 
+            viewport is resized.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.ConvertScreenToWorld(System.Single,System.Single)">
+            <summary>
+            Convert screen coordinates to box2d world coords.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.SimulationThread">
+            <summary>
+            Run simulations until thread is terminated.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.RunTrial">
+            <summary>
+            Run one simulation.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.OnHandleDestroyed(System.EventArgs)">
+            <summary>
+            Event handler to clean-up on window closure.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.Box2D.Box2dDomainView.WindowSize">
+            <summary>
+            Define a default size for the window.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumView.#ctor(SharpNeat.Core.IGenomeDecoder{SharpNeat.Genomes.Neat.NeatGenome,SharpNeat.Phenomes.IBlackBox})">
+            <summary>
+            Construct with the provided IGenomeDecoder, this is used to decode genome(s) into IBlackBox controllers.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumView.CreateSimulationWorld">
+            <summary>
+            Create a Box2D simulation world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumView.InvokeController">
+            <summary>
+            Invoke any required control logic in the Box2D world.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.WalkerBox2d.WalkerWorld">
+            <summary>
+            Box2D world for the Walker problem domain.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.Box2D.SimulationWorld">
+            <summary>
+            Abstract class for Box2D simulations/worlds within SharpNEAT.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationWorld._simParams">
+            <summary>
+            High level simulation parameters.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationWorld._world">
+            <summary>
+            The Box2D world.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationWorld._currentTime">
+            <summary>
+            The world's current clock time (in seconds).
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationWorld._mouseJoint">
+            <summary>
+            The mousejoint is created on a mouseclick and allows world objects to be grabbed and moved around.
+            The joint is destroyed when the mouseclick is released (mouseup event).
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.#ctor">
+            <summary>
+            Construct new SimulationWorld.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.InitSimulationWorld">
+            <summary>
+            Primary initialisation method. Override this method to do sub-class specific initialisation.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.InitSimulationWorld(SharpNeat.DomainsExtra.Box2D.SimulationParameters)">
+            <summary>
+            Initialise world with the specified SimulationParameters.
+            </summary>
+            <param name="simParams"></param>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.CreateBox2DWorld">
+            <summary>
+            Create an empty Box2D world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.PopulateWorld">
+            <summary>
+            Add objects to the Box2d world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.CreateContactListener">
+            <summary>
+            Create contact listener.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.SetDebugDraw(Box2DX.Dynamics.DebugDraw)">
+            <summary>
+            Sets a drawing routine. Methods on the provided object are called-back to perform drawing on each update.
+            </summary>
+            <param name="debugDraw"></param>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.Step">
+            <summary>
+            Perform one simulation timestep; move the simulation forward by the timestep increment duration.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.MouseDown(Box2DX.Common.Vec2)">
+            <summary>
+            Mouse interaction event.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.MouseUp">
+            <summary>
+            Mouse interaction event.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.MouseMove(Box2DX.Common.Vec2)">
+            <summary>
+            Mouse interaction event.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.SimulationWorld.DrawMouseJoint">
+            <summary>
+            Draw the mouse joint (user interation via mouse events). This method can be removed to remove the dependency on OpenGL.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.Box2D.SimulationWorld.SimulationParameters">
+            <summary>
+            Gets the world's high level simulation parameters.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.Box2D.SimulationWorld.CurrentTime">
+            <summary>
+            Gets the world's current clock time (in seconds).
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerWorld.#ctor">
+            <summary>
+            Defautl constrcutor.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerWorld.#ctor(System.Single)">
+            <summary>
+            Constructor accepting a trackLength parameter (length of the track that the walker is walking along).
+            </summary>
+            <param name="trackLength"></param>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerWorld.InitSimulationWorld">
+            <summary>
+            Inititialise world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerWorld.CreateWalkerInterface">
+            <summary>
+            Create an interface onto the walker player.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerWorld.PopulateWorld">
+            <summary>
+            Add objects to the Box2d world.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment">
+            <summary>
+            INeatExperiment for the Walker2D task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.Initialize(System.String,System.Xml.XmlElement)">
+            <summary>
+            Initialize the experiment with some optional XML configutation data.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.LoadPopulation(System.Xml.XmlReader)">
+            <summary>
+            Load a population of genomes from an XmlReader and returns the genomes in a new list.
+            The genome factory for the genomes can be obtained from any one of the genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.SavePopulation(System.Xml.XmlWriter,System.Collections.Generic.IList{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Save a population of genomes to an XmlWriter.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.CreateGenomeDecoder">
+            <summary>
+            Create a genome decoder for the experiment.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.CreateGenomeFactory">
+            <summary>
+            Create a genome factory for the experiment.
+            Create a genome factory with our neat genome parameters object and the appropriate number of input and output neuron genes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.CreateEvolutionAlgorithm">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            Uses the experiments default population size defined in the experiment's config XML.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.CreateEvolutionAlgorithm(System.Int32)">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a population size parameter that specifies how many genomes to create in an initial randomly
+            generated population.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.CreateEvolutionAlgorithm(SharpNeat.Core.IGenomeFactory{SharpNeat.Genomes.Neat.NeatGenome},System.Collections.Generic.List{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a pre-built genome population and their associated/parent genome factory.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.CreateGenomeView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.CreateDomainView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying output for a domain (e.g. show best genome's output/performance/behaviour in the domain). 
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.Name">
+            <summary>
+            Gets the name of the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.Description">
+            <summary>
+            Gets human readable explanatory text for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.InputCount">
+            <summary>
+            Gets the number of inputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.OutputCount">
+            <summary>
+            Gets the number of outputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.DefaultPopulationSize">
+            <summary>
+            Gets the default population size to use for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.NeatEvolutionAlgorithmParameters">
+            <summary>
+            Gets the NeatEvolutionAlgorithmParameters to be used for the experiment. Parameters on this object can be 
+            modified. Calls to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in 
+            at the time of the call.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperiment.NeatGenomeParameters">
+            <summary>
+            Gets the NeatGenomeParameters to be used for the experiment. Parameters on this object can be modified. Calls
+            to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in at the time of the call.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dEvaluator">
+            <summary>
+            Evaluator for the single pole balancing task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dEvaluator.#ctor">
+            <summary>
+            Construct evaluator with default task arguments/variables.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dEvaluator.#ctor(System.Int32,System.Single,System.Single)">
+            <summary>
+            Construct evaluator with the provided task arguments/variables.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dEvaluator.Evaluate(SharpNeat.Phenomes.IBlackBox)">
+            <summary>
+            Evaluate the provided IBlackBox.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dEvaluator.Reset">
+            <summary>
+            Reset the internal state of the evaluation scheme if any exists.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dEvaluator.EvaluationCount">
+            <summary>
+            Gets the total number of evaluations that have been performed.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dEvaluator.StopConditionSatisfied">
+            <summary>
+            Gets a value indicating whether some goal fitness has been achieved and that
+            the the evolutionary algorithm/search should stop. This property's value can remain false
+            to allow the algorithm to run indefinitely.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment">
+            <summary>
+            INeatExperiment for the single pole balancing task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.Initialize(System.String,System.Xml.XmlElement)">
+            <summary>
+            Initialize the experiment with some optional XML configutation data.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.LoadPopulation(System.Xml.XmlReader)">
+            <summary>
+            Load a population of genomes from an XmlReader and returns the genomes in a new list.
+            The genome factory for the genomes can be obtained from any one of the genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.SavePopulation(System.Xml.XmlWriter,System.Collections.Generic.IList{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Save a population of genomes to an XmlWriter.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.CreateGenomeDecoder">
+            <summary>
+            Create a genome decoder for the experiment.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.CreateGenomeFactory">
+            <summary>
+            Create a genome factory for the experiment.
+            Create a genome factory with our neat genome parameters object and the appropriate number of input and output neuron genes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.CreateEvolutionAlgorithm">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            Uses the experiments default population size defined in the experiment's config XML.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.CreateEvolutionAlgorithm(System.Int32)">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a population size parameter that specifies how many genomes to create in an initial randomly
+            generated population.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.CreateEvolutionAlgorithm(SharpNeat.Core.IGenomeFactory{SharpNeat.Genomes.Neat.NeatGenome},System.Collections.Generic.List{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a pre-built genome population and their associated/parent genome factory.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.CreateGenomeView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.CreateDomainView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying output for a domain (e.g. show best genome's output/performance/behaviour in the domain). 
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.Name">
+            <summary>
+            Gets the name of the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.Description">
+            <summary>
+            Gets human readable explanatory text for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.InputCount">
+            <summary>
+            Gets the number of inputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.OutputCount">
+            <summary>
+            Gets the number of outputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.DefaultPopulationSize">
+            <summary>
+            Gets the default population size to use for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.NeatEvolutionAlgorithmParameters">
+            <summary>
+            Gets the NeatEvolutionAlgorithmParameters to be used for the experiment. Parameters on this object can be 
+            modified. Calls to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in 
+            at the time of the call.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dExperiment.NeatGenomeParameters">
+            <summary>
+            Gets the NeatGenomeParameters to be used for the experiment. Parameters on this object can be modified. Calls
+            to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in at the time of the call.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface">
+            <summary>
+            Interface onto a walker's leg.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface.#ctor(Box2DX.Dynamics.RevoluteJoint,Box2DX.Dynamics.RevoluteJoint,Box2DX.Dynamics.Body,System.Single)">
+            <summary>
+            Construct leg interface onto the provided Box2D leg joints.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface.SetHipJointTorque(System.Single)">
+            <summary>
+            Sets the hip joint's torque.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface.SetKneeJointTorque(System.Single)">
+            <summary>
+            Sets the knee joint's torque.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface.HipJointAngle">
+            <summary>
+            Gets the hip joint angle.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface.HipJointVelocity">
+            <summary>
+            Gets the hip joint angular velocity.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface.KneeJointAngle">
+            <summary>
+            Gets the knee joint angle.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface.KneeJointVelocity">
+            <summary>
+            Gets the knee joint angular velocity.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface.TotalAppliedTorque">
+            <summary>
+            Gets the total amount of torque being applied to the leg's joint's (abs(knee_torque) + abs(hip_torque).
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.LegInterface.FootHeight">
+            <summary>
+            Gets the height of the leg's foot. Note that this is actualy the mid point of the circular leg cap which.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld">
+            <summary>
+            Evaluator for the inverted double pendulum task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.#ctor">
+            <summary>
+            Construct with default world settings.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.#ctor(System.Single,System.Single,System.Single)">
+            <summary>
+            Construct with specified world settings.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.InitSimulationWorld">
+            <summary>
+            Inititialise world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.SetCartForce(System.Single)">
+            <summary>
+            Set horizontal force in newtons to apply to cart.
+            </summary>
+            <param name="n"></param>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.PopulateWorld">
+            <summary>
+            Add objects to the Box2d world.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.CartPosX">
+            <summary>
+            Gets the cart's X position. Zero => center, negative => left of center, positive => right of center.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.CartVelocityX">
+            <summary>
+            Gets the cart's track (horizontal) velocity.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.CartJointAngle">
+            <summary>
+            Get the angle of the first joint (cart-pole joint).
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.ElbowJointAngle">
+            <summary>
+            Get the angle of the second joint joint (pole elbow joint).
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.CartJointAngularVelocity">
+            <summary>
+            Get the anglular velocity of the first joint (cart-pole joint).
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.ElbowJointAngularVelocity">
+            <summary>
+            Get the anglular velocity of the second joint joint (pole elbow joint).
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumWorld.PoleTopPos">
+            <summary>
+            Get the position of the pole's end.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat">
+            <summary>
+            INeatExperiment for the Walker2D task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.Initialize(System.String,System.Xml.XmlElement)">
+            <summary>
+            Initialize the experiment with some optional XML configutation data.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.LoadPopulation(System.Xml.XmlReader)">
+            <summary>
+            Load a population of genomes from an XmlReader and returns the genomes in a new list.
+            The genome factory for the genomes can be obtained from any one of the genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.SavePopulation(System.Xml.XmlWriter,System.Collections.Generic.IList{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Save a population of genomes to an XmlWriter.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.CreateGenomeDecoder">
+            <summary>
+            Create a genome decoder for the experiment.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.CreateGenomeFactory">
+            <summary>
+            Create a genome factory for the experiment.
+            Create a genome factory with our neat genome parameters object and the appropriate number of input and output neuron genes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.CreateEvolutionAlgorithm">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            Uses the experiments default population size defined in the experiment's config XML.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.CreateEvolutionAlgorithm(System.Int32)">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a population size parameter that specifies how many genomes to create in an initial randomly
+            generated population.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.CreateEvolutionAlgorithm(SharpNeat.Core.IGenomeFactory{SharpNeat.Genomes.Neat.NeatGenome},System.Collections.Generic.List{SharpNeat.Genomes.Neat.NeatGenome})">
+            <summary>
+            Create and return a NeatEvolutionAlgorithm object ready for running the NEAT algorithm/search. Various sub-parts
+            of the algorithm are also constructed and connected up.
+            This overload accepts a pre-built genome population and their associated/parent genome factory.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.CreateGenomeView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying genomes.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.CreateDomainView">
+            <summary>
+            Create a System.Windows.Forms derived object for displaying output for a domain (e.g. show best genome's output/performance/behaviour in the domain). 
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.Name">
+            <summary>
+            Gets the name of the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.Description">
+            <summary>
+            Gets human readable explanatory text for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.InputCount">
+            <summary>
+            Gets the number of inputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.OutputCount">
+            <summary>
+            Gets the number of outputs required by the network/black-box that the underlying problem domain is based on.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.DefaultPopulationSize">
+            <summary>
+            Gets the default population size to use for the experiment.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.NeatEvolutionAlgorithmParameters">
+            <summary>
+            Gets the NeatEvolutionAlgorithmParameters to be used for the experiment. Parameters on this object can be 
+            modified. Calls to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in 
+            at the time of the call.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dExperimentHyperNeat.NeatGenomeParameters">
+            <summary>
+            Gets the NeatGenomeParameters to be used for the experiment. Parameters on this object can be modified. Calls
+            to CreateEvolutionAlgorithm() make a copy of and use this object in whatever state it is in at the time of the call.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpView">
+            <summary>
+            View class for the box2d single pole balancing domain.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpView.#ctor(SharpNeat.Core.IGenomeDecoder{SharpNeat.Genomes.Neat.NeatGenome,SharpNeat.Phenomes.IBlackBox})">
+            <summary>
+            Construct with the provided IGenomeDecoder, this is used to decode genome(s) into IBlackBox controllers.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpView.CreateSimulationWorld">
+            <summary>
+            Create a Box2D simulation world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingSwingUp.SinglePoleBalancingSwingUpView.InvokeController">
+            <summary>
+            Invoke any required control logic in the Box2D world.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dEvaluator">
+            <summary>
+            Evaluator for the Walker 2D task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dEvaluator.#ctor">
+            <summary>
+            Construct evaluator with default task arguments/variables.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dEvaluator.#ctor(System.Int32)">
+            <summary>
+            Construct evaluator with the provided task arguments/variables.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dEvaluator.Evaluate(SharpNeat.Phenomes.IBlackBox)">
+            <summary>
+            Evaluate the provided IBlackBox.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dEvaluator.Reset">
+            <summary>
+            Reset the internal state of the evaluation scheme if any exists.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dEvaluator.EvaluationCount">
+            <summary>
+            Gets the total number of evaluations that have been performed.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dEvaluator.StopConditionSatisfied">
+            <summary>
+            Gets a value indicating whether some goal fitness has been achieved and that
+            the the evolutionary algorithm/search should stop. This property's value can remain false
+            to allow the algorithm to run indefinitely.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dView">
+            <summary>
+            View class for the Walker2D problem domain.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dView.#ctor(SharpNeat.Core.IGenomeDecoder{SharpNeat.Genomes.Neat.NeatGenome,SharpNeat.Phenomes.IBlackBox})">
+            <summary>
+            Construct with the provided IGenomeDecoder, this is used to decode genome(s) into IBlackBox controllers.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dView.CreateSimulationWorld">
+            <summary>
+            Create a Box2D simulation world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.WalkerBox2d.WalkerBox2dView.InvokeController">
+            <summary>
+            Invoke any required control logic in the Box2D world.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld">
+            <summary>
+            Box2D world for the single pole balancing domain.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld.#ctor">
+            <summary>
+            Construct with default world settings.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld.#ctor(System.Single,System.Single)">
+            <summary>
+            Construct with specified world settings.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld.InitSimulationWorld">
+            <summary>
+            Inititialise world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld.SetCartForce(System.Single)">
+            <summary>
+            Set horizontal force in newtons to apply to cart.
+            </summary>
+            <param name="n"></param>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld.PopulateWorld">
+            <summary>
+            Add objects to the Box2d world.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld.CartPosX">
+            <summary>
+            Gets the cart's X position. Zero => center, negative => left of center, positive => right of center.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld.CartVelocityX">
+            <summary>
+            Gets the cart's track (horizontal) velocity.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld.PoleAngle">
+            <summary>
+            Gets the pole angle in radians. Zero is up, positive angles => counter-clockwise.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingWorld.PoleAngularVelocity">
+            <summary>
+            Gets the pole's angular velocity in radians/sec.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dView">
+            <summary>
+            View class for the box2d single pole balancing domain.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dView.#ctor(SharpNeat.Core.IGenomeDecoder{SharpNeat.Genomes.Neat.NeatGenome,SharpNeat.Phenomes.IBlackBox})">
+            <summary>
+            Construct with the provided IGenomeDecoder, this is used to decode genome(s) into IBlackBox controllers.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dView.CreateSimulationWorld">
+            <summary>
+            Create a Box2D simulation world.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.SinglePoleBalancingBox2d.SinglePoleBalancingBox2dView.InvokeController">
+            <summary>
+            Invoke any required control logic in the Box2D world.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumEvaluator">
+            <summary>
+            Evaluator for the single pole balancing task.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumEvaluator.#ctor">
+            <summary>
+            Construct evaluator with default task arguments/variables.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumEvaluator.#ctor(System.Int32,System.Single,System.Single)">
+            <summary>
+            Construct evaluator with the provided task arguments/variables.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumEvaluator.Evaluate(SharpNeat.Phenomes.IBlackBox)">
+            <summary>
+            Evaluate the provided IBlackBox.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumEvaluator.Reset">
+            <summary>
+            Reset the internal state of the evaluation scheme if any exists.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumEvaluator.EvaluationCount">
+            <summary>
+            Gets the total number of evaluations that have been performed.
+            </summary>
+        </member>
+        <member name="P:SharpNeat.DomainsExtra.InvertedDoublePendulum.InvertedDoublePendulumEvaluator.StopConditionSatisfied">
+            <summary>
+            Gets a value indicating whether some goal fitness has been achieved and that
+            the the evolutionary algorithm/search should stop. This property's value can remain false
+            to allow the algorithm to run indefinitely.
+            </summary>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.Box2D.OpenGLDebugDraw">
+            <summary>
+            Box2DX debug drawing class that redirects drawing calls to Open GL.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.OpenGLDebugDraw.DrawPolygon(Box2DX.Common.Vec2[],System.Int32,Box2DX.Dynamics.Color)">
+            <summary>
+            Draw a closed polygon provided in CCW order.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.OpenGLDebugDraw.DrawSolidPolygon(Box2DX.Common.Vec2[],System.Int32,Box2DX.Dynamics.Color)">
+            <summary>
+            Draw a solid closed polygon provided in CCW order.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.OpenGLDebugDraw.DrawCircle(Box2DX.Common.Vec2,System.Single,Box2DX.Dynamics.Color)">
+            <summary>
+            Draw a circle.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.OpenGLDebugDraw.DrawSolidCircle(Box2DX.Common.Vec2,System.Single,Box2DX.Common.Vec2,Box2DX.Dynamics.Color)">
+            <summary>
+            Draw a solid circle.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.OpenGLDebugDraw.DrawSegment(Box2DX.Common.Vec2,Box2DX.Common.Vec2,Box2DX.Dynamics.Color)">
+            <summary>
+            Draw a line segment.
+            </summary>
+        </member>
+        <member name="M:SharpNeat.DomainsExtra.Box2D.OpenGLDebugDraw.DrawXForm(Box2DX.Common.XForm)">
+            <summary>
+            Draw a transform. Choose your own length scale.
+            </summary>
+            <param name="xf">A transform.</param>
+        </member>
+        <member name="T:SharpNeat.DomainsExtra.Box2D.SimulationParameters">
+            <summary>
+            Represents some generic / high level Box2d simulation parameters.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._lowerBoundPhysics">
+            <summary>
+            Bottom left corner of physics rectangle (the area which for which physics is simulated/calculated)
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._upperBoundPhysics">
+            <summary>
+            Upper right corner of physics rectangle (the area which for which physics is simulated/calculated)
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._lowerBoundView">
+            <summary>
+            Bottom left corner of view rectangle (default rectangle for visual rendering of the world; typically
+            the same or slightly smaller than the physics rectangle).
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._upperBoundView">
+            <summary>
+            Bottom left corner of view rectangle (default rectangle for visual rendering of the world; typically
+            the same or slightly smaller than the physics rectangle).
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._gravity">
+            <summary>
+            World gravity, e.g. -9.8. (+ve Y is up).
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._frameRate">
+            <summary>
+            Update rate in Hertz. Inverse of the simulation timestep increment, e.g. 60Hz = 16ms timestep.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._timeStep">
+            <summary>
+            See _frameRate.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._velocityIters">
+            <summary>
+            Box2d velocity constraint solver iterations per loop.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._positionIters">
+            <summary>
+            Box2d position constraint solver iterations per loop.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._warmStarting">
+            <summary>
+            Allow physics calcs to use values from previous timestep.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._continuousPhysics">
+            <summary>
+            Enable additional collision detection for high speed objects (that might not ever contact each other at a given timestep due to speed).
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._defaultFriction">
+            <summary>
+            Default friction.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._defaultRestitution">
+            <summary>
+            Default restitution.
+            </summary>
+        </member>
+        <member name="F:SharpNeat.DomainsExtra.Box2D.SimulationParameters._defaultDensity">
+            <summary>
+            Default density.
+            </summary>
+        </member>
+    </members>
+</doc>
