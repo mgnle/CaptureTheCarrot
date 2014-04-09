@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* Camera code adapted from http://answers.unity3d.com/questions/13524/rts-style-camera-scrolling.html */
+
+// TODO: Add zoom and boundaries
+
 public class CameraMovementScript : MonoBehaviour {
 
 	public int scrollDistance = 5; 
