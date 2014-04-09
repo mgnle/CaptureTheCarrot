@@ -34,14 +34,11 @@ public class BunnyControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown(1)) {
-			MoveStraight();
-		}
 		bunnyPos = transform.position;
 	}
 
 	/* Rotates bunny to the right and moves forward */
-	void MoveRight() {
+	public void MoveRight() {
 		transform.Rotate(0f, rotationAngle, 0f);
 		Vector3 oldPos = transform.position;
 		moveVector = transform.forward * moveDistance;
@@ -49,7 +46,7 @@ public class BunnyControl : MonoBehaviour {
 	}
 
 	/* Rotates bunny to the left and moves forward */
-	void MoveLeft() {
+	public void MoveLeft() {
 		transform.Rotate(0f, -rotationAngle, 0f);
 		Vector3 oldPos = transform.position;
 		moveVector = transform.forward * moveDistance;
@@ -57,7 +54,7 @@ public class BunnyControl : MonoBehaviour {
 	}
 
 	/* Moves bunny forward */
-	void MoveStraight() {
+	public void MoveStraight() {
 		Vector3 oldPos = transform.position;
 		moveVector = transform.forward * moveDistance;
 		transform.position = oldPos + moveVector;
