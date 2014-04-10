@@ -45,7 +45,7 @@ public class TrainingScript : MonoBehaviour {
 			}
 
 			// Respawn bunny if far away from spawn
-			if (Vector3.Distance(bunny.transform.position, spawnLoc.transform.position) > 20) {
+			if (Vector3.Distance(bunny.transform.position, spawnLoc.transform.position) > 30) {
 				RespawnBunny(bunnyObj);
 			}
 		}

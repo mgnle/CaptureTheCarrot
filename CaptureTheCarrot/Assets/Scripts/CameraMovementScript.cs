@@ -9,10 +9,16 @@ public class CameraMovementScript : MonoBehaviour {
 
 	public int scrollDistance = 5; 
 	public float scrollSpeed = 70;
+	public float zoomSpeed = 10;
+
+	public Vector3 camPos;
+
+	private GameObject camera;
 	
 	// Use this for initialization
 	void Start () {
-	
+		camera = GameObject.Find("Main Camera");
+		camPos = camera.transform.position;
 	}
 	
 	// Move Camera Script
@@ -45,5 +51,15 @@ public class CameraMovementScript : MonoBehaviour {
 		{ 
 			transform.Translate(transform.forward * scrollSpeed * Time.deltaTime); 
 		}
+
+		if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+			camera.transform.Translate(Vector3.back * zoomSpeed);
+		}
+
+		if (Input.GetAxis("Mouse ScrollWheel") > 0 && camPos.y > zoomSpeed) {
+			camera.transform.Translate(Vector3.forward * zoomSpeed);
+		}
+
+		camPos = camera.transform.position;
 	}
 }
