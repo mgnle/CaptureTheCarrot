@@ -18,6 +18,16 @@ public class TrainingScript : MonoBehaviour {
 	// The seconds till we replace the worst bunny
 	private int SEC_TIL_REMOVE_BUNNY = 10;
 
+	// rtNEAT Loop:
+	/*
+	1. Calculate the adjusted fitness of all current individuals in the population
+	2. Remove the agent with the worst adjusted fitness from the population provided one has been alive sufficiently long enough so that it has been properly evaluated
+	3. Re-estimate the average fitness F for all species
+	4. Choose a parent species to create the new offspring
+	5. Adjust d dynamically and reassign all agents to species
+	6. Place the new agent in the world
+	 */
+
 	// Use this for initialization
 	void Start () {
 		spawnLoc = GameObject.Find("BunnySpawn");
@@ -34,7 +44,7 @@ public class TrainingScript : MonoBehaviour {
 
 		// Check if the time is up
 		if (TimeUp()) {
-			// TODO: Use NEAT to choose worst bunny and replace with best bunny
+			// TODO: Use NEAT to choose worst bunny and replace with best bunny - rtNEAT Loop
 		}
 		
 		// Loops through all existing bunnies, and moves them randomly
