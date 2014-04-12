@@ -12,10 +12,17 @@ public class TrainingScript : MonoBehaviour {
 	// List of all our bunny objects
 	private ArrayList bunnies;
 
+	// Holds the seconds since the start of the game
+	private float time;
+
+	// The seconds till we replace the worst bunny
+	private int SEC_TIL_REMOVE_BUNNY = 10;
+
 	// Use this for initialization
 	void Start () {
 		spawnLoc = GameObject.Find("BunnySpawn");
 		bunnies = new ArrayList();
+		time = Time.fixedTime;
 	}
 	
 	// Update is called once per frame
@@ -25,6 +32,11 @@ public class TrainingScript : MonoBehaviour {
 			CreateBunny();
 		}
 
+		// Check if the time is up
+		if (TimeUp()) {
+			// TODO: Use NEAT to choose worst bunny and replace with best bunny
+		}
+		
 		// Loops through all existing bunnies, and moves them randomly
 		// TODO: Use NEAT to determine actions of each bunny
 		foreach(GameObject bunnyObj in bunnies) {
@@ -61,5 +73,15 @@ public class TrainingScript : MonoBehaviour {
 	void RespawnBunny(GameObject bunnyObj) {
 		bunnyObj.transform.position = spawnLoc.transform.position;
 		bunnyObj.transform.rotation = Quaternion.identity;
+	}
+
+	bool TimeUp() {
+		time = Time.fixedTime;
+
+		if (time % SEC_TIL_REMOVE_BUNNY == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
