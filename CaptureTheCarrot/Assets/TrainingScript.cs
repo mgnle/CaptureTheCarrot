@@ -54,7 +54,21 @@ public class TrainingScript : MonoBehaviour {
 			// just make public variables inside the BunnyControl class.
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
 
+			bunny.CalculateRadar(GameObject.Find("Carrot"));
+
+			// Move bunnies with arrow keys
+			if (Input.GetKey ("a"))
+			    bunny.MoveLeft();
+		    if (Input.GetKey ("d"))
+			    bunny.MoveRight();
+		    if (Input.GetKey ("w"))
+			    bunny.MoveStraight();
+			if (Input.GetKey ("s"))
+				bunny.MoveBack();
+
+
 			// Randomly move bunnies, with a bias toward moving straight
+			/*
 			int moveDirIndex = Random.Range(0, 20);
 			if (moveDirIndex == 0) {
 				bunny.MoveLeft();
@@ -70,6 +84,7 @@ public class TrainingScript : MonoBehaviour {
 			if (Vector3.Distance(bunny.transform.position, spawnLoc.transform.position) > 30) {
 				RespawnBunny(bunnyObj);
 			}
+			*/
 		}
 	}
 
