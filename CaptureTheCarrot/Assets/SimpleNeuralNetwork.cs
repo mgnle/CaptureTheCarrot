@@ -29,31 +29,36 @@ namespace AssemblyCSharp
 						nodeID = 0;
 						innovationNum = 0;
 						
-						// Initial node list size = Inputs + Ouputs + 1 Hidden
+						// Initial node list size = Inputs + Ouputs
 						this._nodeGenes = new List<NodeGene>();
 			
-						// Initial connection list size = Inputs + Outputs
+						// Initial connection list size = Inputs * Outputs
 						this._connectionGenes = new List<ConnectionGene>();
-						
-						// Create the hidden node
-						int hiddenId = nodeID;
-						this._nodeGenes.Add(new NodeGene(nodeID, NodeType.Hidden));
-						
-						// Create the input nodes and connections from the inputs to the hidden node
+												
+						// Create the input nodes
 						for(int i=0; i<inputCount; i++)
 						{
 							this._nodeGenes.Add(new NodeGene(nodeID, NodeType.Input));
-							this._connectionGenes.Add(new ConnectionGene(innovationNum, nodeID, hiddenId, DEFAULT_WEIGHT));							
 							nodeID++;
-							innovationNum++;
 						}
 						
-						// Create the output nodes and connections from the hidden node to the outputs
+						// Create the output nodes
 						for(int i=0; i<outputCount; i++)
 						{
 							this._nodeGenes.Add(new NodeGene(nodeID, NodeType.Output));								
-							this._connectionGenes.Add(new ConnectionGene(innovationNum, hiddenId, nodeID, DEFAULT_WEIGHT));
 							nodeID++;
+						}
+						
+						// Create the connections - 1 for each input to output pair of nodes
+						for(int i=0; i<inputCount; i++)
+						{
+							int fromNode = i;
+							for(int j=0; j<outputCount; j++)
+							{
+								int toNode = j+inputCount;
+								this._connectionGenes.Add(new ConnectionGene(innovationNum, fromNode, toNode, DEFAULT_WEIGHT));
+								innovationNum++;
+							}										
 						}
 				}
 				
@@ -85,14 +90,16 @@ namespace AssemblyCSharp
 				}
 
 				public void Activate ()
-				{
-					double value = 0;
-					for (int i =0; i < this._inputCount; i++){
-						value += this._inputArray[i]*this._connectionGenes[i].weight;
-					}
-										
-					for (int i =0; i < this._outputCount; i++){
-						this._outputArray[i] = (float)(value*this._connectionGenes[this._inputCount+i].weight);
+				{					
+					// For each output node calculate the output value				
+					for (int j =0; j < this._outputCount; j++){
+						double value = 0;
+						
+						// Calculate the value based on the weights of the connections to that output node
+						for (int i =0; i < this._inputCount; i++){
+							value += this._inputArray[i]*this._connectionGenes[i+j].weight;
+						}
+						this._outputArray[j] = (float)value;
 					}
 				}
 		}
