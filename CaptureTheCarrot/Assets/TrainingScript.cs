@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AssemblyCSharp;
 
 public class TrainingScript : MonoBehaviour {
+
+	public const int INPUTS = 4;
+	public const int OUTPUTS = 2;
 
 	// Template for Bunny prefab
 	public GameObject bunnyPrefab;
@@ -57,6 +61,7 @@ public class TrainingScript : MonoBehaviour {
 			bunny.CalculateRadar(GameObject.Find("Carrot"));
 
 			// Move bunnies with arrow keys
+			/*
 			if (Input.GetKey ("a"))
 			    bunny.MoveLeft();
 		    if (Input.GetKey ("d"))
@@ -65,7 +70,7 @@ public class TrainingScript : MonoBehaviour {
 			    bunny.MoveStraight();
 			if (Input.GetKey ("s"))
 				bunny.MoveBack();
-
+			*/
 
 			// Randomly move bunnies, with a bias toward moving straight
 			/*
@@ -90,7 +95,13 @@ public class TrainingScript : MonoBehaviour {
 
 	// Spawns a new Bunny GameObject and adds it to the bunnies list
 	void CreateBunny() {
-		bunnies.Add((GameObject)Instantiate(bunnyPrefab, spawnLoc.transform.position, Quaternion.identity));
+		GameObject bunnyObj = (GameObject)Instantiate(bunnyPrefab, spawnLoc.transform.position, Quaternion.identity);
+		
+		// Create a brain for the bunny
+		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
+		bunny.brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
+		
+		bunnies.Add(bunnyObj);
 	}
 
 	// Respawns the specified Bunny at the spawn location

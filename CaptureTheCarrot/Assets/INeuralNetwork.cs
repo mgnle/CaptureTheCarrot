@@ -16,7 +16,7 @@ namespace AssemblyCSharp
 				/// <summary>
 				/// Gets an array of input values that feed into the neural network 
 				/// </summary>
-				float[] InputSignalArray { get; }
+				float[] InputSignalArray { get; set; }
 
 				/// <summary>
 				/// Gets an array of output values that feed out from the neural network

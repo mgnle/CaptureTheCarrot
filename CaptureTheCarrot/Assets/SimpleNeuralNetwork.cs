@@ -12,8 +12,8 @@ namespace AssemblyCSharp
 
 				readonly int _inputCount;
 				readonly int _outputCount;
-				readonly float[] _inputArray;
-				readonly float[] _outputArray;
+				public float[] _inputArray;
+				public float[] _outputArray;
 				
 				private List<NodeGene> _nodeGenes;
 				private List<ConnectionGene> _connectionGenes;
@@ -77,6 +77,7 @@ namespace AssemblyCSharp
 
 				public float[] InputSignalArray {
 						get { return _inputArray; }
+						set { _inputArray = value; }
 				}
 				
 				public float[] OutputSignalArray {
@@ -85,7 +86,14 @@ namespace AssemblyCSharp
 
 				public void Activate ()
 				{
-					// TODO: Write activation code
+					double value = 0;
+					for (int i =0; i < this._inputCount; i++){
+						value += this._inputArray[i]*this._connectionGenes[i].weight;
+					}
+										
+					for (int i =0; i < this._outputCount; i++){
+						this._outputArray[i] = (float)(value*this._connectionGenes[this._inputCount+i].weight);
+					}
 				}
 		}
 }

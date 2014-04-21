@@ -1,11 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using AssemblyCSharp;
+using System;
 
 [RequireComponent (typeof (CharacterController))]
 
 public class BunnyControl : MonoBehaviour {
-
+		
+	// Neural Network bunny "brain"
+	public INeuralNetwork brain;
+	
+	// Enum for the actions that can be taken
+	public enum Action
+	{
+		MoveLeft,
+		MoveRight,
+		MoveForward,
+		MoveBackward,
+		Fire
+	}
 	// Movement properties
 	public float moveDistance;
 	public float rotationAngle;
@@ -36,6 +49,39 @@ public class BunnyControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		bunnyPos = transform.position;
+		
+		// TODO: Populate the neural network input array with the correct inputs
+		
+		
+		brain.InputSignalArray = new float[]{3, 5, 1, 0};
+		brain.Activate();
+		float maxValue = 0;
+		Action action = Action.MoveForward;
+		for(int i=0; i<brain.OutputSignalArray.Length; i++)
+		{
+			if (brain.OutputSignalArray[i] > maxValue)
+			{
+				maxValue = Math.Abs(brain.OutputSignalArray[i]);
+				action = (Action)i;
+			}
+		}
+		
+		switch(action)
+		{
+			case Action.MoveLeft:
+				MoveLeft();
+				break;
+			case Action.MoveRight:
+				MoveRight();
+				break;
+			case Action.MoveBackward:
+				MoveBack();
+				break;
+			case Action.MoveForward:
+			default:
+				MoveStraight();
+				break;
+		}		
 	}
 
 	/* Rotates bunny to the right and moves forward */
