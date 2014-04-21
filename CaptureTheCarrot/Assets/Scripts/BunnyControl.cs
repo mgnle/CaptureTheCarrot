@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 [RequireComponent (typeof (CharacterController))]
 
 public class BunnyControl : MonoBehaviour {
@@ -58,5 +59,34 @@ public class BunnyControl : MonoBehaviour {
 		Vector3 oldPos = transform.position;
 		moveVector = transform.forward * moveDistance;
 		transform.position = oldPos + moveVector;
+	}
+
+	/* Moves bunny backward */
+	public void MoveBack() {
+		Vector3 oldPos = transform.position;
+		moveVector = -1 * transform.forward * moveDistance;
+		transform.position = oldPos + moveVector;
+	}
+
+	public int CalculateRadar(GameObject obj) {
+		Vector3 facing = transform.forward;
+		float x = (obj.transform.position.x - transform.position.x);
+		float z = (obj.transform.position.z - transform.position.z);
+		float degree = Mathf.PI - Mathf.Atan2(z, x);
+		Debug.Log (degree);
+		if ((degree >= 0) && (degree <= (Mathf.PI / 4))) {
+			Debug.Log (0);
+			return 0;
+		} else if (degree >= (Mathf.PI / 4) && degree <= (Mathf.PI / 2)) {
+			Debug.Log (1);
+			return 1;
+		} else if (degree >= -(Mathf.PI / 4) && degree <= 0) {
+			Debug.Log (2);
+			return 2;
+		} else if (degree >= -(Mathf.PI / 2) && degree <= -(Mathf.PI / 4)) {
+			Debug.Log (3);
+			return 3;
+		} else
+			return -1;
 	}
 }
