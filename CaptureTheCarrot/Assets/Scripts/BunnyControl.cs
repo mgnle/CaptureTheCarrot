@@ -139,16 +139,12 @@ public class BunnyControl : MonoBehaviour {
 			return -1;
 		
 		if ((degree >= 0) && (degree <= 45)){
-			Debug.Log (0);
 			return 0;
 		} else if (degree >= 45 && degree <= 90) {
-			Debug.Log (1);
 			return 1;
 		} else if (degree >= 90 && degree <= 135) {
-			Debug.Log (2);
 			return 2;
 		} else if (degree >= 135 && degree <= 180) {
-			Debug.Log (3);
 			return 3;
 		} else {
 			Debug.Log ("Unknown Degree in method CalculateRadar");
