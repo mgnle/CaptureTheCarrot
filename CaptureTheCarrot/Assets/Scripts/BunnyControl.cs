@@ -31,6 +31,9 @@ public class BunnyControl : MonoBehaviour {
 	
 	// Template for Cabbage prefab
 	public GameObject cabbagePrefab;	
+	
+	// Array of inputs
+	float[] inputArray = new float[]{1f, 1f, 1f, 1f};
 
 	CharacterController controller;
 	CollisionFlags collisionFlags;
@@ -55,7 +58,7 @@ public class BunnyControl : MonoBehaviour {
 		
 		// TODO: Populate the neural network input array with the correct inputs
 				
-		brain.InputSignalArray = new float[]{1f, 1f, 1f, 1f};
+		brain.InputSignalArray = inputArray;
 		brain.Activate();
 		float maxValue = 0f;
 		Action action = Action.MoveForward;
@@ -128,12 +131,13 @@ public class BunnyControl : MonoBehaviour {
 		GameObject cabbageObj = (GameObject)Instantiate(cabbagePrefab, transform.position + transform.forward * 2f + new Vector3(0f, 1f, 0f), transform.rotation);
 	}
 
-	public float[] FindRadarValues(ArrayList objs) {
+	public void FindRadarValues(GameObject obj) {
 		float[] radars = new float[4];
-		foreach(GameObject obj in objs) {
-			radars[CalculateRadar(obj)] += CalculateDistance(obj);
-		}
-		return radars;
+		//foreach(GameObject obj in objs) {
+			if (CalculateRadar(obj) != -1)
+				radars[CalculateRadar(obj)] += CalculateDistance(obj);
+		//}
+		inputArray = radars;
 	}
 	
 	public float CalculateDistance(GameObject obj) {
@@ -142,6 +146,14 @@ public class BunnyControl : MonoBehaviour {
 		return distance;
 	}
 	
+	/* Returns the radar that the object is in according to the position
+	   the bunny is facing. Returns -1 if the object is not in one of the
+	   radars (not in the bunny's sight).
+	   -1: behind bunny somewhere
+	   0: 0 degrees to 45 degrees
+	   1: 45 degrees to 90 degrees
+	   2: 90 degrees to 135 degrees
+	   3: 135 degrees to 180 degrees */
 	public int CalculateRadar (GameObject obj)
 	{
 		Vector3 facing = transform.forward;

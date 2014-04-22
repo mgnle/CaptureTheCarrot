@@ -64,7 +64,7 @@ public class TrainingScript : MonoBehaviour {
 			// just make public variables inside the BunnyControl class.
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
 
-			bunny.CalculateRadar(GameObject.Find("Carrot"));
+			bunny.FindRadarValues(GameObject.Find("Carrot"));//new ArrayList().Add(GameObject.Find("Carrot")));
 			
 			// For testing cabbage gun
 			if (Input.GetKeyDown ("f"))
@@ -93,13 +93,13 @@ public class TrainingScript : MonoBehaviour {
 			}
 			else {
 				bunny.MoveStraight();
-			}
+			}*/
 
 			// Respawn bunny if far away from spawn
 			if (Vector3.Distance(bunny.transform.position, spawnLoc.transform.position) > 30) {
 				RespawnBunny(bunnyObj);
 			}
-			*/
+			
 		}
 	}
 
