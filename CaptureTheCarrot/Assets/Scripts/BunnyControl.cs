@@ -120,21 +120,41 @@ public class BunnyControl : MonoBehaviour {
 		transform.position = oldPos + moveVector;
 	}
 
-	public int CalculateRadar(GameObject obj) {
+	public float[] FindRadarValues(ArrayList objs) {
+		float[] radars = new float[4];
+		foreach(GameObject obj in objs) {
+			radars[CalculateRadar(obj)] += CalculateDistance(obj);
+		}
+		return radars;
+	}
+	
+	public float CalculateDistance(GameObject obj) {
+		Vector3 vector = obj.transform.position - transform.position;
+		float distance = vector.magnitude;
+		return distance;
+	}
+	
+	public int CalculateRadar (GameObject obj)
+	{
 		Vector3 facing = transform.forward;
-		float x = (obj.transform.position.x - transform.position.x);
-		float z = (obj.transform.position.z - transform.position.z);
-		float degree = Mathf.PI - Mathf.Atan2(z, x);
-		Debug.Log (degree);
-		if ((degree >= 0) && (degree <= (Mathf.PI / 4))) {
-			return 0;
-		} else if (degree >= (Mathf.PI / 4) && degree <= (Mathf.PI / 2)) {
-			return 1;
-		} else if (degree >= -(Mathf.PI / 4) && degree <= 0) {
-			return 2;
-		} else if (degree >= -(Mathf.PI / 2) && degree <= -(Mathf.PI / 4)) {
-			return 3;
-		} else
+		Vector3 perpendicular = new Vector3(facing.z, facing.y, -facing.x);
+		Vector3 carrot = obj.transform.position - transform.position;
+		float degree = Vector3.Angle (perpendicular, carrot);
+		//Debug.Log(degree);
+		if(transform.InverseTransformPoint(obj.transform.position).z < 0)
 			return -1;
+		
+		if ((degree >= 0) && (degree <= 45)){
+			return 0;
+		} else if (degree >= 45 && degree <= 90) {
+			return 1;
+		} else if (degree >= 90 && degree <= 135) {
+			return 2;
+		} else if (degree >= 135 && degree <= 180) {
+			return 3;
+		} else {
+			Debug.Log ("Unknown Degree in method CalculateRadar");
+			return -1;
+		}
 	}
 }
