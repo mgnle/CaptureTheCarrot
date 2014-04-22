@@ -28,6 +28,8 @@ namespace AssemblyCSharp
 				/// ready for reading from OutputSignalArray.
 				/// </summary>
 				void Activate();
+				
+				double[] getWeights();
 		}
 }
 

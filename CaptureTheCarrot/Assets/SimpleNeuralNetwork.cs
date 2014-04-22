@@ -5,7 +5,7 @@ namespace AssemblyCSharp
 {
 		public class SimpleNeuralNetwork : INeuralNetwork
 		{
-				public const double DEFAULT_WEIGHT = 0.5;
+				private Random gen = new Random();
 		
 				private static int nodeID;	
 				private static int innovationNum;
@@ -56,10 +56,16 @@ namespace AssemblyCSharp
 							for(int j=0; j<outputCount; j++)
 							{
 								int toNode = j+inputCount;
-								this._connectionGenes.Add(new ConnectionGene(innovationNum, fromNode, toNode, DEFAULT_WEIGHT));
+								double randomWeight = gen.NextDouble();
+								this._connectionGenes.Add(new ConnectionGene(innovationNum, fromNode, toNode, randomWeight));
 								innovationNum++;
 							}										
 						}
+				}
+				
+				public void changeWeights()
+				{
+					// TODO: change the weights
 				}
 				
 				public void addConnection()
@@ -92,7 +98,8 @@ namespace AssemblyCSharp
 				public void Activate ()
 				{					
 					// For each output node calculate the output value				
-					for (int j =0; j < this._outputCount; j++){
+					for (int j =0; j < this._outputCount; j++)
+					{
 						double value = 0;
 						
 						// Calculate the value based on the weights of the connections to that output node
@@ -101,6 +108,16 @@ namespace AssemblyCSharp
 						}
 						this._outputArray[j] = (float)value;
 					}
+				}
+				
+				public double[] getWeights()
+				{
+					double[] weights = new double[_inputCount*_outputCount];
+					for(int i=0; i<weights.Length; i++)
+					{
+						weights[i] = this._connectionGenes[i].weight;
+					}
+					return weights;
 				}
 		}
 }

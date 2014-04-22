@@ -15,8 +15,8 @@ public class BunnyControl : MonoBehaviour {
 	{
 		MoveLeft,
 		MoveRight,
-		MoveForward,
 		MoveBackward,
+		MoveForward,
 		Fire
 	}
 	// Movement properties
@@ -51,9 +51,8 @@ public class BunnyControl : MonoBehaviour {
 		bunnyPos = transform.position;
 		
 		// TODO: Populate the neural network input array with the correct inputs
-		
-		
-		brain.InputSignalArray = new float[]{3, 5, 1, 0};
+				
+		brain.InputSignalArray = new float[]{1, 1, 1, 1};
 		brain.Activate();
 		float maxValue = 0;
 		Action action = Action.MoveForward;
@@ -62,7 +61,14 @@ public class BunnyControl : MonoBehaviour {
 			if (brain.OutputSignalArray[i] > maxValue)
 			{
 				maxValue = Math.Abs(brain.OutputSignalArray[i]);
-				action = (Action)i;
+				if(i < 0)
+				{
+					action = (Action)(i*2);
+				}
+				else
+				{
+					action = (Action)(i*2 + 1);
+				}
 			}
 		}
 		
@@ -121,16 +127,12 @@ public class BunnyControl : MonoBehaviour {
 		float degree = Mathf.PI - Mathf.Atan2(z, x);
 		Debug.Log (degree);
 		if ((degree >= 0) && (degree <= (Mathf.PI / 4))) {
-			Debug.Log (0);
 			return 0;
 		} else if (degree >= (Mathf.PI / 4) && degree <= (Mathf.PI / 2)) {
-			Debug.Log (1);
 			return 1;
 		} else if (degree >= -(Mathf.PI / 4) && degree <= 0) {
-			Debug.Log (2);
 			return 2;
 		} else if (degree >= -(Mathf.PI / 2) && degree <= -(Mathf.PI / 4)) {
-			Debug.Log (3);
 			return 3;
 		} else
 			return -1;
