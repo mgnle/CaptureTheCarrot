@@ -34,6 +34,11 @@ public class BunnyControl : MonoBehaviour {
 	
 	// Array of inputs
 	float[] inputArray = new float[]{1f, 1f, 1f, 1f};
+	
+	// Fitness of the neural network and the count for
+	// calculations
+	float fitness = 0;
+	int fitnessCount = 0;
 
 	CharacterController controller;
 	CollisionFlags collisionFlags;
@@ -57,6 +62,8 @@ public class BunnyControl : MonoBehaviour {
 		bunnyPos = transform.position;
 		
 		// TODO: Populate the neural network input array with the correct inputs
+				
+		CalculateOnTargetSensor();
 				
 		brain.InputSignalArray = inputArray;
 		brain.Activate();
@@ -177,4 +184,38 @@ public class BunnyControl : MonoBehaviour {
 			return -1;
 		}
 	}
+	
+	/* Returns 1 (full activation) if the onTargetSensor collides with
+	   anything within 100 units. Return 0 otherwise. */
+	public int CalculateOnTargetSensor() {
+		Vector3 position = transform.position + transform.forward;
+		RaycastHit hit = new RaycastHit();
+		if (Physics.Raycast(position, transform.forward, out hit, 100))
+			return 1;
+        else
+            return 0;
+    }
+	
+	/* Calculates the fitness of the neural network by finding the
+	   average distance from the object. Then takes the inverse
+	   to find a number between 0 and 1. The higher the fitness, the
+	   better the neural network. */
+	public float CalculateFitness(GameObject obj) {
+		fitnessCount++;
+		if (fitness != 0)
+			fitness = 1 / fitness;
+		fitness = 1 / ((fitness*(fitnessCount-1) + CalculateDistance(obj)) / fitnessCount);
+		Debug.Log (fitness);
+		return fitness;
+	}
 }
+
+
+
+
+
+
+
+
+
+
