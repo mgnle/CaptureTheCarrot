@@ -5,7 +5,7 @@ using System.Collections;
 
 public class CabbageControl : MonoBehaviour {
 	
-	public float speed = 300;
+	public float speed = 300f;
 	
 	public CharacterController control;
 	

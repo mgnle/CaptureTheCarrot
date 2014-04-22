@@ -28,6 +28,9 @@ public class BunnyControl : MonoBehaviour {
 
 	// Movement vector
 	public Vector3 moveVector = Vector3.zero;
+	
+	// Template for Cabbage prefab
+	public GameObject cabbagePrefab;	
 
 	CharacterController controller;
 	CollisionFlags collisionFlags;
@@ -52,9 +55,9 @@ public class BunnyControl : MonoBehaviour {
 		
 		// TODO: Populate the neural network input array with the correct inputs
 				
-		brain.InputSignalArray = new float[]{1, 1, 1, 1};
+		brain.InputSignalArray = new float[]{1f, 1f, 1f, 1f};
 		brain.Activate();
-		float maxValue = 0;
+		float maxValue = 0f;
 		Action action = Action.MoveForward;
 		for(int i=0; i<brain.OutputSignalArray.Length; i++)
 		{
@@ -118,6 +121,11 @@ public class BunnyControl : MonoBehaviour {
 		Vector3 oldPos = transform.position;
 		moveVector = -1 * transform.forward * moveDistance;
 		transform.position = oldPos + moveVector;
+	}
+
+	/* Fires a cabbage gun in the bunny's forward direction */
+	public void FireCabbageGun() {
+		GameObject cabbageObj = (GameObject)Instantiate(cabbagePrefab, transform.position + transform.forward * 2f + new Vector3(0f, 1f, 0f), transform.rotation);
 	}
 
 	public float[] FindRadarValues(ArrayList objs) {

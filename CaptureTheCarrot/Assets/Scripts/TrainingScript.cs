@@ -59,6 +59,10 @@ public class TrainingScript : MonoBehaviour {
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
 
 			bunny.CalculateRadar(GameObject.Find("Carrot"));
+			
+			// For testing cabbage gun
+			if (Input.GetKeyDown ("f"))
+				bunny.FireCabbageGun();
 
 			// Move bunnies with arrow keys
 			/*
