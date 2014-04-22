@@ -7,8 +7,9 @@ public class TrainingScript : MonoBehaviour {
 	public const int INPUTS = 4;
 	public const int OUTPUTS = 2;
 
-	// Template for Bunny prefab
+	// Template for Bunny prefabs
 	public GameObject bunnyPrefab;
+	public GameObject enemyBunnyPrefab;
 
 	// Default bunny spawn location
 	GameObject spawnLoc;
@@ -41,9 +42,14 @@ public class TrainingScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// Left click to create a bunny
+		// Left click to create a bunny at spawn location
 		if (Input.GetMouseButtonDown(0)) {
 			CreateBunny();
+		}
+		
+		// Right click to add enemy bunny (at location specified by mouse click)
+		if (Input.GetMouseButtonDown(1)) {
+			CreateEnemyBunny(Camera.main.ScreenPointToRay (Input.mousePosition));
 		}
 
 		// Check if the time is up
@@ -106,6 +112,18 @@ public class TrainingScript : MonoBehaviour {
 		bunny.brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
 		
 		bunnies.Add(bunnyObj);
+	}
+
+	// Spawns an enemy bunny
+	void CreateEnemyBunny(Ray ray) {
+		RaycastHit hit = new RaycastHit();
+		if (Physics.Raycast(ray, out hit, 100)) {
+			GameObject bunnyObj = (GameObject)Instantiate(enemyBunnyPrefab, hit.point, Quaternion.identity);
+			
+			// Create a brain for the bunny
+			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
+			bunny.brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
+		}
 	}
 
 	// Respawns the specified Bunny at the spawn location
