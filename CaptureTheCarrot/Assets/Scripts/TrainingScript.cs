@@ -127,7 +127,7 @@ public class TrainingScript : MonoBehaviour {
 
 	// Spawns a new bunny in the bunny hole and adds it to the bunnies list
 	void CreateBunny() {
-		GameObject bunnyObj = (GameObject)Instantiate(bunnyPrefab, spawnLoc.transform.position, Quaternion.identity);
+		GameObject bunnyObj = (GameObject)Instantiate(bunnyPrefab, new Vector3(spawnLoc.transform.position.x, 0.8f, spawnLoc.transform.position.z), Quaternion.identity);
 		
 		// Create a brain for the bunny
 		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
@@ -140,7 +140,7 @@ public class TrainingScript : MonoBehaviour {
 	void CreateEnemyBunny(Ray ray) {
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast(ray, out hit, 100)) {
-			GameObject bunnyObj = (GameObject)Instantiate(enemyBunnyPrefab, hit.point, Quaternion.identity);
+			GameObject bunnyObj = (GameObject)Instantiate(enemyBunnyPrefab, new Vector3(hit.point.x, 0.8f, hit.point.z), Quaternion.identity);
 			
 			// Create a brain for the bunny
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
@@ -167,7 +167,7 @@ public class TrainingScript : MonoBehaviour {
 	// Respawns the specified Bunny at the spawn location
 	// TODO: Evolve bunny's neural network
 	void RespawnBunny(GameObject bunnyObj) {
-		bunnyObj.transform.position = spawnLoc.transform.position;
+		bunnyObj.transform.position = new Vector3(spawnLoc.transform.position.x, 0.8f, spawnLoc.transform.position.z);
 		bunnyObj.transform.rotation = Quaternion.identity;
 	}
 
