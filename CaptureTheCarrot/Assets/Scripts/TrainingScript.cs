@@ -7,9 +7,11 @@ public class TrainingScript : MonoBehaviour {
 	public const int INPUTS = 4;
 	public const int OUTPUTS = 2;
 
-	// Template for Bunny prefabs
+	// Template for prefabs
 	public GameObject bunnyPrefab;
 	public GameObject enemyBunnyPrefab;
+	public GameObject carrotPrefab;
+	public GameObject mudPrefab;
 
 	// Default bunny spawn location
 	GameObject spawnLoc;
@@ -22,6 +24,8 @@ public class TrainingScript : MonoBehaviour {
 
 	// The seconds till we replace the worst bunny
 	private int SEC_TIL_REMOVE_BUNNY = 10;
+
+	TrainingGUIScript gui;
 
 	// rtNEAT Loop:
 	/*
@@ -38,18 +42,36 @@ public class TrainingScript : MonoBehaviour {
 		spawnLoc = GameObject.Find("BunnySpawn");
 		bunnies = new ArrayList();
 		time = Time.fixedTime;
+		gui = GameObject.Find("Terrain").GetComponent<TrainingGUIScript>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		// Left click to create a bunny at spawn location
+
+		/*
 		if (Input.GetMouseButtonDown(0)) {
 			CreateBunny();
 		}
+		*/
 		
-		// Right click to add enemy bunny (at location specified by mouse click)
+		// Right click to add current selection to map
 		if (Input.GetMouseButtonDown(1)) {
-			CreateEnemyBunny(Camera.main.ScreenPointToRay (Input.mousePosition));
+			switch(gui.selectedItem)
+			{
+			case TrainingGUIScript.Item.Bunny:
+				CreateBunny();
+				break;
+			case TrainingGUIScript.Item.EnemyBunny:
+				CreateEnemyBunny(Camera.main.ScreenPointToRay (Input.mousePosition));
+				break;
+			case TrainingGUIScript.Item.Carrot:
+				CreateCarrot(Camera.main.ScreenPointToRay (Input.mousePosition));
+				break;
+			case TrainingGUIScript.Item.Mud:
+				CreateMud(Camera.main.ScreenPointToRay (Input.mousePosition));
+				break;
+			}
 		}
 
 		// Check if the time is up
@@ -103,7 +125,7 @@ public class TrainingScript : MonoBehaviour {
 		}
 	}
 
-	// Spawns a new Bunny GameObject and adds it to the bunnies list
+	// Spawns a new bunny in the bunny hole and adds it to the bunnies list
 	void CreateBunny() {
 		GameObject bunnyObj = (GameObject)Instantiate(bunnyPrefab, spawnLoc.transform.position, Quaternion.identity);
 		
@@ -123,6 +145,22 @@ public class TrainingScript : MonoBehaviour {
 			// Create a brain for the bunny
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
 			bunny.brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
+		}
+	}
+
+	// Spawns a carrot
+	void CreateCarrot(Ray ray) {
+		RaycastHit hit = new RaycastHit();
+		if (Physics.Raycast(ray, out hit, 100)) {
+			GameObject carrotObj = (GameObject)Instantiate(carrotPrefab, hit.point, Quaternion.identity);
+		}
+	}
+
+	// Spawns a mud pit
+	void CreateMud(Ray ray) {
+		RaycastHit hit = new RaycastHit();
+		if (Physics.Raycast(ray, out hit, 100)) {
+			GameObject mudObj = (GameObject)Instantiate(mudPrefab, new Vector3(hit.point.x, 0.15f, hit.point.z), Quaternion.identity);
 		}
 	}
 

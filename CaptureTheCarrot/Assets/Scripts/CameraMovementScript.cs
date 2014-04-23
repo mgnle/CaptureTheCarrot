@@ -31,7 +31,8 @@ public class CameraMovementScript : MonoBehaviour {
 		float mousePosX = Input.mousePosition.x; 
 		float mousePosY = Input.mousePosition.y; 
 
-		
+		// Uncomment for mouse controls
+		/*
 		if (mousePosX < scrollDistance) 
 		{ 
 			transform.Translate(Vector3.right * -scrollSpeed * Time.deltaTime); 
@@ -51,12 +52,34 @@ public class CameraMovementScript : MonoBehaviour {
 		{ 
 			transform.Translate(transform.forward * scrollSpeed * Time.deltaTime); 
 		}
+		*/
 
-		if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+		// Move camera with WASD keys
+		if (Input.GetKey("a")) 
+		{ 
+			transform.Translate(Vector3.right * -scrollSpeed * Time.deltaTime); 
+		} 
+		
+		if (Input.GetKey("d")) 
+		{ 
+			transform.Translate(Vector3.right * scrollSpeed * Time.deltaTime); 
+		}
+		
+		if (Input.GetKey("s")) 
+		{ 
+			transform.Translate(transform.forward * -scrollSpeed * Time.deltaTime); 
+		} 
+		
+		if (Input.GetKey("w")) 
+		{ 
+			transform.Translate(transform.forward * scrollSpeed * Time.deltaTime); 
+		}
+
+		if (Input.GetKeyDown("-") || Input.GetAxis ("Mouse ScrollWheel") < 0) {
 			camera.transform.Translate(Vector3.back * zoomSpeed);
 		}
 
-		if (Input.GetAxis("Mouse ScrollWheel") > 0 && camPos.y > zoomSpeed) {
+		if (Input.GetKeyDown("=") || Input.GetAxis ("Mouse ScrollWheel") > 0) {
 			camera.transform.Translate(Vector3.forward * zoomSpeed);
 		}
 
