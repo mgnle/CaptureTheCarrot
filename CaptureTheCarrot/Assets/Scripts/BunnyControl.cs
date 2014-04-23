@@ -37,8 +37,10 @@ public class BunnyControl : MonoBehaviour {
 	
 	// Fitness of the neural network and the count for
 	// calculations
-	float fitness = 0;
+	float nearFitness = 0;
+	float firingFitness = 0;
 	int fitnessCount = 0;
+	int firingCount = 1;
 
 	CharacterController controller;
 	CollisionFlags collisionFlags;
@@ -138,12 +140,12 @@ public class BunnyControl : MonoBehaviour {
 		GameObject cabbageObj = (GameObject)Instantiate(cabbagePrefab, transform.position + transform.forward * 2f + new Vector3(0f, 1f, 0f), transform.rotation);
 	}
 
-	public void FindRadarValues(GameObject obj) {
+	public void FindRadarValues(ArrayList objs) {
 		float[] radars = new float[4];
-		//foreach(GameObject obj in objs) {
+		foreach(GameObject obj in objs) {
 			if (CalculateRadar(obj) != -1)
 				radars[CalculateRadar(obj)] += CalculateDistance(obj);
-		//}
+		}
 		inputArray = radars;
 	}
 	
@@ -196,17 +198,37 @@ public class BunnyControl : MonoBehaviour {
             return 0;
     }
 	
-	/* Calculates the fitness of the neural network by finding the
-	   average distance from the object. Then takes the inverse
-	   to find a number between 0 and 1. The higher the fitness, the
-	   better the neural network. */
+	/* Calculates the fitness of the neural network by adding the
+	   fitness for approaching and object and the fitness for firing.
+	   
+	   Fitness for aproaching an object averages the distance from the object. 
+	   Then it takes the inverse to find a number between 0 and 1. 
+	   
+	   Fitness for firing takes 1 - (the inverse of how many times an
+	   object has been in range of firing.
+	   
+	   Finally, these are individually multiplied by the scale the user
+	   has set, and they are added together.
+	   
+	   The higher the fitness, the better the neural network. */
 	public float CalculateFitness(GameObject obj) {
 		fitnessCount++;
-		if (fitness != 0)
-			fitness = 1 / fitness;
-		fitness = 1 / ((fitness*(fitnessCount-1) + CalculateDistance(obj)) / fitnessCount);
-		Debug.Log (fitness);
-		return fitness;
+		
+		// Fitness for approaching an object
+		if (nearFitness != 0)
+			nearFitness = 1 / nearFitness;
+		nearFitness = 1 / ((nearFitness*(fitnessCount-1) + CalculateDistance(obj)) / fitnessCount);
+		nearFitness = nearFitness;//*userInputScale;
+		Debug.Log ("Near Fitness" + nearFitness);
+		
+		// Fitness for firing
+		if (CalculateOnTargetSensor() == 1)
+			firingCount++;
+		firingFitness = 1 - (1 / firingCount);
+		firingFitness = firingFitness;//*userInputScale;
+		Debug.Log ("Firing Fitness: " + firingFitness);
+		
+		return nearFitness + firingFitness;
 	}
 }
 

@@ -86,7 +86,11 @@ public class TrainingScript : MonoBehaviour {
 			// just make public variables inside the BunnyControl class.
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
 
-			bunny.FindRadarValues(GameObject.Find("Carrot"));//new ArrayList().Add(GameObject.Find("Carrot")));
+			ArrayList carrotArray = new ArrayList();
+			carrotArray.Add (GameObject.Find("Carrot"));
+			bunny.FindRadarValues(carrotArray);
+			
+			bunny.CalculateFitness(GameObject.Find("Carrot"));
 			
 			// For testing cabbage gun
 			if (Input.GetKeyDown ("f"))
