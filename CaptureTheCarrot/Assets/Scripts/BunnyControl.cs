@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using AssemblyCSharp;
 using System;
 
@@ -140,7 +140,7 @@ public class BunnyControl : MonoBehaviour {
 		GameObject cabbageObj = (GameObject)Instantiate(cabbagePrefab, transform.position + transform.forward * 2f + new Vector3(0f, 1f, 0f), transform.rotation);
 	}
 
-	public void FindRadarValues(ArrayList objs) {
+	public void FindRadarValues(List<GameObject> objs) {
 		float[] radars = new float[4];
 		foreach(GameObject obj in objs) {
 			if (CalculateRadar(obj) != -1)
