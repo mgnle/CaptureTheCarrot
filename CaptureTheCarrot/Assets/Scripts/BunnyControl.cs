@@ -8,7 +8,7 @@ using System;
 public class BunnyControl : MonoBehaviour {
 		
 	// Neural Network bunny "brain"
-	public INeuralNetwork brain;
+	public SimpleNeuralNetwork brain;
 	
 	// Enum for the actions that can be taken
 	public enum Action

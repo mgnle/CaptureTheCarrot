@@ -30,6 +30,8 @@ namespace AssemblyCSharp
 				void Activate();
 				
 				double[] getWeights();
+				
+				int Evaluate();
 		}
 }
 

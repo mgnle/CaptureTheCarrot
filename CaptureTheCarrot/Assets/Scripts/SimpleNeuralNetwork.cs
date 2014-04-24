@@ -56,26 +56,181 @@ namespace AssemblyCSharp
 							for(int j=0; j<outputCount; j++)
 							{
 								int toNode = j+inputCount;
-								double randomWeight = gen.NextDouble();
+								double randomWeight = gen.Next(-5, 5)/100.0;
 								this._connectionGenes.Add(new ConnectionGene(innovationNum, fromNode, toNode, randomWeight));
 								innovationNum++;
 							}										
 						}
 				}
 				
-				public void changeWeights()
+				public SimpleNeuralNetwork (SimpleNeuralNetwork parent1, SimpleNeuralNetwork parent2)
 				{
-					// TODO: change the weights
+					List<NodeGene> nodes1 = parent1.GetNodes();
+					List<NodeGene> nodes2 = parent2.GetNodes();
+					List<ConnectionGene> connections1 = parent1.GetConnections();
+					List<ConnectionGene> connections2 = parent2.GetConnections();
+					
+					List<NodeGene> nodeIntersection = new List<NodeGene>();
+					List<NodeGene> node1Disjoint = new List<NodeGene>();
+					List<NodeGene> node2Disjoint = new List<NodeGene>();
+					foreach(NodeGene n1 in nodes1)
+					{
+						bool found = false;
+						foreach(NodeGene n2 in nodes2)
+						{
+							if(n1.Equals(n2))
+							{
+								nodeIntersection.Add(new NodeGene(n1));
+								found = true;
+							}
+						}
+						if(!found)
+						{
+							node1Disjoint.Add(new NodeGene(n1));
+						}
+					}
+					foreach(NodeGene n2 in nodes2)
+					{
+						bool found = false;
+						foreach(NodeGene n1 in nodes1)
+						{
+							if(n1.Equals(n2))
+							{
+								found = true;
+							}
+						}
+						if(!found)
+						{
+							node2Disjoint.Add(new NodeGene(n2));
+						}
+					}
+					
+					// Find the intersection of connections, as well as the disjoints
+					List<ConnectionGene> connectionsIntersection = new List<ConnectionGene>();
+					List<ConnectionGene> connections1Disjoint = new List<ConnectionGene>();
+					List<ConnectionGene> connections2Disjoint = new List<ConnectionGene>();
+					foreach(ConnectionGene c1 in connections1)
+					{
+						bool found = false;
+						foreach(ConnectionGene c2 in connections2)
+						{
+							if(c1.Equals(c2))
+							{
+								connectionsIntersection.Add(new ConnectionGene(c1));
+								found = true;
+							}
+						}
+						if(!found)
+						{
+							connections1Disjoint.Add(new ConnectionGene(c1));
+						}
+						
+					}
+					foreach(ConnectionGene c2 in connections2)
+					{
+						bool found = false;
+						foreach(ConnectionGene c1 in connections1)
+						{
+							if(c1.Equals(c2))
+							{
+								found = true;
+							}
+						}
+						if(!found)
+						{
+							connections2Disjoint.Add(new ConnectionGene(c2));
+						}						
+					}
+					
+					// Make this neural network's connections the intersection + the disjoint according to the fitness function
+					_nodeGenes = nodeIntersection;
+					_connectionGenes = connectionsIntersection;
+										
+					int eval1 = parent1.Evaluate();
+					int eval2 = parent2.Evaluate();
+					if(eval1 > eval2)
+					{
+						foreach(NodeGene n1 in node1Disjoint)
+						{
+							_nodeGenes.Add(n1);
+						}
+						foreach(ConnectionGene c1 in connections1Disjoint)
+						{
+							_connectionGenes.Add(c1);
+						}
+					}
+					else if(eval2 > eval1)
+					{
+						foreach(NodeGene n2 in node2Disjoint)
+						{
+							_nodeGenes.Add(n2);
+						}
+						foreach(ConnectionGene c2 in connections2Disjoint)
+						{
+							_connectionGenes.Add(c2);
+						}
+					}
+					else
+					{
+						// If they are equal -- add the disjoint nodes from both sets
+						foreach(NodeGene n1 in node1Disjoint)
+						{
+							_nodeGenes.Add(n1);
+						}
+						foreach(NodeGene n2 in node2Disjoint)
+						{
+							_nodeGenes.Add(n2);
+						}
+						foreach(ConnectionGene c1 in connections1Disjoint)
+						{
+							_connectionGenes.Add(c1);
+						}
+						foreach(ConnectionGene c2 in connections2Disjoint)
+						{
+							_connectionGenes.Add(c2);
+						}
+					}
+					
+					// Figure out the input count and output count
+					foreach(NodeGene n in _nodeGenes)
+					{
+						if(n.type == NodeType.Input)
+						{
+							this._inputCount++;
+						}
+						if(n.type == NodeType.Output)
+						{
+							this._outputCount++;
+						}
+					}
+					
+					this._inputArray = new float[this._inputCount];
+					this._outputArray = new float[this._outputCount];					
 				}
 				
-				public void addConnection()
+				public void changeWeights()
+				{
+					
+				}
+				
+				private void addConnection()
 				{
 					// TODO: add connections to mutate the network
 				}
 				
-				public void addNode()
+				private void addNode()
 				{
 					// TODO: add nodes to mutate the network
+				}
+				
+				public List<NodeGene> GetNodes()
+				{
+					return _nodeGenes;
+				}
+				
+				public List<ConnectionGene> GetConnections()
+				{
+					return _connectionGenes;
 				}
 				
 				public int InputCount {
@@ -118,6 +273,12 @@ namespace AssemblyCSharp
 						weights[i] = this._connectionGenes[i].weight;
 					}
 					return weights;
+				}
+				
+				// Return a number representing how good the neural network is
+				public int Evaluate() 
+				{
+					return gen.Next();
 				}
 		}
 }

@@ -18,6 +18,22 @@ namespace AssemblyCSharp
 					this.nodeID = id;
 					this.type = type;					
 				}
+				
+				public NodeGene (NodeGene toCopy)
+				{
+					this.nodeID = toCopy.nodeID;
+					this.type = toCopy.type;					
+				}
+				
+				public override bool Equals(System.Object obj)
+				{
+					NodeGene n = (NodeGene) obj;
+					if(this.nodeID == n.nodeID && this.type.Equals(n.type))
+					{
+						return true;
+					}
+					return false;
+				}
 		}
 }
 

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using AssemblyCSharp;
 
 public class TrainingScript : MonoBehaviour {
@@ -15,13 +15,13 @@ public class TrainingScript : MonoBehaviour {
 	GameObject spawnLoc;
 
 	// List of all our bunny objects
-	private ArrayList bunnies;
+	private List<GameObject> bunnies;
 
 	// Holds the seconds since the start of the game
 	private float time;
 
 	// The seconds till we replace the worst bunny
-	private int SEC_TIL_REMOVE_BUNNY = 10;
+	private int SEC_TIL_REMOVE_BUNNY = 20;
 
 	// rtNEAT Loop:
 	/*
@@ -36,7 +36,7 @@ public class TrainingScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spawnLoc = GameObject.Find("BunnySpawn");
-		bunnies = new ArrayList();
+		bunnies = new List<GameObject>();
 		time = Time.fixedTime;
 	}
 	
@@ -54,7 +54,8 @@ public class TrainingScript : MonoBehaviour {
 
 		// Check if the time is up
 		if (TimeUp()) {
-			// TODO: Use NEAT to choose worst bunny and replace with best bunny - rtNEAT Loop
+			Debug.Log("Time up");
+			ReplaceWorstBunny();
 		}
 		
 		// Loops through all existing bunnies, and moves them randomly
@@ -96,9 +97,10 @@ public class TrainingScript : MonoBehaviour {
 			}*/
 
 			// Respawn bunny if far away from spawn
+			/*
 			if (Vector3.Distance(bunny.transform.position, spawnLoc.transform.position) > 30) {
 				RespawnBunny(bunnyObj);
-			}
+			}*/
 			
 		}
 	}
@@ -110,6 +112,17 @@ public class TrainingScript : MonoBehaviour {
 		// Create a brain for the bunny
 		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
 		bunny.brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
+		
+		bunnies.Add(bunnyObj);
+	}
+	
+	// Spawns a new Bunny GameObject and adds it to the bunnies list
+	void CreateBunny(SimpleNeuralNetwork brain) {
+		GameObject bunnyObj = (GameObject)Instantiate(bunnyPrefab, spawnLoc.transform.position, Quaternion.identity);
+		
+		// Create a brain for the bunny
+		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
+		bunny.brain = brain;
 		
 		bunnies.Add(bunnyObj);
 	}
@@ -132,11 +145,51 @@ public class TrainingScript : MonoBehaviour {
 		bunnyObj.transform.position = spawnLoc.transform.position;
 		bunnyObj.transform.rotation = Quaternion.identity;
 	}
+	
+	// Get the bunny with the lowest fitness and replace it with the two highest fitness bunnies
+	void ReplaceWorstBunny() {
+		if(bunnies.ToArray().Length > 0) {
+			GameObject worstBunny = bunnies.ToArray()[0];
+			GameObject bestBunny = bunnies.ToArray()[0];
+			GameObject secondBestBunny = bunnies.ToArray()[0];
+			
+			foreach(GameObject bunnyObj in bunnies) {
+				int worstBunnyEval = worstBunny.GetComponent<BunnyControl>().brain.Evaluate();
+				int bestBunnyEval = bestBunny.GetComponent<BunnyControl>().brain.Evaluate();
+				int secondBestBunnyEval = secondBestBunny.GetComponent<BunnyControl>().brain.Evaluate();
+			
+				BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
+				int bunnyEval = bunny.brain.Evaluate();
+				
+				if(bunnyEval < worstBunnyEval) {
+					worstBunny = bunnyObj;
+				}
+				
+				if(bunnyEval > bestBunnyEval) {
+					bestBunny = bunnyObj;
+				}
+				else if(bunnyEval > secondBestBunnyEval) {
+					secondBestBunny = bunnyObj;
+				}				
+			}
+			
+			// Remove worst bunny
+			//bunnies.Remove(worstBunny);
+			
+			// Take two best bunnies, create new neural network combining both, and place in game
+			SimpleNeuralNetwork bestBrain = bestBunny.GetComponent<BunnyControl>().brain;
+			SimpleNeuralNetwork secondBestBrain = secondBestBunny.GetComponent<BunnyControl>().brain;
+			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
+			worstBunny.GetComponent<BunnyControl>().brain = newBrain;
+			RespawnBunny(worstBunny);
+			Debug.Log("NEW BUNNY");
+		}			
+	}
 
 	bool TimeUp() {
 		time = Time.fixedTime;
 
-		if (time % SEC_TIL_REMOVE_BUNNY == 0) {
+		if (time > 0 && time % SEC_TIL_REMOVE_BUNNY == 0) {
 			return true;
 		} else {
 			return false;
