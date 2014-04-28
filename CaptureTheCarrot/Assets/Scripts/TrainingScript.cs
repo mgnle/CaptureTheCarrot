@@ -76,7 +76,7 @@ public class TrainingScript : MonoBehaviour {
 
 		// Check if the time is up
 		if (TimeUp()) {
-			Debug.Log("Time up");
+			//Debug.Log("Time up");
 			ReplaceWorstBunny();
 		}
 		
@@ -224,7 +224,7 @@ public class TrainingScript : MonoBehaviour {
 			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
 			worstBunny.GetComponent<BunnyControl>().brain = newBrain;
 			RespawnBunny(worstBunny);
-			Debug.Log("NEW BUNNY");
+			//Debug.Log("NEW BUNNY");
 		}			
 	}
 

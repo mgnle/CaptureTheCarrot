@@ -182,7 +182,7 @@ public class BunnyControl : MonoBehaviour {
 		} else if (degree >= 135 && degree <= 180) {
 			return 3;
 		} else {
-			Debug.Log ("Unknown Degree in method CalculateRadar");
+			//Debug.Log ("Unknown Degree in method CalculateRadar");
 			return -1;
 		}
 	}
@@ -219,14 +219,14 @@ public class BunnyControl : MonoBehaviour {
 			nearFitness = 1 / nearFitness;
 		nearFitness = 1 / ((nearFitness*(fitnessCount-1) + CalculateDistance(obj)) / fitnessCount);
 		nearFitness = nearFitness;//*userInputScale;
-		Debug.Log ("Near Fitness" + nearFitness);
+		//Debug.Log ("Near Fitness" + nearFitness);
 		
 		// Fitness for firing
 		if (CalculateOnTargetSensor() == 1)
 			firingCount++;
 		firingFitness = 1 - (1 / firingCount);
 		firingFitness = firingFitness;//*userInputScale;
-		Debug.Log ("Firing Fitness: " + firingFitness);
+		//Debug.Log ("Firing Fitness: " + firingFitness);
 		
 		return nearFitness + firingFitness;
 	}
