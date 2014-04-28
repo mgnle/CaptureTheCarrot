@@ -56,7 +56,7 @@ namespace AssemblyCSharp
 							for(int j=0; j<outputCount; j++)
 							{
 								int toNode = j+inputCount;
-								double randomWeight = gen.Next(-5, 5)/100.0;
+								double randomWeight = gen.NextDouble();
 								this._connectionGenes.Add(new ConnectionGene(innovationNum, fromNode, toNode, randomWeight));
 								innovationNum++;
 							}										
@@ -205,22 +205,115 @@ namespace AssemblyCSharp
 					}
 					
 					this._inputArray = new float[this._inputCount];
-					this._outputArray = new float[this._outputCount];					
+					this._outputArray = new float[this._outputCount];	
+					
+					// Randomly mutate neural network weights and structure after creating new brain from parent brains
+					mutate();				
 				}
 				
-				public void changeWeights()
+				// Randomly mutate the network
+				public void mutate()
 				{
+					changeWeights();
 					
+					double prob = gen.NextDouble();
+					if(prob <= Constants.PROBABILITY_ADD_NODE)
+					{
+						addNode();
+					}
+					
+					prob = gen.NextDouble();
+					if(prob <= Constants.PROBABILITY_ADD_CONNECTION)
+					{
+						addConnection();
+					}
+				}
+				
+				private void changeWeights()
+				{
+					foreach(ConnectionGene c in this._connectionGenes)
+					{
+						double prob = gen.NextDouble();
+						if(prob <= Constants.PROBABILITY_MUTATE_WEIGHT)
+						{
+							double change = (gen.Next(-1*Constants.AMOUNT_MUTATE_WEIGHT, Constants.AMOUNT_MUTATE_WEIGHT))/100.0;
+							if (c.weight+change < 0)
+							{
+								c.weight = 0;
+							}
+							else if(c.weight+change > 1)
+							{
+								c.weight = 1;
+							}
+							else
+							{
+								c.weight += change;
+							}
+						}
+					}
 				}
 				
 				private void addConnection()
 				{
 					// TODO: add connections to mutate the network
+					while(true)
+					{
+						int index = gen.Next(0, this._nodeGenes.Count);
+						NodeGene toConnect = this._nodeGenes[index];
+						
+						List<NodeGene> possibilities = new List<NodeGene>();
+						foreach(NodeGene n in this._nodeGenes)
+						{
+							// If I am not looking at the same node AND
+							// If I'm a hidden node OR
+							// I'm an Input/Output node and the node I'm looking at is not the same type
+							if(!n.Equals(toConnect) &&
+							   (toConnect.type == NodeType.Hidden || (toConnect.type != NodeType.Hidden && toConnect.type != n.type)))
+							{
+								possibilities.Add(n);
+							}
+						}
+						
+						if(possibilities.Count == 0)
+						{
+							continue;
+						}
+						
+						int nodeIndex = gen.Next(0, possibilities.Count);
+						NodeGene toConnect2 = possibilities[nodeIndex];
+						
+						NodeGene nodeIn = toConnect;
+						NodeGene nodeOut = toConnect2;
+						
+						if(nodeOut.type == NodeType.Input || nodeIn.type == NodeType.Output)
+						{
+							// Swap them so the connection is created in the right direction
+							NodeGene temp = nodeIn;
+							nodeIn = nodeOut;
+							nodeOut = temp;
+						}						
+						ConnectionGene toAdd = new ConnectionGene(innovationNum++, nodeIn.nodeID, nodeOut.nodeID, gen.NextDouble());
+						this._connectionGenes.Add(toAdd);
+						break;						
+					}
+					
 				}
 				
 				private void addNode()
 				{
-					// TODO: add nodes to mutate the network
+					// Take an existing connection, and split it.
+					int index = gen.Next(0, this._connectionGenes.Count);
+					ConnectionGene toDisable = this._connectionGenes[index];
+					NodeGene toAdd = new NodeGene(nodeID++, NodeType.Hidden);
+					
+					ConnectionGene connect1 = new ConnectionGene(innovationNum++, toDisable.nodeIn, toAdd.nodeID, 1);
+					ConnectionGene connect2 = new ConnectionGene(innovationNum++, toAdd.nodeID, toDisable.nodeOut, toDisable.weight);
+					
+					toDisable.enabled = false;
+					// Maybe just remove this connection?
+					
+					this._connectionGenes.Add(connect1);
+					this._connectionGenes.Add(connect2);			
 				}
 				
 				public List<NodeGene> GetNodes()
