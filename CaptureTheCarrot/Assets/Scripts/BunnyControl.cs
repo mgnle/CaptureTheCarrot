@@ -64,17 +64,15 @@ public class BunnyControl : MonoBehaviour {
 		
 		distance = new List<int>();
 		firing = new List<int>();
-		
-		brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		bunnyPos = transform.position;
 		
-		// TODO: Populate the neural network input array with the correct inputs
 		GameObject carrot = GameObject.Find ("Carrot");
 		if (carrot != null) {
+			// TODO: Do for multiple carrots
 			distance.Add((int)CalculateDistance(GameObject.Find("Carrot")));
 		}
 				
@@ -207,13 +205,10 @@ public class BunnyControl : MonoBehaviour {
 		} else if (degree >= 85 && degree <= 95) {
 			return 2;
 		} else if (degree >= 95 && degree <= 135) {
-			//Debug.Log ("Left Radar");
 			return 3;
 		} else if (degree >= 135 && degree <= 180) {
-			//Debug.Log ("Far Left Radar");
 			return 4;
 		} else {
-			//Debug.Log ("Unknown Degree in method CalculateRadar");
 			return -1;
 		}
 	}
@@ -229,7 +224,6 @@ public class BunnyControl : MonoBehaviour {
 				
 				return 1;
 			}
-			//Debug.Log (hit.collider.name);
 		}
         return 0;
     }

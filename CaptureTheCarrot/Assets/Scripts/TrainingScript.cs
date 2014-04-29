@@ -56,7 +56,6 @@ public class TrainingScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Left click to create a bunny at spawn location
-
 		/*
 		if (Input.GetMouseButtonDown(0)) {
 			CreateBunny();
@@ -84,12 +83,10 @@ public class TrainingScript : MonoBehaviour {
 
 		// Check if the time is up
 		if (TimeUp()) {
-			//Debug.Log("Time up");
 			ReplaceWorstBunny();
 		}
 		
 		// Loops through all existing bunnies, and moves them randomly
-		// TODO: Use NEAT to determine actions of each bunny
 		foreach(GameObject bunnyObj in bunnies) {
 			// Use this to access anything associated with a specific bunny. To add NEAT stuff, 
 			// just make public variables inside the BunnyControl class.
@@ -155,18 +152,6 @@ public class TrainingScript : MonoBehaviour {
 		
 		bunnies.Add(bunnyObj);
 	}
-	
-	// Spawns a new Bunny GameObject and adds it to the bunnies list
-	void CreateBunny(SimpleNeuralNetwork brain) {
-		GameObject bunnyObj = (GameObject)Instantiate(bunnyPrefab, spawnLoc.transform.position, Quaternion.identity);
-		
-		// Create a brain for the bunny
-		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
-		bunny.brain = brain;
-		bunny.birthday = Time.fixedTime;
-		
-		bunnies.Add(bunnyObj);
-	}
 
 	// Spawns an enemy bunny
 	void CreateEnemyBunny(Ray ray) {
@@ -197,7 +182,6 @@ public class TrainingScript : MonoBehaviour {
 	}
 
 	// Respawns the specified Bunny at the spawn location
-	// TODO: Evolve bunny's neural network
 	void RespawnBunny(GameObject bunnyObj) {
 		bunnyObj.transform.position = new Vector3(spawnLoc.transform.position.x, 0.8f, spawnLoc.transform.position.z);
 		bunnyObj.transform.rotation = Quaternion.identity;
@@ -218,6 +202,7 @@ public class TrainingScript : MonoBehaviour {
 				BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
 				float bunnyEval = bunny.brain.Evaluate();
 				
+				// Only respawns if it has been alive for long enough
 				if(HasBeenAliveLongEnough(bunny) && bunnyEval < worstBunnyEval) {
 					worstBunny = bunnyObj;
 				}
@@ -235,16 +220,12 @@ public class TrainingScript : MonoBehaviour {
 				return;
 			}
 			
-			// Remove worst bunny
-			//bunnies.Remove(worstBunny);
-			
 			// Take two best bunnies, create new neural network combining both, and place in game
 			SimpleNeuralNetwork bestBrain = bestBunny.GetComponent<BunnyControl>().brain;
 			SimpleNeuralNetwork secondBestBrain = secondBestBunny.GetComponent<BunnyControl>().brain;
 			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
 			worstBunny.GetComponent<BunnyControl>().brain = newBrain;
 			RespawnBunny(worstBunny);
-			//Debug.Log("NEW BUNNY");
 		}			
 	}
 

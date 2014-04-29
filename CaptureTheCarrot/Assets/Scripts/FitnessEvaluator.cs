@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class FitnessEvaluator {
-	
-	private List<int> distance;
-	private List<int> firing;
 	
 	/* Calculates the fitness of the neural network based on the distance
 	 * from the carrot and whether an enemy is in firing range.
@@ -13,14 +11,14 @@ public class FitnessEvaluator {
 		int sum = 0;
 		float nearFitness = 0;
 		float fireFitness = 0;
-		
-		
+				
 		for (int i = 0; i < distance.Count; i++) {
 			sum += distance[i];
 		}
 		
-		if (sum != 0 && distance.Count != 0)
+		if (sum != 0 && distance.Count != 0) {
 			nearFitness = 1/(sum/distance.Count);
+		}
 		nearFitness = nearFitness;//*userInputScale;
 			
 		// Fitness for firing
