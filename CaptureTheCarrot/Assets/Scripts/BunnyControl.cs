@@ -7,8 +7,15 @@ using System;
 
 public class BunnyControl : MonoBehaviour {
 		
+	public const int INPUTS = 5;
+	public const int OUTPUTS = 2;
+		
 	// Neural Network bunny "brain"
 	public SimpleNeuralNetwork brain;
+	
+	// Data for fitness evaluator
+	private List<int> distance;
+	private List<int> firing;
 	
 	// Enum for the actions that can be taken
 	public enum Action
@@ -34,13 +41,6 @@ public class BunnyControl : MonoBehaviour {
 	
 	// Array of inputs
 	float[] inputArray = new float[]{1f, 1f, 1f, 1f};
-	
-	// Fitness of the neural network and the count for
-	// calculations
-	float nearFitness = 0;
-	float firingFitness = 0;
-	int fitnessCount = 0;
-	int firingCount = 1;
 
 	CharacterController controller;
 	CollisionFlags collisionFlags;
@@ -57,6 +57,11 @@ public class BunnyControl : MonoBehaviour {
 		initialPosition = transform.position;
 		initialRotation = transform.rotation;
 		bunnyPos = initialPosition;
+		
+		distance = new List<int>();
+		firing = new List<int>();
+		
+		brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
 	}
 	
 	// Update is called once per frame
@@ -65,7 +70,7 @@ public class BunnyControl : MonoBehaviour {
 		
 		// TODO: Populate the neural network input array with the correct inputs
 				
-		brain.UpdateFitness();
+		distance.Add((int)CalculateDistance(GameObject.Find("Carrot")));
 				
 		CalculateOnTargetSensor();
 				
@@ -204,43 +209,11 @@ public class BunnyControl : MonoBehaviour {
 				
 				return 1;
 			}
-			Debug.Log (hit.collider.name);
+			//Debug.Log (hit.collider.name);
 		}
         return 0;
     }
 	
-	/* Calculates the fitness of the neural network by adding the
-	   fitness for approaching and object and the fitness for firing.
-	   
-	   Fitness for aproaching an object averages the distance from the object. 
-	   Then it takes the inverse to find a number between 0 and 1. 
-	   
-	   Fitness for firing takes 1 - (the inverse of how many times an
-	   object has been in range of firing.
-	   
-	   Finally, these are individually multiplied by the scale the user
-	   has set, and they are added together.
-	   
-	   The higher the fitness, the better the neural network. */
-	public float CalculateFitness(GameObject obj) {
-		fitnessCount++;
-		
-		// Fitness for approaching an object
-		if (nearFitness != 0)
-			nearFitness = 1 / nearFitness;
-		nearFitness = 1 / ((nearFitness*(fitnessCount-1) + CalculateDistance(obj)) / fitnessCount);
-		nearFitness = nearFitness;//*userInputScale;
-		//Debug.Log ("Near Fitness" + nearFitness);
-		
-		// Fitness for firing
-		/*if (CalculateOnTargetSensor() == 1)
-			firingCount++;
-		firingFitness = 1 - (1 / firingCount);
-		firingFitness = firingFitness;//*userInputScale;
-		//Debug.Log ("Firing Fitness: " + firingFitness);*/
-		
-		return nearFitness;
-	}
 }
 
 

@@ -18,26 +18,21 @@ namespace AssemblyCSharp
 				
 				private List<NodeGene> _nodeGenes;
 				private List<ConnectionGene> _connectionGenes;
-				
-				// Fitness of the neural network and the count for
-				// calculations
-				float nearFitness = 0;
-				float firingFitness = 0;
-				int fitnessCount = 0;
-				int firingCount = 1;
-				
-				BunnyControl bunny;
+            
+				private FitnessEvaluator fitEval;
+				private List<int> distance;
+				private List<int> firing;
 
-				public SimpleNeuralNetwork (GameObject bunnyObj, int inputCount, int outputCount)
+				public SimpleNeuralNetwork (int inputCount, int outputCount)
 				{ 
-						this.bunny = bunnyObj.GetComponent<BunnyControl>();
-						
+						fitEval = new FitnessEvaluator();
+            
 						this._inputCount = inputCount;
 						this._outputCount = outputCount;
 
 						this._inputArray = new float[inputCount];
 						this._outputArray = new float[outputCount];
-						
+            
 						nodeID = 0;
 						innovationNum = 0;
 						
@@ -75,11 +70,10 @@ namespace AssemblyCSharp
 						}
 				}
 				
-				public SimpleNeuralNetwork(GameObject bunnyObj, SimpleNeuralNetwork parent1, SimpleNeuralNetwork parent2)
-				{
-				
-					this.bunny = bunnyObj.GetComponent<BunnyControl>();
-					
+				public SimpleNeuralNetwork(SimpleNeuralNetwork parent1, SimpleNeuralNetwork parent2)
+				{	
+					fitEval = new FitnessEvaluator();
+            
 					List<NodeGene> nodes1 = parent1.GetNodes();
 					List<NodeGene> nodes2 = parent2.GetNodes();
 					List<ConnectionGene> connections1 = parent1.GetConnections();
@@ -383,42 +377,15 @@ namespace AssemblyCSharp
 					return weights;
 				}
 				
-		/* Calculates the fitness of the neural network by adding the
-		fitness for approaching and object and the fitness for firing.
-		
-		Fitness for aproaching an object averages the distance from the object. 
-		Then it takes the inverse to find a number between 0 and 1. 
-		
-		Fitness for firing takes 1 - (the inverse of how many times an
-		object has been in range of firing.
-		
-		Finally, these are individually multiplied by the scale the user
-		has set, and they are added together.
-		
-		The higher the fitness, the better the neural network. */
-		public float Evaluate() {
-		
-			fitnessCount++;
-			
-			// Fitness for approaching an object
-			if (nearFitness != 0)
-				nearFitness = 1 / nearFitness;
-			nearFitness = 1 / ((nearFitness*(fitnessCount-1) + bunny.CalculateDistance(GameObject.Find("Carrot"))) / fitnessCount);
-			nearFitness = nearFitness;//*userInputScale;
-			//Debug.Log ("Near Fitness" + nearFitness);
-			
-			// Fitness for firing
-			/*if (CalculateOnTargetSensor() == 1)
-			firingCount++;
-			firingFitness = 1 - (1 / firingCount);
-			firingFitness = firingFitness;//*userInputScale;
-			//Debug.Log ("Firing Fitness: " + firingFitness);*/
-			
-			return nearFitness;
+		/* Calculates the distance from a bunny and a value for if the
+	 	 * bunny is facing an enemy. Should be called on every move.*/
+		public void UpdateEvaluator(List<int> distance, List<int> firing) {
+			this.distance = distance;
+			this.firing = firing;
 		}
-		
-		public void UpdateFitness() {
-			Evaluate ();
+				
+		public float Evaluate() {
+			return fitEval.Evaluate(distance, firing);
 		}
 	}
 }
