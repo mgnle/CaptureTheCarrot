@@ -234,6 +234,7 @@ public class TrainingScript : MonoBehaviour {
 			SimpleNeuralNetwork secondBestBrain = secondBestBunny.GetComponent<BunnyControl>().brain;
 			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
 			worstBunny.GetComponent<BunnyControl>().brain = newBrain;
+			worstBunny.GetComponent<BunnyControl>().birthday = Time.fixedTime;
 			RespawnBunny(worstBunny);
 		}			
 	}
