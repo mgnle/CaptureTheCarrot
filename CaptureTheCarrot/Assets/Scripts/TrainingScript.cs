@@ -57,6 +57,13 @@ public class TrainingScript : MonoBehaviour {
 		
 		// Right click to add current selection to map
 		if (Input.GetMouseButtonDown(1)) {
+			// Delete object if LCtrl+Right Click (may have consequenses)
+			if (Input.GetButton("Fire1")) {
+				RaycastHit hit = new RaycastHit();
+				if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
+					Destroy(hit.collider.gameObject);
+				}
+			}
 			switch(gui.selectedItem)
 			{
 			case TrainingGUIScript.Item.Bunny:
@@ -158,7 +165,7 @@ public class TrainingScript : MonoBehaviour {
 	// Spawns an enemy bunny
 	void CreateEnemyBunny(Ray ray) {
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(ray, out hit, 100)) {
+		if (Physics.Raycast(ray, out hit)) {
 			GameObject bunnyObj = (GameObject)Instantiate(enemyBunnyPrefab, new Vector3(hit.point.x, 0.8f, hit.point.z), Quaternion.identity);
 			
 			// Create a brain for the bunny
@@ -170,7 +177,7 @@ public class TrainingScript : MonoBehaviour {
 	// Spawns a carrot
 	void CreateCarrot(Ray ray) {
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(ray, out hit, 100)) {
+		if (Physics.Raycast(ray, out hit)) {
 			GameObject carrotObj = (GameObject)Instantiate(carrotPrefab, hit.point, Quaternion.identity);
 		}
 	}
@@ -178,7 +185,7 @@ public class TrainingScript : MonoBehaviour {
 	// Spawns a mud pit
 	void CreateMud(Ray ray) {
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(ray, out hit, 100)) {
+		if (Physics.Raycast(ray, out hit)) {
 			GameObject mudObj = (GameObject)Instantiate(mudPrefab, new Vector3(hit.point.x, 0.15f, hit.point.z), Quaternion.identity);
 		}
 	}
