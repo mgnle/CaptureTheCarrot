@@ -457,13 +457,18 @@ namespace AssemblyCSharp
 		
 		The higher the fitness, the better the neural network. */
 		public float Evaluate() {
+			GameObject carrot = GameObject.Find("Carrot");
+			
+			// TODO: Make this better?
+			if (carrot == null)
+				return 0;
 		
 			fitnessCount++;
 			
 			// Fitness for approaching an object
 			if (nearFitness != 0)
 				nearFitness = 1 / nearFitness;
-			nearFitness = 1 / ((nearFitness*(fitnessCount-1) + bunny.CalculateDistance(GameObject.Find("Carrot"))) / fitnessCount);
+			nearFitness = 1 / ((nearFitness*(fitnessCount-1) + bunny.CalculateDistance(carrot)) / fitnessCount);
 			nearFitness = nearFitness;//*userInputScale;
 			//Debug.Log ("Near Fitness" + nearFitness);
 			
