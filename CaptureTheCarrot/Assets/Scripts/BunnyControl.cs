@@ -65,6 +65,8 @@ public class BunnyControl : MonoBehaviour {
 		
 		// TODO: Populate the neural network input array with the correct inputs
 				
+		brain.UpdateFitness();
+				
 		CalculateOnTargetSensor();
 				
 		brain.InputSignalArray = inputArray;

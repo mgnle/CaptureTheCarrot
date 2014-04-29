@@ -405,7 +405,7 @@ namespace AssemblyCSharp
 				nearFitness = 1 / nearFitness;
 			nearFitness = 1 / ((nearFitness*(fitnessCount-1) + bunny.CalculateDistance(GameObject.Find("Carrot"))) / fitnessCount);
 			nearFitness = nearFitness;//*userInputScale;
-			Debug.Log ("Near Fitness" + nearFitness);
+			//Debug.Log ("Near Fitness" + nearFitness);
 			
 			// Fitness for firing
 			/*if (CalculateOnTargetSensor() == 1)
@@ -415,6 +415,10 @@ namespace AssemblyCSharp
 			//Debug.Log ("Firing Fitness: " + firingFitness);*/
 			
 			return nearFitness;
+		}
+		
+		public void updateFitness() {
+			Evaluate ();
 		}
 	}
 }
