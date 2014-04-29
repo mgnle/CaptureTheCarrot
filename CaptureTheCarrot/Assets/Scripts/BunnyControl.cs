@@ -64,8 +64,6 @@ public class BunnyControl : MonoBehaviour {
 		
 		distance = new List<int>();
 		firing = new List<int>();
-		
-		brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
 	}
 	
 	// Update is called once per frame
