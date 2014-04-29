@@ -65,13 +65,6 @@ public class TrainingScript : MonoBehaviour {
 		
 		// Right click to add current selection to map
 		if (Input.GetMouseButtonDown(1)) {
-			// Delete object if LCtrl+Right Click (may have consequenses)
-			if (Input.GetButton("Fire1")) {
-				RaycastHit hit = new RaycastHit();
-				if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
-					Destroy(hit.collider.gameObject);
-				}
-			}
 			switch(gui.selectedItem)
 			{
 			case TrainingGUIScript.Item.Bunny:
@@ -110,9 +103,7 @@ public class TrainingScript : MonoBehaviour {
 				List<GameObject> carrotArray = new List<GameObject>();
 				
 				carrotArray.Add (carrot);
-				bunny.FindRadarValues(carrotArray);
-				
-				bunny.CalculateFitness(carrot);			
+				bunny.FindRadarValues(carrotArray);		
 			}
 			// For testing cabbage gun
 			/*
@@ -159,7 +150,7 @@ public class TrainingScript : MonoBehaviour {
 		
 		// Create a brain for the bunny
 		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
-		bunny.brain = new SimpleNeuralNetwork(bunnyObj, INPUTS, OUTPUTS);
+		bunny.brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
 		bunny.birthday = Time.fixedTime;
 		
 		bunnies.Add(bunnyObj);
@@ -180,7 +171,7 @@ public class TrainingScript : MonoBehaviour {
 	// Spawns an enemy bunny
 	void CreateEnemyBunny(Ray ray) {
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(ray, out hit)) {
+		if (Physics.Raycast(ray, out hit, 100)) {
 			GameObject bunnyObj = (GameObject)Instantiate(enemyBunnyPrefab, new Vector3(hit.point.x, 0.8f, hit.point.z), Quaternion.identity);
 			
 			// Create a brain for the bunny
@@ -192,7 +183,7 @@ public class TrainingScript : MonoBehaviour {
 	// Spawns a carrot
 	void CreateCarrot(Ray ray) {
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(ray, out hit)) {
+		if (Physics.Raycast(ray, out hit, 100)) {
 			GameObject carrotObj = (GameObject)Instantiate(carrotPrefab, hit.point, Quaternion.identity);
 		}
 	}
@@ -200,7 +191,7 @@ public class TrainingScript : MonoBehaviour {
 	// Spawns a mud pit
 	void CreateMud(Ray ray) {
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(ray, out hit)) {
+		if (Physics.Raycast(ray, out hit, 100)) {
 			GameObject mudObj = (GameObject)Instantiate(mudPrefab, new Vector3(hit.point.x, 0.15f, hit.point.z), Quaternion.identity);
 		}
 	}
@@ -250,7 +241,7 @@ public class TrainingScript : MonoBehaviour {
 			// Take two best bunnies, create new neural network combining both, and place in game
 			SimpleNeuralNetwork bestBrain = bestBunny.GetComponent<BunnyControl>().brain;
 			SimpleNeuralNetwork secondBestBrain = secondBestBunny.GetComponent<BunnyControl>().brain;
-			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(worstBunny, bestBrain, secondBestBrain);
+			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
 			worstBunny.GetComponent<BunnyControl>().brain = newBrain;
 			RespawnBunny(worstBunny);
 			//Debug.Log("NEW BUNNY");
