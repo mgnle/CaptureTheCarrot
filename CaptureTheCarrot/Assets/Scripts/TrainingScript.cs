@@ -65,20 +65,29 @@ public class TrainingScript : MonoBehaviour {
 		
 		// Right click to add current selection to map
 		if (Input.GetMouseButtonDown(1)) {
-			switch(gui.selectedItem)
-			{
-			case TrainingGUIScript.Item.Bunny:
-				CreateBunny();
-				break;
-			case TrainingGUIScript.Item.EnemyBunny:
-				CreateEnemyBunny(Camera.main.ScreenPointToRay (Input.mousePosition));
-				break;
-			case TrainingGUIScript.Item.Carrot:
-				CreateCarrot(Camera.main.ScreenPointToRay (Input.mousePosition));
-				break;
-			case TrainingGUIScript.Item.Mud:
-				CreateMud(Camera.main.ScreenPointToRay (Input.mousePosition));
-				break;
+			// Delete object if LCtrl+Right Click (may have consequenses)
+			if (Input.GetButton("Fire1")) {
+				RaycastHit hit = new RaycastHit();
+				if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
+					if (!hit.collider.name.Equals("Terrain")) {
+						Destroy(hit.collider.gameObject);
+					}
+				}
+			}
+			else {
+			
+				switch(gui.selectedItem)
+				{
+				case TrainingGUIScript.Item.EnemyBunny:
+					CreateEnemyBunny(Camera.main.ScreenPointToRay (Input.mousePosition));
+					break;
+				case TrainingGUIScript.Item.Carrot:
+					CreateCarrot(Camera.main.ScreenPointToRay (Input.mousePosition));
+					break;
+				case TrainingGUIScript.Item.Mud:
+					CreateMud(Camera.main.ScreenPointToRay (Input.mousePosition));
+					break;
+				}
 			}
 		}
 
@@ -171,7 +180,7 @@ public class TrainingScript : MonoBehaviour {
 	// Spawns an enemy bunny
 	void CreateEnemyBunny(Ray ray) {
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(ray, out hit, 100)) {
+		if (Physics.Raycast(ray, out hit)) {
 			GameObject bunnyObj = (GameObject)Instantiate(enemyBunnyPrefab, new Vector3(hit.point.x, 0.8f, hit.point.z), Quaternion.identity);
 			
 			// Create a brain for the bunny
@@ -183,7 +192,7 @@ public class TrainingScript : MonoBehaviour {
 	// Spawns a carrot
 	void CreateCarrot(Ray ray) {
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(ray, out hit, 100)) {
+		if (Physics.Raycast(ray, out hit)) {
 			GameObject carrotObj = (GameObject)Instantiate(carrotPrefab, hit.point, Quaternion.identity);
 		}
 	}
@@ -191,7 +200,7 @@ public class TrainingScript : MonoBehaviour {
 	// Spawns a mud pit
 	void CreateMud(Ray ray) {
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(ray, out hit, 100)) {
+		if (Physics.Raycast(ray, out hit)) {
 			GameObject mudObj = (GameObject)Instantiate(mudPrefab, new Vector3(hit.point.x, 0.15f, hit.point.z), Quaternion.identity);
 		}
 	}
@@ -267,5 +276,14 @@ public class TrainingScript : MonoBehaviour {
 			return false;
 		}
 		
+	}
+	
+	// Use to add a delay in a function
+	void WaitForMilliseconds(float ms) {
+		float startTime = 0f;
+		float currTime = 0f;
+		ms = ms/1000;
+		startTime = Time.time;
+		currTime = startTime;
 	}
 }
