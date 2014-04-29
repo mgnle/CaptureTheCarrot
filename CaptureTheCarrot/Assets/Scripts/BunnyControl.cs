@@ -33,7 +33,7 @@ public class BunnyControl : MonoBehaviour {
 	public GameObject cabbagePrefab;	
 	
 	// Array of inputs
-	float[] inputArray = new float[]{1f, 1f, 1f, 1f};
+	float[] inputArray = new float[]{1f, 1f, 1f, 1f, 1f};
 	
 	// Fitness of the neural network and the count for
 	// calculations

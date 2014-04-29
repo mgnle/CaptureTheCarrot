@@ -100,6 +100,8 @@ namespace AssemblyCSharp
 				{
 				
 					this.bunny = bunnyObj.GetComponent<BunnyControl>();
+			
+					_adjacencyList = new Dictionary<int, List<ConnectionGene>>();
 					
 					List<NodeGene> nodes1 = parent1.GetNodes();
 					List<NodeGene> nodes2 = parent2.GetNodes();
@@ -117,6 +119,7 @@ namespace AssemblyCSharp
 							if(n1.Equals(n2))
 							{
 								nodeIntersection.Add(new NodeGene(n1));
+								this._adjacencyList.Add(n1.nodeID, new List<ConnectionGene>());
 								found = true;
 							}
 						}
@@ -152,7 +155,10 @@ namespace AssemblyCSharp
 						{
 							if(c1.Equals(c2))
 							{
-								connectionsIntersection.Add(new ConnectionGene(c1));
+								ConnectionGene toAdd = new ConnectionGene(c1);
+								connectionsIntersection.Add(toAdd);
+								this._adjacencyList[c1.nodeOut].Add(toAdd);
+						
 								found = true;
 							}
 						}
@@ -189,14 +195,14 @@ namespace AssemblyCSharp
 						foreach(NodeGene n1 in node1Disjoint)
 						{
 							_nodeGenes.Add(n1);
+							
+							_adjacencyList.Add(n1.nodeID, new List<ConnectionGene>());
 						}
 						foreach(ConnectionGene c1 in connections1Disjoint)
 						{
 							_connectionGenes.Add(c1);
 							
-							// Add to the adjacency list for this node
-							List<ConnectionGene> list = this._adjacencyList[c1.nodeOut];
-							list.Add(c1);
+							_adjacencyList[c1.nodeOut].Add(c1);
 						}
 					}
 					else if(eval2 > eval1)
@@ -204,14 +210,14 @@ namespace AssemblyCSharp
 						foreach(NodeGene n2 in node2Disjoint)
 						{
 							_nodeGenes.Add(n2);
+							
+							this._adjacencyList.Add(n2.nodeID, new List<ConnectionGene>());
 						}
 						foreach(ConnectionGene c2 in connections2Disjoint)
 						{
 							_connectionGenes.Add(c2);
 							
-							// Add to the adjacency list for this node
-							List<ConnectionGene> list = this._adjacencyList[c2.nodeOut];
-							list.Add(c2);
+							_adjacencyList[c2.nodeOut].Add(c2);
 						}
 					}
 					else
@@ -220,18 +226,26 @@ namespace AssemblyCSharp
 						foreach(NodeGene n1 in node1Disjoint)
 						{
 							_nodeGenes.Add(n1);
+							
+							_adjacencyList.Add(n1.nodeID, new List<ConnectionGene>());
 						}
 						foreach(NodeGene n2 in node2Disjoint)
 						{
 							_nodeGenes.Add(n2);
+							
+							_adjacencyList.Add(n2.nodeID, new List<ConnectionGene>());
 						}
 						foreach(ConnectionGene c1 in connections1Disjoint)
 						{
 							_connectionGenes.Add(c1);
+							
+							_adjacencyList[c1.nodeOut].Add(c1);
 						}
 						foreach(ConnectionGene c2 in connections2Disjoint)
 						{
 							_connectionGenes.Add(c2);
+							
+							_adjacencyList[c2.nodeOut].Add(c2);
 						}
 					}
 					
