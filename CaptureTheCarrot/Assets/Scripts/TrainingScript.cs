@@ -86,6 +86,9 @@ public class TrainingScript : MonoBehaviour {
 			// Use this to access anything associated with a specific bunny. To add NEAT stuff, 
 			// just make public variables inside the BunnyControl class.
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
+			
+			if (bunny.CalculateOnTargetSensor() == 1)
+				bunny.FireCabbageGun();
 
 			List<GameObject> carrotArray = new List<GameObject>();
 			carrotArray.Add (GameObject.Find("Carrot"));
@@ -159,8 +162,8 @@ public class TrainingScript : MonoBehaviour {
 			GameObject bunnyObj = (GameObject)Instantiate(enemyBunnyPrefab, new Vector3(hit.point.x, 0.8f, hit.point.z), Quaternion.identity);
 			
 			// Create a brain for the bunny
-			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
-			bunny.brain = new SimpleNeuralNetwork(bunnyObj, INPUTS, OUTPUTS);
+			//BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
+			//bunny.brain = new SimpleNeuralNetwork(bunnyObj, INPUTS, OUTPUTS);
 		}
 	}
 

@@ -196,12 +196,17 @@ public class BunnyControl : MonoBehaviour {
 	/* Returns 1 (full activation) if the onTargetSensor collides with
 	   anything within 100 units. Return 0 otherwise. */
 	public int CalculateOnTargetSensor() {
-		Vector3 position = transform.position + transform.forward;
+		Vector3 position = transform.position + transform.forward * 2f + new Vector3(0f, 1f, 0f);
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(position, transform.forward, out hit, 100))
-			return 1;
-        else
-            return 0;
+		if (Physics.Raycast(position, transform.forward, out hit, 100)) {
+			
+			if (hit.collider.name.Equals("EnemyBunny(Clone)")) {
+				
+				return 1;
+			}
+			Debug.Log (hit.collider.name);
+		}
+        return 0;
     }
 	
 	/* Calculates the fitness of the neural network by adding the
