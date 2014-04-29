@@ -31,7 +31,7 @@ namespace AssemblyCSharp
 				
 				double[] getWeights();
 				
-				int Evaluate();
+				float Evaluate();
 		}
 }
 

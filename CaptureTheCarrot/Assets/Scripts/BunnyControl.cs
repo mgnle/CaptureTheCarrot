@@ -141,7 +141,7 @@ public class BunnyControl : MonoBehaviour {
 	}
 
 	public void FindRadarValues(List<GameObject> objs) {
-		float[] radars = new float[4];
+		float[] radars = new float[5];
 		foreach(GameObject obj in objs) {
 			if (CalculateRadar(obj) != -1)
 				radars[CalculateRadar(obj)] += CalculateDistance(obj);
@@ -175,12 +175,16 @@ public class BunnyControl : MonoBehaviour {
 		
 		if ((degree >= 0) && (degree <= 45)){
 			return 0;
-		} else if (degree >= 45 && degree <= 90) {
+		} else if (degree >= 45 && degree <= 85) {
 			return 1;
-		} else if (degree >= 90 && degree <= 135) {
+		} else if (degree >= 85 && degree <= 95) {
 			return 2;
-		} else if (degree >= 135 && degree <= 180) {
+		} else if (degree >= 95 && degree <= 135) {
+			//Debug.Log ("Left Radar");
 			return 3;
+		} else if (degree >= 135 && degree <= 180) {
+			//Debug.Log ("Far Left Radar");
+			return 4;
 		} else {
 			//Debug.Log ("Unknown Degree in method CalculateRadar");
 			return -1;
@@ -222,13 +226,13 @@ public class BunnyControl : MonoBehaviour {
 		//Debug.Log ("Near Fitness" + nearFitness);
 		
 		// Fitness for firing
-		if (CalculateOnTargetSensor() == 1)
+		/*if (CalculateOnTargetSensor() == 1)
 			firingCount++;
 		firingFitness = 1 - (1 / firingCount);
 		firingFitness = firingFitness;//*userInputScale;
-		//Debug.Log ("Firing Fitness: " + firingFitness);
+		//Debug.Log ("Firing Fitness: " + firingFitness);*/
 		
-		return nearFitness + firingFitness;
+		return nearFitness;
 	}
 }
 

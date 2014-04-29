@@ -1,3 +1,4 @@
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 
@@ -5,7 +6,7 @@ namespace AssemblyCSharp
 {
 		public class SimpleNeuralNetwork : INeuralNetwork
 		{
-				private Random gen = new Random();
+				private System.Random gen = new System.Random();
 		
 				private static int nodeID;	
 				private static int innovationNum;
@@ -17,9 +18,20 @@ namespace AssemblyCSharp
 				
 				private List<NodeGene> _nodeGenes;
 				private List<ConnectionGene> _connectionGenes;
+				
+				// Fitness of the neural network and the count for
+				// calculations
+				float nearFitness = 0;
+				float firingFitness = 0;
+				int fitnessCount = 0;
+				int firingCount = 1;
+				
+				BunnyControl bunny;
 
-				public SimpleNeuralNetwork (int inputCount, int outputCount)
+				public SimpleNeuralNetwork (GameObject bunnyObj, int inputCount, int outputCount)
 				{ 
+						this.bunny = bunnyObj.GetComponent<BunnyControl>();
+						
 						this._inputCount = inputCount;
 						this._outputCount = outputCount;
 
@@ -63,8 +75,11 @@ namespace AssemblyCSharp
 						}
 				}
 				
-				public SimpleNeuralNetwork (SimpleNeuralNetwork parent1, SimpleNeuralNetwork parent2)
+				public SimpleNeuralNetwork(GameObject bunnyObj, SimpleNeuralNetwork parent1, SimpleNeuralNetwork parent2)
 				{
+				
+					this.bunny = bunnyObj.GetComponent<BunnyControl>();
+					
 					List<NodeGene> nodes1 = parent1.GetNodes();
 					List<NodeGene> nodes2 = parent2.GetNodes();
 					List<ConnectionGene> connections1 = parent1.GetConnections();
@@ -146,8 +161,8 @@ namespace AssemblyCSharp
 					_nodeGenes = nodeIntersection;
 					_connectionGenes = connectionsIntersection;
 										
-					int eval1 = parent1.Evaluate();
-					int eval2 = parent2.Evaluate();
+					float eval1 = parent1.Evaluate();
+					float eval2 = parent2.Evaluate();
 					if(eval1 > eval2)
 					{
 						foreach(NodeGene n1 in node1Disjoint)
@@ -368,11 +383,39 @@ namespace AssemblyCSharp
 					return weights;
 				}
 				
-				// Return a number representing how good the neural network is
-				public int Evaluate() 
-				{
-					return gen.Next();
-				}
+		/* Calculates the fitness of the neural network by adding the
+		fitness for approaching and object and the fitness for firing.
+		
+		Fitness for aproaching an object averages the distance from the object. 
+		Then it takes the inverse to find a number between 0 and 1. 
+		
+		Fitness for firing takes 1 - (the inverse of how many times an
+		object has been in range of firing.
+		
+		Finally, these are individually multiplied by the scale the user
+		has set, and they are added together.
+		
+		The higher the fitness, the better the neural network. */
+		public float Evaluate() {
+		
+			fitnessCount++;
+			
+			// Fitness for approaching an object
+			if (nearFitness != 0)
+				nearFitness = 1 / nearFitness;
+			nearFitness = 1 / ((nearFitness*(fitnessCount-1) + bunny.CalculateDistance(GameObject.Find("Carrot"))) / fitnessCount);
+			nearFitness = nearFitness;//*userInputScale;
+			Debug.Log ("Near Fitness" + nearFitness);
+			
+			// Fitness for firing
+			/*if (CalculateOnTargetSensor() == 1)
+			firingCount++;
+			firingFitness = 1 - (1 / firingCount);
+			firingFitness = firingFitness;//*userInputScale;
+			//Debug.Log ("Firing Fitness: " + firingFitness);*/
+			
+			return nearFitness;
 		}
+	}
 }
 

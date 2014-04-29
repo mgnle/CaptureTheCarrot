@@ -4,7 +4,7 @@ using AssemblyCSharp;
 
 public class TrainingScript : MonoBehaviour {
 
-	public const int INPUTS = 4;
+	public const int INPUTS = 5;
 	public const int OUTPUTS = 2;
 
 	// Template for prefabs
@@ -123,10 +123,9 @@ public class TrainingScript : MonoBehaviour {
 			}*/
 
 			// Respawn bunny if far away from spawn
-			/*
 			if (Vector3.Distance(bunny.transform.position, spawnLoc.transform.position) > 30) {
 				RespawnBunny(bunnyObj);
-			}*/
+			}
 			
 		}
 	}
@@ -137,7 +136,7 @@ public class TrainingScript : MonoBehaviour {
 		
 		// Create a brain for the bunny
 		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
-		bunny.brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
+		bunny.brain = new SimpleNeuralNetwork(bunnyObj, INPUTS, OUTPUTS);
 		
 		bunnies.Add(bunnyObj);
 	}
@@ -161,7 +160,7 @@ public class TrainingScript : MonoBehaviour {
 			
 			// Create a brain for the bunny
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
-			bunny.brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
+			bunny.brain = new SimpleNeuralNetwork(bunnyObj, INPUTS, OUTPUTS);
 		}
 	}
 
@@ -196,12 +195,12 @@ public class TrainingScript : MonoBehaviour {
 			GameObject secondBestBunny = bunnies.ToArray()[0];
 			
 			foreach(GameObject bunnyObj in bunnies) {
-				int worstBunnyEval = worstBunny.GetComponent<BunnyControl>().brain.Evaluate();
-				int bestBunnyEval = bestBunny.GetComponent<BunnyControl>().brain.Evaluate();
-				int secondBestBunnyEval = secondBestBunny.GetComponent<BunnyControl>().brain.Evaluate();
+				float worstBunnyEval = worstBunny.GetComponent<BunnyControl>().brain.Evaluate();
+				float bestBunnyEval = bestBunny.GetComponent<BunnyControl>().brain.Evaluate();
+				float secondBestBunnyEval = secondBestBunny.GetComponent<BunnyControl>().brain.Evaluate();
 			
 				BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
-				int bunnyEval = bunny.brain.Evaluate();
+				float bunnyEval = bunny.brain.Evaluate();
 				
 				if(bunnyEval < worstBunnyEval) {
 					worstBunny = bunnyObj;
@@ -221,7 +220,7 @@ public class TrainingScript : MonoBehaviour {
 			// Take two best bunnies, create new neural network combining both, and place in game
 			SimpleNeuralNetwork bestBrain = bestBunny.GetComponent<BunnyControl>().brain;
 			SimpleNeuralNetwork secondBestBrain = secondBestBunny.GetComponent<BunnyControl>().brain;
-			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
+			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(worstBunny, bestBrain, secondBestBrain);
 			worstBunny.GetComponent<BunnyControl>().brain = newBrain;
 			RespawnBunny(worstBunny);
 			//Debug.Log("NEW BUNNY");
