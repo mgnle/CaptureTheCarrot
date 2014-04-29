@@ -41,8 +41,7 @@ public class BunnyControl : MonoBehaviour {
 	public GameObject cabbagePrefab;	
 	
 	// Array of inputs
-
-	float[] inputArray = new float[]{1f, 1f, 1f, 1f, 1f};
+	float[] inputArray = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
 
 	CharacterController controller;
 	CollisionFlags collisionFlags;
@@ -159,11 +158,12 @@ public class BunnyControl : MonoBehaviour {
 	}
 
 	public void FindRadarValues(List<GameObject> objs) {
-		float[] radars = new float[5];
+		float[] radars = new float[6];
 		foreach(GameObject obj in objs) {
 			if (CalculateRadar(obj) != -1)
 				radars[CalculateRadar(obj)] += CalculateDistance(obj);
 		}
+		radars[5] = 1; // bias node
 		inputArray = radars;
 	}
 	
