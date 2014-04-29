@@ -136,6 +136,11 @@ public class BunnyControl : MonoBehaviour {
 		moveVector = -1 * transform.forward * moveDistance;
 		transform.position = oldPos + moveVector;
 	}
+	
+	/* Bunny doesn't move */
+	public void StandStill() {
+	
+	}
 
 	/* Fires a cabbage gun in the bunny's forward direction */
 	public void FireCabbageGun() {
@@ -200,7 +205,7 @@ public class BunnyControl : MonoBehaviour {
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast(position, transform.forward, out hit, 100)) {
 			
-			if (hit.collider.name.Equals("EnemyBunny(Clone)")) {
+			if (hit.collider.name.Equals("EnemyBunny")) {
 				
 				return 1;
 			}
