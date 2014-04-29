@@ -417,7 +417,7 @@ namespace AssemblyCSharp
 			return nearFitness;
 		}
 		
-		public void updateFitness() {
+		public void UpdateFitness() {
 			Evaluate ();
 		}
 	}
