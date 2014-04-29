@@ -73,9 +73,15 @@ public class BunnyControl : MonoBehaviour {
 		bunnyPos = transform.position;
 		
 		// TODO: Populate the neural network input array with the correct inputs
+		GameObject carrot = GameObject.Find ("Carrot");
+		if (carrot != null) {
+			distance.Add((int)CalculateDistance(GameObject.Find("Carrot")));
+		}
 				
-		distance.Add((int)CalculateDistance(GameObject.Find("Carrot")));
-				
+		if (distance.Count != 0) {
+			brain.UpdateEvaluator(distance, firing);
+		}
+		
 		CalculateOnTargetSensor();
 		
 		//brain.changeWeights();
