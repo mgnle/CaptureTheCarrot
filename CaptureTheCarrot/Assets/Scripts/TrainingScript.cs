@@ -26,7 +26,7 @@ public class TrainingScript : MonoBehaviour {
 	private float time;
 
 	// The seconds till we replace the worst bunny
-	private int SEC_TIL_REMOVE_BUNNY = 20;
+	private int SEC_TIL_REMOVE_BUNNY = 4;
 
 	TrainingGUIScript gui;
 

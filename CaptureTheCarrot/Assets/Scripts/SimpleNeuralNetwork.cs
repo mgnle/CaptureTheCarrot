@@ -287,7 +287,7 @@ namespace AssemblyCSharp
 					}
 				}
 				
-				private void changeWeights()
+				public void changeWeights()
 				{
 					foreach(ConnectionGene c in this._connectionGenes)
 					{
@@ -349,8 +349,9 @@ namespace AssemblyCSharp
 							NodeGene temp = nodeIn;
 							nodeIn = nodeOut;
 							nodeOut = temp;
-						}						
-						ConnectionGene toAdd = new ConnectionGene(innovationNum++, nodeIn.nodeID, nodeOut.nodeID, gen.NextDouble());
+						}
+						double randomWeight = ((double)gen.Next(-100,100))/100.0;						
+						ConnectionGene toAdd = new ConnectionGene(innovationNum++, nodeIn.nodeID, nodeOut.nodeID, randomWeight);
 						this._connectionGenes.Add(toAdd);
 						
 						// Add to the adjacency list for this node
