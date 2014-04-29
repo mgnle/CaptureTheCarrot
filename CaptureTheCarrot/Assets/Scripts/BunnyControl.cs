@@ -10,6 +10,9 @@ public class BunnyControl : MonoBehaviour {
 	// Neural Network bunny "brain"
 	public SimpleNeuralNetwork brain;
 	
+	// Time alive for
+	public float birthday;
+	
 	// Enum for the actions that can be taken
 	public enum Action
 	{

@@ -160,6 +160,7 @@ public class TrainingScript : MonoBehaviour {
 		// Create a brain for the bunny
 		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
 		bunny.brain = new SimpleNeuralNetwork(bunnyObj, INPUTS, OUTPUTS);
+		bunny.birthday = Time.fixedTime;
 		
 		bunnies.Add(bunnyObj);
 	}
@@ -171,6 +172,7 @@ public class TrainingScript : MonoBehaviour {
 		// Create a brain for the bunny
 		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
 		bunny.brain = brain;
+		bunny.birthday = Time.fixedTime;
 		
 		bunnies.Add(bunnyObj);
 	}
@@ -225,7 +227,7 @@ public class TrainingScript : MonoBehaviour {
 				BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
 				float bunnyEval = bunny.brain.Evaluate();
 				
-				if(bunnyEval < worstBunnyEval) {
+				if(HasBeenAliveLongEnough(bunny) && bunnyEval < worstBunnyEval) {
 					worstBunny = bunnyObj;
 				}
 				
@@ -235,6 +237,11 @@ public class TrainingScript : MonoBehaviour {
 				else if(bunnyEval > secondBestBunnyEval) {
 					secondBestBunny = bunnyObj;
 				}				
+			}
+			
+			// If the default worst bunny has not been alive long enough remove no one
+			if(!HasBeenAliveLongEnough(worstBunny.GetComponent<BunnyControl>())) {
+				return;
 			}
 			
 			// Remove worst bunny
@@ -258,5 +265,16 @@ public class TrainingScript : MonoBehaviour {
 		} else {
 			return false;
 		}
+	}
+	
+	bool HasBeenAliveLongEnough(BunnyControl bunny) {
+		time = Time.fixedTime;
+		
+		if (time > bunny.birthday + Constants.TIME_ALIVE_THRESHOLD) {
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 }
