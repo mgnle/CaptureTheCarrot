@@ -204,7 +204,7 @@ public class BunnyControl : MonoBehaviour {
 				
 				return 1;
 			}
-			Debug.Log (hit.collider.name);
+			//Debug.Log (hit.collider.name);
 		}
         return 0;
     }

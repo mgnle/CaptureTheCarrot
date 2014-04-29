@@ -18,6 +18,7 @@ namespace AssemblyCSharp
 				
 				private List<NodeGene> _nodeGenes;
 				private List<ConnectionGene> _connectionGenes;
+				private Dictionary<int, List<ConnectionGene>> _adjacencyList;
 				
 				// Fitness of the neural network and the count for
 				// calculations
@@ -47,17 +48,31 @@ namespace AssemblyCSharp
 						// Initial connection list size = Inputs * Outputs
 						this._connectionGenes = new List<ConnectionGene>();
 												
+						this._adjacencyList = new Dictionary<int, List<ConnectionGene>>();
+												
 						// Create the input nodes
 						for(int i=0; i<inputCount; i++)
 						{
-							this._nodeGenes.Add(new NodeGene(nodeID, NodeType.Input));
+							NodeGene toAdd = new NodeGene(nodeID, NodeType.Input);
+							this._nodeGenes.Add(toAdd);	
+							
+							// Instantiate adjacency list for this node
+							List<ConnectionGene> newList = new List<ConnectionGene>();
+							this._adjacencyList.Add(toAdd.nodeID, newList);
+							
 							nodeID++;
 						}
 						
 						// Create the output nodes
 						for(int i=0; i<outputCount; i++)
 						{
-							this._nodeGenes.Add(new NodeGene(nodeID, NodeType.Output));								
+							NodeGene toAdd = new NodeGene(nodeID, NodeType.Output);
+							this._nodeGenes.Add(toAdd);	
+							
+							// Instantiate adjacency list for this node
+							List<ConnectionGene> newList = new List<ConnectionGene>();
+							this._adjacencyList.Add(toAdd.nodeID, newList);
+														
 							nodeID++;
 						}
 						
@@ -68,10 +83,16 @@ namespace AssemblyCSharp
 							for(int j=0; j<outputCount; j++)
 							{
 								int toNode = j+inputCount;
-								double randomWeight = gen.NextDouble();
-								this._connectionGenes.Add(new ConnectionGene(innovationNum, fromNode, toNode, randomWeight));
+								double randomWeight = ((double)gen.Next(-100,100))/100.0;
+								ConnectionGene toAdd = new ConnectionGene(innovationNum, fromNode, toNode, randomWeight);
+								this._connectionGenes.Add(toAdd);
+								
+								// Add to the adjacency list for this node
+								List<ConnectionGene> list = this._adjacencyList[toNode];
+								list.Add(toAdd);
+				
 								innovationNum++;
-							}										
+							}
 						}
 				}
 				
@@ -172,6 +193,10 @@ namespace AssemblyCSharp
 						foreach(ConnectionGene c1 in connections1Disjoint)
 						{
 							_connectionGenes.Add(c1);
+							
+							// Add to the adjacency list for this node
+							List<ConnectionGene> list = this._adjacencyList[c1.nodeOut];
+							list.Add(c1);
 						}
 					}
 					else if(eval2 > eval1)
@@ -183,6 +208,10 @@ namespace AssemblyCSharp
 						foreach(ConnectionGene c2 in connections2Disjoint)
 						{
 							_connectionGenes.Add(c2);
+							
+							// Add to the adjacency list for this node
+							List<ConnectionGene> list = this._adjacencyList[c2.nodeOut];
+							list.Add(c2);
 						}
 					}
 					else
@@ -309,6 +338,10 @@ namespace AssemblyCSharp
 						}						
 						ConnectionGene toAdd = new ConnectionGene(innovationNum++, nodeIn.nodeID, nodeOut.nodeID, gen.NextDouble());
 						this._connectionGenes.Add(toAdd);
+						
+						// Add to the adjacency list for this node
+						List<ConnectionGene> list = this._adjacencyList[toAdd.nodeOut];
+						list.Add(toAdd);
 						break;						
 					}
 					
@@ -321,6 +354,10 @@ namespace AssemblyCSharp
 					ConnectionGene toDisable = this._connectionGenes[index];
 					NodeGene toAdd = new NodeGene(nodeID++, NodeType.Hidden);
 					
+					this._nodeGenes.Add(toAdd);
+					
+					this._adjacencyList.Add(toAdd.nodeID, new List<ConnectionGene>());
+					
 					ConnectionGene connect1 = new ConnectionGene(innovationNum++, toDisable.nodeIn, toAdd.nodeID, 1);
 					ConnectionGene connect2 = new ConnectionGene(innovationNum++, toAdd.nodeID, toDisable.nodeOut, toDisable.weight);
 					
@@ -328,7 +365,15 @@ namespace AssemblyCSharp
 					// Maybe just remove this connection?
 					
 					this._connectionGenes.Add(connect1);
-					this._connectionGenes.Add(connect2);			
+					this._connectionGenes.Add(connect2);
+					
+					// Add to the adjacency list for this node
+					List<ConnectionGene> list = this._adjacencyList[connect1.nodeOut];
+					list.Add(connect1);	
+					
+					// Add to the adjacency list for this node
+					List<ConnectionGene> list2 = this._adjacencyList[connect2.nodeOut];
+					list2.Add(connect2);			
 				}
 				
 				public List<NodeGene> GetNodes()
@@ -363,14 +408,29 @@ namespace AssemblyCSharp
 					// For each output node calculate the output value				
 					for (int j =0; j < this._outputCount; j++)
 					{
-						double value = 0;
-						
-						// Calculate the value based on the weights of the connections to that output node
-						for (int i =0; i < this._inputCount; i++){
-							value += this._inputArray[i]*this._connectionGenes[i+j].weight;
-						}
-						this._outputArray[j] = (float)value;
+						this._outputArray[j] = Activate(this._nodeGenes[j+this._inputCount].nodeID);
 					}
+				}
+				
+				public float Activate (int nodeID)
+				{
+					// Base case - did you reach an input node?
+					if(nodeID < this._inputCount)
+					{
+						float input = this._inputArray[nodeID];
+						//if(input < -1) input = -1;
+						//if(input > 1) input = 1;
+						return input;
+					}
+					
+					// Calculate weighted sum of inputs
+					float sum = 0;
+					foreach (ConnectionGene c in this._adjacencyList[nodeID])
+					{
+						sum += ((float)c.weight*Activate(c.nodeIn));
+						
+					}
+					return sum;
 				}
 				
 				public double[] getWeights()
