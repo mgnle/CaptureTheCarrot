@@ -13,7 +13,7 @@ public class TrainingGUIScript : MonoBehaviour {
 
 	// Item to be placed
 	public Item selectedItem;
-	int numItemTypes = 4;
+	int numItemTypes = 3;
 	
 	// Current values of sliders
 	public float carrotProximityReward;
@@ -25,7 +25,6 @@ public class TrainingGUIScript : MonoBehaviour {
 	public float enemyAttackReward;
 
 	public Texture carrotIcon;
-	public Texture bunnyIcon;
 	public Texture enemyBunnyIcon;
 	public Texture mudIcon;
 
@@ -38,7 +37,7 @@ public class TrainingGUIScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		selectedItem = (Item)0;
-		icons = new Texture[] {carrotIcon, bunnyIcon, enemyBunnyIcon, mudIcon};
+		icons = new Texture[] {carrotIcon, enemyBunnyIcon, mudIcon};
 		carrotProximityReward = 0.0f;
 		carrotProximityDistance = 0.0f;
 		enemyProximityReward = 0.0f;
@@ -51,14 +50,11 @@ public class TrainingGUIScript : MonoBehaviour {
 	void OnGUI () {
 		GUI.enabled = true;
 		GUI.backgroundColor = Color.red;
-		selectedItem = (Item) (GUI.SelectionGrid(new Rect(Screen.width/2 - 60*(numItemTypes/2), Screen.height - 80, boxDim*numItemTypes, boxDim), (int)selectedItem, icons, numItemTypes, "button"));
+		selectedItem = (Item) (GUI.SelectionGrid(new Rect(Screen.width/2 - 60*(numItemTypes/2) - boxDim/2, Screen.height - 80, boxDim*numItemTypes, boxDim), (int)selectedItem, icons, numItemTypes, "button"));
 
 		// Item selector
 		switch(selectedItem)
 		{
-		case Item.Bunny:
-			selectionText = "Bunny";
-			break;
 		case Item.EnemyBunny:
 			selectionText = "Enemy Bunny";
 			break;
@@ -70,7 +66,7 @@ public class TrainingGUIScript : MonoBehaviour {
 			break;
 		}
 
-		GUI.Box (new Rect(Screen.width/2 - 20, Screen.height - 110, 120, 25), selectionText);
+		GUI.Box (new Rect(Screen.width/2 - 45, Screen.height - 110, 120, 25), selectionText);
 		
 		// Sliders
 		enemyAttackReward = GUI.VerticalSlider(new Rect(60, Screen.height - 80, 20, 70), enemyAttackReward, 100f, -100f);

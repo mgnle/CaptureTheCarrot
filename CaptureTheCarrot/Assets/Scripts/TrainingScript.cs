@@ -12,6 +12,9 @@ public class TrainingScript : MonoBehaviour {
 	public GameObject enemyBunnyPrefab;
 	public GameObject carrotPrefab;
 	public GameObject mudPrefab;
+	
+	// Number of bunnies to spawn
+	public int numBunnies = 10;
 
 	// Default bunny spawn location
 	GameObject spawnLoc;
@@ -23,7 +26,7 @@ public class TrainingScript : MonoBehaviour {
 	private float time;
 
 	// The seconds till we replace the worst bunny
-	private int SEC_TIL_REMOVE_BUNNY = 20;
+	private int SEC_TIL_REMOVE_BUNNY = 4;
 
 	TrainingGUIScript gui;
 
@@ -43,6 +46,11 @@ public class TrainingScript : MonoBehaviour {
 		bunnies = new List<GameObject>();
 		time = Time.fixedTime;
 		gui = GameObject.Find("Terrain").GetComponent<TrainingGUIScript>();
+		
+		// Spawn the bunnies!
+		for (int i=0; i<numBunnies; i++) {
+			CreateBunny();
+		}
 	}
 	
 	// Update is called once per frame
@@ -90,14 +98,19 @@ public class TrainingScript : MonoBehaviour {
 			if (bunny.CalculateOnTargetSensor() == 1)
 				bunny.FireCabbageGun();
 
-			List<GameObject> carrotArray = new List<GameObject>();
-			carrotArray.Add (GameObject.Find("Carrot"));
-			bunny.FindRadarValues(carrotArray);
-			
+			GameObject carrot = GameObject.Find("Carrot");
+			if (carrot != null) {
+				List<GameObject> carrotArray = new List<GameObject>();
+				
+				carrotArray.Add (carrot);
+				bunny.FindRadarValues(carrotArray);		
+			}
 			// For testing cabbage gun
+			/*
 			if (Input.GetKeyDown ("f"))
 				bunny.FireCabbageGun();
-
+			*/
+			
 			// Move bunnies with arrow keys
 			/*
 			if (Input.GetKey ("a"))

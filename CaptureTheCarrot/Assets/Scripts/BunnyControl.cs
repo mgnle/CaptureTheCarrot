@@ -24,7 +24,8 @@ public class BunnyControl : MonoBehaviour {
 		MoveRight,
 		MoveBackward,
 		MoveForward,
-		Fire
+		Fire,
+		None
 	}
 	// Movement properties
 	public float moveDistance;
@@ -40,7 +41,8 @@ public class BunnyControl : MonoBehaviour {
 	public GameObject cabbagePrefab;	
 	
 	// Array of inputs
-	float[] inputArray = new float[]{1f, 1f, 1f, 1f};
+
+	float[] inputArray = new float[]{1f, 1f, 1f, 1f, 1f};
 
 	CharacterController controller;
 	CollisionFlags collisionFlags;
@@ -73,17 +75,19 @@ public class BunnyControl : MonoBehaviour {
 		distance.Add((int)CalculateDistance(GameObject.Find("Carrot")));
 				
 		CalculateOnTargetSensor();
+		
+		//brain.changeWeights();
 				
 		brain.InputSignalArray = inputArray;
 		brain.Activate();
 		float maxValue = 0f;
-		Action action = Action.MoveForward;
+		Action action = Action.MoveBackward;
 		for(int i=0; i<brain.OutputSignalArray.Length; i++)
 		{
-			if (brain.OutputSignalArray[i] > maxValue)
+			if (Math.Abs(brain.OutputSignalArray[i]) > Math.Abs(maxValue))
 			{
-				maxValue = Math.Abs(brain.OutputSignalArray[i]);
-				if(i < 0)
+				maxValue = brain.OutputSignalArray[i];
+				if(maxValue < 0)
 				{
 					action = (Action)(i*2);
 				}
@@ -106,8 +110,10 @@ public class BunnyControl : MonoBehaviour {
 				MoveBack();
 				break;
 			case Action.MoveForward:
-			default:
 				MoveStraight();
+				break;
+			default:
+				StandStill();
 				break;
 		}		
 	}
@@ -140,6 +146,11 @@ public class BunnyControl : MonoBehaviour {
 		Vector3 oldPos = transform.position;
 		moveVector = -1 * transform.forward * moveDistance;
 		transform.position = oldPos + moveVector;
+	}
+	
+	/* Bunny doesn't move */
+	public void StandStill() {
+	
 	}
 
 	/* Fires a cabbage gun in the bunny's forward direction */
@@ -205,7 +216,7 @@ public class BunnyControl : MonoBehaviour {
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast(position, transform.forward, out hit, 100)) {
 			
-			if (hit.collider.name.Equals("EnemyBunny(Clone)")) {
+			if (hit.collider.name.Equals("EnemyBunny")) {
 				
 				return 1;
 			}
