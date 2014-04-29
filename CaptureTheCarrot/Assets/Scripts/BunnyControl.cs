@@ -200,7 +200,7 @@ public class BunnyControl : MonoBehaviour {
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast(position, transform.forward, out hit, 100)) {
 			
-			if (hit.collider.name.Equals("EnemyBunny(Clone)")) {
+			if (hit.collider.name.Equals("EnemyBunny")) {
 				
 				return 1;
 			}

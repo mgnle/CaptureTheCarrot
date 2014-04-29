@@ -104,9 +104,11 @@ public class TrainingScript : MonoBehaviour {
 			bunny.CalculateFitness(GameObject.Find("Carrot"));
 			
 			// For testing cabbage gun
+			/*
 			if (Input.GetKeyDown ("f"))
 				bunny.FireCabbageGun();
-
+			*/
+			
 			// Move bunnies with arrow keys
 			/*
 			if (Input.GetKey ("a"))
