@@ -74,7 +74,6 @@ public class TrainingScript : MonoBehaviour {
 				}
 			}
 			else {
-			
 				switch(gui.selectedItem)
 				{
 				case TrainingGUIScript.Item.EnemyBunny:
@@ -257,15 +256,6 @@ public class TrainingScript : MonoBehaviour {
 		} else {
 			return false;
 		}
-		
 	}
-	
-	// Use to add a delay in a function
-	void WaitForMilliseconds(float ms) {
-		float startTime = 0f;
-		float currTime = 0f;
-		ms = ms/1000;
-		startTime = Time.time;
-		currTime = startTime;
-	}
+
 }
