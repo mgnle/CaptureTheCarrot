@@ -8,18 +8,18 @@ public class FitnessEvaluator {
 	 * For distance, take the average of all distances and inverse it.
 	 * For firing, ...not really sure. */
 	public float Evaluate(List<int> distance, List<int> firing) {
-		int sum = 0;
+		float sum = 0;
 		float nearFitness = 0;
 		float fireFitness = 0;
 				
 		for (int i = 0; i < distance.Count; i++) {
 			sum += distance[i];
 		}
-		
-		if (sum != 0 && distance.Count != 0) {
-			nearFitness = 1/(sum/distance.Count);
-		}
+
+		if (sum != 0 && distance.Count != 0)
+			nearFitness = 1f/(sum/distance.Count);
 		nearFitness = nearFitness;//*userInputScale;
+		Debug.Log ("Near Fitness: " + nearFitness);
 			
 		// Fitness for firing
 		/*if (CalculateOnTargetSensor() == 1)
