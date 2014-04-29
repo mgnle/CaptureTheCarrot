@@ -4,7 +4,7 @@ using AssemblyCSharp;
 
 public class TrainingScript : MonoBehaviour {
 
-	public const int INPUTS = 5;
+	public const int INPUTS = 5+1;	// 1 bias node
 	public const int OUTPUTS = 2;
 
 	// Template for prefabs
