@@ -129,7 +129,7 @@ public class TrainingScript : MonoBehaviour {
 			// just make public variables inside the BunnyControl class.
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
 			
-			bunny.setSliders(gui.carrotProximityReward ,gui.enemyAttackReward);
+			bunny.setSliders(gui.carrotProximityReward, gui.enemyProximityReward, gui.enemyAttackReward, gui.mudProximityReward);
 			
 			//if (bunny.CalculateOnTargetSensor() == 1)
 				//bunny.FireCabbageGun();
@@ -354,11 +354,12 @@ public class TrainingScript : MonoBehaviour {
 		foreach(Species s in species)
 		{
 			float prob2 = (s.GetAverageFitness()/totalFitness);
-			if(i >= prob && i < prob2)
+			if(i >= prob && i <= prob2)
 			{
 				return s;
 			}
 			prob = prob2;
+			Debug.Log("prob2:" + prob2);
         }
         return null;
 	}

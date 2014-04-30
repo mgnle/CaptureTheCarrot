@@ -16,6 +16,7 @@ public class BunnyControl : MonoBehaviour {
 	// Data for fitness evaluator
 	private List<int> carrotDistance;
 	private List<int> enemyDistance;
+	private List<int> mudDistance;
 	private int firing;
 	
 	// Enum for the actions that can be taken
@@ -62,6 +63,7 @@ public class BunnyControl : MonoBehaviour {
 		
 		carrotDistance = new List<int>();
 		enemyDistance = new List<int>();
+		mudDistance = new List<int>();
 		firing = 1;
 	}
 	
@@ -80,13 +82,18 @@ public class BunnyControl : MonoBehaviour {
 			foreach (GameObject g in enemyArray)
 				enemyDistance.Add((int)CalculateDistance(g));
 		}
+		GameObject[] mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
+		if (mudArray != null) {
+			foreach (GameObject g in mudArray)
+				mudDistance.Add((int)CalculateDistance(g));
+		}
 		if (CalculateOnTargetSensor() == 1)
 			firing += 1;
 			
 		//DisplayInputs();
 				
 		//if (distance.Count != 0) {
-			brain.UpdateEvaluator(carrotDistance, firing);
+			brain.UpdateEvaluator(carrotDistance, enemyDistance, mudDistance, firing);
 		//}
 		
 		brain.changeWeights();
@@ -251,8 +258,8 @@ public class BunnyControl : MonoBehaviour {
 		return onTarget[0];
     }
 	
-	public void setSliders(float near, float fire) {
-		brain.setSliders(near, fire);
+	public void setSliders(float near, float avoid, float fire, float mud) {
+		brain.setSliders(near, avoid, fire, mud);
 	}
 	
 	public void DisplayInputs() {

@@ -20,7 +20,9 @@ namespace AssemblyCSharp
 			private List<ConnectionGene> _connectionGenes;
     
 			private FitnessEvaluator fitEval;
-			private List<int> distance;
+			private List<int> carrotDistance;
+			private List<int> enemyDistance;
+			private List<int> mudDistance;
 			private int firing;
         
 			private Dictionary<int, List<ConnectionGene>> _adjacencyList;
@@ -28,7 +30,11 @@ namespace AssemblyCSharp
 			public SimpleNeuralNetwork (int inputCount, int outputCount)
 			{ 
 					fitEval = new FitnessEvaluator();
-    
+					carrotDistance = new List<int>();
+					enemyDistance = new List<int>();
+					mudDistance = new List<int>();
+					firing = 1;
+    	
 					this._inputCount = inputCount;
 					this._outputCount = outputCount;
 
@@ -556,19 +562,19 @@ namespace AssemblyCSharp
 
 			/* Calculates the distance from a bunny and a value for if the
 		 	 * bunny is facing an enemy. Should be called on every move.*/
-			public void UpdateEvaluator(List<int> distance, int firing) {
-				this.distance = distance;
+		public void UpdateEvaluator(List<int> carrotDistance, List<int> enemyDistance, List<int> mudDistance, int firing) {
+				this.carrotDistance = carrotDistance;
+				this.enemyDistance = enemyDistance;
+				this.mudDistance = mudDistance;
 				this.firing = firing;
 			}
 					
 			public float Evaluate() {
-				if (distance != null)
-					return fitEval.Evaluate(distance, firing);
-				return 0;
+				return fitEval.Evaluate(carrotDistance, enemyDistance, mudDistance, firing);
 			}
 			
-			public void setSliders(float near, float fire) {
-				fitEval.setSliders(near, fire);
+			public void setSliders(float near, float avoid, float fire, float mud) {
+				fitEval.setSliders(near, avoid, fire, mud);
 	        }
 	}
 }
