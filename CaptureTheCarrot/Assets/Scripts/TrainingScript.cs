@@ -234,7 +234,7 @@ public class TrainingScript : MonoBehaviour {
 			
 			// TODO: Reassign all agents to species based on a per-species dynamic compatability threshold
 			
-			RespawnBunny(worstBunny.gameObject);
+			//RespawnBunny(worstBunny);
 		}			
 	}
 	

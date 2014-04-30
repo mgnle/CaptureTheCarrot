@@ -86,7 +86,7 @@ public class BunnyControl : MonoBehaviour {
 		
 		CalculateOnTargetSensor();
 		
-		//brain.changeWeights();
+		brain.changeWeights();
 				
 		brain.InputSignalArray = inputArray;
 		brain.Activate();
