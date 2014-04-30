@@ -11,7 +11,6 @@ namespace AssemblyCSharp
 			private static int nodeID;	
 			private static int innovationNum;
 
-<<<<<<< HEAD
 			readonly int _inputCount;
 			readonly int _outputCount;
 			public float[] _inputArray;
@@ -22,24 +21,9 @@ namespace AssemblyCSharp
     
 			private FitnessEvaluator fitEval;
 			private List<int> distance;
-			private List<int> firing;
-			
+			private int firing;
+        
 			private Dictionary<int, List<ConnectionGene>> _adjacencyList;
-=======
-				readonly int _inputCount;
-				readonly int _outputCount;
-				public float[] _inputArray;
-				public float[] _outputArray;
-				
-				private List<NodeGene> _nodeGenes;
-				private List<ConnectionGene> _connectionGenes;
-            
-				private FitnessEvaluator fitEval;
-				private List<int> distance;
-				private int firing;
-				
-				private Dictionary<int, List<ConnectionGene>> _adjacencyList;
->>>>>>> 3df02c4ea02cf06f8c6355bb298392e014e167d0
 
 			public SimpleNeuralNetwork (int inputCount, int outputCount)
 			{ 
