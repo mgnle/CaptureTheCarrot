@@ -361,7 +361,6 @@ public class TrainingScript : MonoBehaviour {
 				return s;
 			}
 			prob = prob2;
-			Debug.Log("prob2:" + prob2);
         }
         return null;
 	}
