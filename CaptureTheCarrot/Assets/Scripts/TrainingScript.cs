@@ -70,9 +70,20 @@ public class TrainingScript : MonoBehaviour {
 				RaycastHit hit = new RaycastHit();
 				if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
 					if (!hit.collider.name.Equals("Terrain")) {
-						foreach (GameObject carrot in carrotArray) {
-							if (carrot.GetInstanceID() == hit.transform.gameObject.GetInstanceID()) {
-								Destroy(carrot);
+						Debug.Log (hit.collider.name);
+						foreach (GameObject obj in carrotArray) {
+							if (obj.GetInstanceID() == hit.transform.gameObject.GetInstanceID()) {
+								Destroy(obj);
+							}
+						}
+						foreach (GameObject obj in mudArray) {
+							if (obj.GetInstanceID() == hit.transform.gameObject.GetInstanceID()) {
+								Destroy(obj);
+							}
+						}
+						foreach (GameObject obj in enemyArray) {
+							if (obj.GetInstanceID() == hit.transform.gameObject.GetInstanceID()) {
+								Destroy(obj);
 							}
 						}
 					}
@@ -101,7 +112,7 @@ public class TrainingScript : MonoBehaviour {
 		
 		// Find all carrots, enemy bunnies, and mud pits
 		carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
-		enemyArray = (GameObject.FindGameObjectsWithTag("Enemy"));
+		enemyArray = (GameObject.FindGameObjectsWithTag("EnemyBunny"));
 		mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
 		
 		// Fix null cases
@@ -183,6 +194,8 @@ public class TrainingScript : MonoBehaviour {
 		if (GUI.Button (new Rect(Screen.width/2 + 440, Screen.height - 80, 100, 70), "Fight!")) {
 			Application.LoadLevel("TestingMenu");
 		}
+		
+		GUI.Box(new Rect(5, 5, 1020, 30), "Click on desired icon to select that Item, then spawn in desired location with Right Click. Use LCtrl + Right Click to delete any object. WASD to pan camera, =/- to zoom in/out");
 	}
 	
 	// Spawns a new bunny in the bunny hole and adds it to the bunnies list
