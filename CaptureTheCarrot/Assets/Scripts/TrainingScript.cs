@@ -15,6 +15,9 @@ public class TrainingScript : MonoBehaviour {
 
 	// List of all our bunny objects
 	private List<GameObject> bunnies;
+	private GameObject[] carrotArray;
+	private GameObject[] enemyArray;
+	private GameObject[] mudArray;
 	
 	// List of all species
 	private List<Species> species;
@@ -67,7 +70,11 @@ public class TrainingScript : MonoBehaviour {
 				RaycastHit hit = new RaycastHit();
 				if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
 					if (!hit.collider.name.Equals("Terrain")) {
-						Destroy(hit.collider.gameObject);
+						foreach (GameObject carrot in carrotArray) {
+							if (carrot.GetInstanceID() == hit.transform.gameObject.GetInstanceID()) {
+								Destroy(carrot);
+							}
+						}
 					}
 				}
 			}
@@ -92,6 +99,19 @@ public class TrainingScript : MonoBehaviour {
 			ReplaceWorstBunny();
 		}
 		
+		// Find all carrots, enemy bunnies, and mud pits
+		carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
+		enemyArray = (GameObject.FindGameObjectsWithTag("Enemy"));
+		mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
+		
+		// Fix null cases
+		if(carrotArray == null)
+		carrotArray = new GameObject[0];
+		if (enemyArray == null)
+		enemyArray = new GameObject[0];
+		if (mudArray == null)
+		mudArray = new GameObject[0];
+		
 		// Loops through all existing bunnies, and moves them randomly
 		foreach(GameObject bunnyObj in bunnies) {
 			// Use this to access anything associated with a specific bunny. To add NEAT stuff, 
@@ -103,22 +123,6 @@ public class TrainingScript : MonoBehaviour {
 			//if (bunny.CalculateOnTargetSensor() == 1)
 				//bunny.FireCabbageGun();
 
-			// Find all carrots, enemy bunnies, and mud pits
-			GameObject[] carrotArray;
-			GameObject[] enemyArray;
-			GameObject[] mudArray;
-			carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
-			enemyArray = (GameObject.FindGameObjectsWithTag("Enemy"));
-			mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
-			
-			// Fix null cases
-			if(carrotArray == null)
-				carrotArray = new GameObject[0];
-			if (enemyArray == null)
-				enemyArray = new GameObject[0];
-			if (mudArray == null)
-				mudArray = new GameObject[0];
-			
 			bunny.setInputArray(carrotArray, enemyArray);
 			
 			
