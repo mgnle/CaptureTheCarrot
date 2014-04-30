@@ -19,7 +19,6 @@ public class FitnessEvaluator {
 		if (sum != 0 && distance.Count != 0)
 			nearFitness = 1f/(sum/distance.Count);
 		nearFitness = nearFitness;//*userInputScale;
-		Debug.Log ("Near Fitness: " + nearFitness);
 			
 		// Fitness for firing
 		/*if (CalculateOnTargetSensor() == 1)
