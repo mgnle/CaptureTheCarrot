@@ -61,6 +61,8 @@ public class BunnyControl : MonoBehaviour {
 		
 		distance = new List<int>();
 		firing = 1;
+				
+		inputArray[Constants.INPUTS-1] = 1; // bias node
 	}
 	
 	// Update is called once per frame
@@ -175,8 +177,7 @@ public class BunnyControl : MonoBehaviour {
 			if (CalculateRadar(obj) != -1)
 				radars[CalculateRadar(obj)] += CalculateDistance(obj);
 		}
-		radars[5] = 1; // bias node
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 6; i++) {
 			inputArray[i] = radars[i];
         }
 	}
