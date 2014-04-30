@@ -17,7 +17,15 @@ public class TestingScript : MonoBehaviour {
 	// List of all our bunny objects
 	private List<GameObject> bunnies;
 	private List<GameObject> enemyBunnies;
-
+	
+	// Find all carrots, enemy bunnies, and mud pits
+	GameObject[] carrotArray;
+	GameObject[] enemyArray;
+	GameObject[] mudArray;
+	
+	private int winVal;
+	private bool gameOver;
+	
 	// Holds the seconds since the start of the game
 	private float time;
 
@@ -49,6 +57,8 @@ public class TestingScript : MonoBehaviour {
 		//gui = GameObject.Find("Terrain").GetComponent<TrainingGUIScript>();
 
 		bunniesSpawned = 0;
+		winVal = 0;
+		gameOver = false;
 	}
 	
 	// Update is called once per frame
@@ -61,6 +71,18 @@ public class TestingScript : MonoBehaviour {
 			bunniesSpawned++;
 		}
 		
+		carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
+		enemyArray = (GameObject.FindGameObjectsWithTag("EnemyBunny"));
+		mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
+		
+		// Fix null cases
+		if(carrotArray == null)
+			carrotArray = new GameObject[0];
+		if (enemyArray == null)
+			enemyArray = new GameObject[0];
+		if (mudArray == null)
+			mudArray = new GameObject[0];
+					
 		// Loops through all existing bunnies
 		foreach(GameObject bunnyObj in bunnies) {
 			// Use this to access anything associated with a specific bunny. To add NEAT stuff, 
@@ -71,22 +93,6 @@ public class TestingScript : MonoBehaviour {
 			if (bunny.CalculateOnTargetSensor() == 1)
 				bunny.FireCabbageGun();
 			*/
-
-			// Find all carrots, enemy bunnies, and mud pits
-			GameObject[] carrotArray;
-			GameObject[] enemyArray;
-			GameObject[] mudArray;
-			carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
-			enemyArray = (GameObject.FindGameObjectsWithTag("Enemy"));
-			mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
-			
-			// Fix null cases
-			if(carrotArray == null)
-				carrotArray = new GameObject[0];
-			if (enemyArray == null)
-				enemyArray = new GameObject[0];
-			if (mudArray == null)
-				mudArray = new GameObject[0];
 			
 			bunny.setInputArray(carrotArray, enemyArray);
 			
@@ -132,6 +138,25 @@ public class TestingScript : MonoBehaviour {
 	void OnGUI() {
 		if (GUI.Button (new Rect(Screen.width/2 + 440, Screen.height - 80, 100, 70), "Main Menu")) {
 			Application.LoadLevel("MainMenu");
+		}
+		
+		if (gameOver) {
+			if (winVal == 1) {
+				GUI.Box (new Rect(Screen.width/2 - 100, Screen.height/2, 200, 50), "YOU WIN");
+			}
+			else if (winVal == 2) {
+				GUI.Box (new Rect(Screen.width/2 - 100, Screen.height/2, 200, 50), "YOU LOSE");
+			}
+		}
+		
+		else {
+			winVal = CheckForWin();
+			if (winVal == 1) {
+				GUI.Box (new Rect(Screen.width/2 - 100, Screen.height/2, 200, 50), "YOU WIN");
+			}
+			else if (winVal == 2) {
+				GUI.Box (new Rect(Screen.width/2 - 100, Screen.height/2, 200, 50), "YOU LOSE");
+			}
 		}
 	}
 	
@@ -226,6 +251,24 @@ public class TestingScript : MonoBehaviour {
 		} else {
 			return false;
 		}
+	}
+	
+	int CheckForWin() {
+		int winVal = 0;
+		foreach (GameObject obj in bunnies) {
+			//Debug.Log (Vector3.Distance(obj.transform.position, GameObject.Find("Carrot").transform.position));
+			if (Vector3.Distance(obj.transform.position, GameObject.Find("Carrot").transform.position) < 2f) {
+				winVal = 1;
+			}
+		}
+		foreach (GameObject obj in enemyArray) {
+			//Debug.Log (Vector3.Distance(obj.transform.position, GameObject.Find("EnemyCarrot").transform.position));
+			if (Vector3.Distance(obj.transform.position, GameObject.Find("EnemyCarrot").transform.position) < 2f) {
+				winVal = 2;
+			}
+		}
+
+		return winVal;
 	}
 	
 	bool HasBeenAliveLongEnough(BunnyControl bunny) {
