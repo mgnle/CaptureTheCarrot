@@ -18,7 +18,7 @@ public class MainMenuGUI : MonoBehaviour {
 			Application.LoadLevel("TrainingScene");
 		}
 		if (GUI.Button (new Rect(Screen.width/20, Screen.height/6 + 120, 150, 100), "Test")) {
-		
+			Application.LoadLevel("TestingMenu");
 		}
 	}
 }
