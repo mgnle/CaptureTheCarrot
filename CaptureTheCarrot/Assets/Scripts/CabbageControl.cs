@@ -3,6 +3,12 @@ using System.Collections;
 
 [RequireComponent (typeof (CharacterController))]
 
+/* TODO:
+   Ignore friendly bunnies
+   Know if it hits an enemy, pass to bunny
+   Kill enemy bunny?
+*/
+
 public class CabbageControl : MonoBehaviour {
 	
 	public float speed = 300f;

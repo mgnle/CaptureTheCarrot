@@ -15,6 +15,9 @@ public class TrainingScript : MonoBehaviour {
 
 	// List of all our bunny objects
 	private List<GameObject> bunnies;
+	private GameObject[] carrotArray;
+	private GameObject[] enemyArray;
+	private GameObject[] mudArray;
 	
 	// List of all species
 	private List<Species> species;
@@ -67,7 +70,22 @@ public class TrainingScript : MonoBehaviour {
 				RaycastHit hit = new RaycastHit();
 				if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
 					if (!hit.collider.name.Equals("Terrain")) {
-						Destroy(hit.collider.gameObject);
+						Debug.Log (hit.collider.name);
+						foreach (GameObject obj in carrotArray) {
+							if (obj.GetInstanceID() == hit.transform.gameObject.GetInstanceID()) {
+								Destroy(obj);
+							}
+						}
+						foreach (GameObject obj in mudArray) {
+							if (obj.GetInstanceID() == hit.transform.gameObject.GetInstanceID()) {
+								Destroy(obj);
+							}
+						}
+						foreach (GameObject obj in enemyArray) {
+							if (obj.GetInstanceID() == hit.transform.gameObject.GetInstanceID()) {
+								Destroy(obj);
+							}
+						}
 					}
 				}
 			}
@@ -92,6 +110,19 @@ public class TrainingScript : MonoBehaviour {
 			ReplaceWorstBunny();
 		}
 		
+		// Find all carrots, enemy bunnies, and mud pits
+		carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
+		enemyArray = (GameObject.FindGameObjectsWithTag("EnemyBunny"));
+		mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
+		
+		// Fix null cases
+		if(carrotArray == null)
+		carrotArray = new GameObject[0];
+		if (enemyArray == null)
+		enemyArray = new GameObject[0];
+		if (mudArray == null)
+		mudArray = new GameObject[0];
+		
 		// Loops through all existing bunnies, and moves them randomly
 		foreach(GameObject bunnyObj in bunnies) {
 			// Use this to access anything associated with a specific bunny. To add NEAT stuff, 
@@ -103,22 +134,6 @@ public class TrainingScript : MonoBehaviour {
 			//if (bunny.CalculateOnTargetSensor() == 1)
 				//bunny.FireCabbageGun();
 
-			// Find all carrots, enemy bunnies, and mud pits
-			GameObject[] carrotArray;
-			GameObject[] enemyArray;
-			GameObject[] mudArray;
-			carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
-			enemyArray = (GameObject.FindGameObjectsWithTag("Enemy"));
-			mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
-			
-			// Fix null cases
-			if(carrotArray == null)
-				carrotArray = new GameObject[0];
-			if (enemyArray == null)
-				enemyArray = new GameObject[0];
-			if (mudArray == null)
-				mudArray = new GameObject[0];
-			
 			bunny.setInputArray(carrotArray, enemyArray);
 			
 			
@@ -179,6 +194,8 @@ public class TrainingScript : MonoBehaviour {
 		if (GUI.Button (new Rect(Screen.width/2 + 440, Screen.height - 80, 100, 70), "Fight!")) {
 			Application.LoadLevel("TestingMenu");
 		}
+		
+		GUI.Box(new Rect(5, 5, 1020, 30), "Click on desired icon to select that Item, then spawn in desired location with Right Click. Use LCtrl + Right Click to delete any object. WASD to pan camera, =/- to zoom in/out");
 	}
 	
 	// Spawns a new bunny in the bunny hole and adds it to the bunnies list
@@ -228,11 +245,13 @@ public class TrainingScript : MonoBehaviour {
 	// Get the bunny with the lowest fitness and replace it with the two highest fitness bunnies
 	void ReplaceWorstBunny() {
 		if(bunnies.ToArray().Length > 0) {
-			Debug.Log ("Replacing bunny");
+			
 		
 			// Choose worst agent
 			BunnyControl worstBunny = RemoveWorstBunny();
 			if(worstBunny == null) return;
+			
+			Debug.Log ("Replacing bunny");
 			
 			// Choose the best parent species
 			Species parentSpecies = ChooseParentSpecies();
@@ -285,6 +304,7 @@ public class TrainingScript : MonoBehaviour {
 		{
 			Species newSpecies = new Species();
 			newSpecies.Add(bunny);
+			species.Add (newSpecies);
 		}
     }
 	
