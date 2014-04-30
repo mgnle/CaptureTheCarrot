@@ -161,7 +161,6 @@ namespace AssemblyCSharp
 						{
 							connections1Disjoint.Add(new ConnectionGene(c1));
 						}
-						
 					}
 					foreach(ConnectionGene c2 in connections2)
 					{

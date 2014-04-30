@@ -3,6 +3,11 @@ namespace AssemblyCSharp
 {
 		public class Constants
 		{
+				public const int INPUTS = 5+1;	// 1 bias node
+				public const int OUTPUTS = 3;
+        
+				public const int NUM_BUNNIES = 30;
+		
 				public const int TIME_ALIVE_THRESHOLD = 25;
 		
 				public const double PROBABILITY_MUTATE_WEIGHT = 1;

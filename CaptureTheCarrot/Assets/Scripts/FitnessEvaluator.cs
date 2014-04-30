@@ -23,7 +23,7 @@ public class FitnessEvaluator {
 			nearFitness = 1f/(nearSum/distance.Count);
 		nearFitness = nearFitness * nearSlider;
 		//Debug.Log ("Near Fitness: " + nearFitness);
-			
+
 		// Fitness for firing
 		fireFitness = 1 - (1 / firing);
 		fireFitness = fireFitness * fireSlider;

@@ -7,9 +7,6 @@ using System;
 
 public class BunnyControl : MonoBehaviour {
 		
-	public const int INPUTS = 5;
-	public const int OUTPUTS = 2;
-		
 	// Neural Network bunny "brain"
 	public SimpleNeuralNetwork brain;
 	
@@ -44,7 +41,7 @@ public class BunnyControl : MonoBehaviour {
 	public GameObject cabbagePrefab;	
 	
 	// Array of inputs
-	float[] inputArray = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
+	float[] inputArray = new float[Constants.INPUTS];
 
 	CharacterController controller;
 	CollisionFlags collisionFlags;
@@ -118,6 +115,9 @@ public class BunnyControl : MonoBehaviour {
 				break;
 			case Action.MoveForward:
 				MoveStraight();
+				break;
+			case Action.Fire:
+				FireCabbageGun();
 				break;
 			default:
 				StandStill();

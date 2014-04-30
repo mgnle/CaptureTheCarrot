@@ -4,18 +4,12 @@ using AssemblyCSharp;
 
 public class TrainingScript : MonoBehaviour {
 
-	public const int INPUTS = 5+1;	// 1 bias node
-	public const int OUTPUTS = 2;
-
 	// Template for prefabs
 	public GameObject bunnyPrefab;
 	public GameObject enemyBunnyPrefab;
 	public GameObject carrotPrefab;
 	public GameObject mudPrefab;
 	
-	// Number of bunnies to spawn
-	public int numBunnies = 10;
-
 	// Default bunny spawn location
 	GameObject spawnLoc;
 
@@ -49,6 +43,7 @@ public class TrainingScript : MonoBehaviour {
 		bunnies = new List<GameObject>();
 		time = Time.fixedTime;
 		gui = GameObject.Find("Terrain").GetComponent<TrainingGUIScript>();
+
 		bunniesSpawned = 0;
 	}
 	
@@ -62,7 +57,7 @@ public class TrainingScript : MonoBehaviour {
 		*/
 		// Spawn the bunnies!
 		float t = Time.fixedTime;
-		if (bunniesSpawned < numBunnies && t > 0 && t % 1 == 0) {
+		if (bunniesSpawned < Constants.NUM_BUNNIES && t > 0 && t % 1 == 0) {
 			CreateBunny();
 			bunniesSpawned++;
 		}
@@ -162,7 +157,7 @@ public class TrainingScript : MonoBehaviour {
 		
 		// Create a brain for the bunny
 		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
-		bunny.brain = new SimpleNeuralNetwork(INPUTS, OUTPUTS);
+		bunny.brain = new SimpleNeuralNetwork(Constants.INPUTS, Constants.OUTPUTS);
 		bunny.birthday = Time.fixedTime;
 		
 		bunnies.Add(bunnyObj);
@@ -173,10 +168,6 @@ public class TrainingScript : MonoBehaviour {
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast(ray, out hit)) {
 			GameObject bunnyObj = (GameObject)Instantiate(enemyBunnyPrefab, new Vector3(hit.point.x, 0.8f, hit.point.z), Quaternion.identity);
-			
-			// Create a brain for the bunny
-			//BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
-			//bunny.brain = new SimpleNeuralNetwork(bunnyObj, INPUTS, OUTPUTS);
 		}
 	}
 
