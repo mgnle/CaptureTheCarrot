@@ -15,6 +15,9 @@ public class TrainingScript : MonoBehaviour {
 
 	// List of all our bunny objects
 	private List<GameObject> bunnies;
+	
+	// List of all species
+	private List<Species> species;
 
 	// Holds the seconds since the start of the game
 	private float time;
@@ -41,6 +44,7 @@ public class TrainingScript : MonoBehaviour {
 	void Start () {
 		spawnLoc = GameObject.Find("BunnySpawn");
 		bunnies = new List<GameObject>();
+		species = new List<Species>();
 		time = Time.fixedTime;
 		gui = GameObject.Find("Terrain").GetComponent<TrainingGUIScript>();
 
@@ -159,6 +163,8 @@ public class TrainingScript : MonoBehaviour {
 		bunny.birthday = Time.fixedTime;
 		
 		bunnies.Add(bunnyObj);
+		
+		AssignBunnyToSpecies(bunny);
 	}
 
 	// Spawns an enemy bunny
@@ -194,44 +200,118 @@ public class TrainingScript : MonoBehaviour {
 	// Get the bunny with the lowest fitness and replace it with the two highest fitness bunnies
 	void ReplaceWorstBunny() {
 		if(bunnies.ToArray().Length > 0) {
-			GameObject worstBunny = bunnies.ToArray()[0];
-			GameObject bestBunny = bunnies.ToArray()[0];
-			GameObject secondBestBunny = bunnies.ToArray()[0];
+		
+			// Choose worst agent
+			BunnyControl worstBunny = RemoveWorstBunny();
+			if(worstBunny == null) return;
 			
-			foreach(GameObject bunnyObj in bunnies) {
-				float worstBunnyEval = worstBunny.GetComponent<BunnyControl>().brain.Evaluate();
-				float bestBunnyEval = bestBunny.GetComponent<BunnyControl>().brain.Evaluate();
-				float secondBestBunnyEval = secondBestBunny.GetComponent<BunnyControl>().brain.Evaluate();
+			// Choose the best parent species
+			Species parentSpecies = ChooseParentSpecies();
+
+			BunnyControl bestBunny = null;
+			BunnyControl secondBestBunny = null;			
+			parentSpecies.ChooseParents(out bestBunny, out secondBestBunny);
 			
-				BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
-				float bunnyEval = bunny.brain.Evaluate();
-				
-				// Only respawns if it has been alive for long enough
-				if(HasBeenAliveLongEnough(bunny) && bunnyEval < worstBunnyEval) {
-					worstBunny = bunnyObj;
-				}
-				
-				if(bunnyEval > bestBunnyEval) {
-					bestBunny = bunnyObj;
-				}
-				else if(bunnyEval > secondBestBunnyEval) {
-					secondBestBunny = bunnyObj;
-				}				
-			}
+			// Create a new brain from the best parents
+			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBunny.brain, secondBestBunny.brain);
 			
-			// If the default worst bunny has not been alive long enough remove no one
-			if(!HasBeenAliveLongEnough(worstBunny.GetComponent<BunnyControl>())) {
-				return;
-			}
+			// Replace the old brain with the new one
+			worstBunny.brain = newBrain;
+			worstBunny.birthday = Time.fixedTime;
 			
-			// Take two best bunnies, create new neural network combining both, and place in game
-			SimpleNeuralNetwork bestBrain = bestBunny.GetComponent<BunnyControl>().brain;
-			SimpleNeuralNetwork secondBestBrain = secondBestBunny.GetComponent<BunnyControl>().brain;
-			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
-			worstBunny.GetComponent<BunnyControl>().brain = newBrain;
-			worstBunny.GetComponent<BunnyControl>().birthday = Time.fixedTime;
-			RespawnBunny(worstBunny);
+			// Reassign agent to species
+			AssignBunnyToSpecies(worstBunny);
+			
+			// TODO: Reassign all agents to species based on a per-species dynamic compatability threshold
+			
+			RespawnBunny(worstBunny.gameObject);
 		}			
+	}
+	
+	public void AssignBunnyToSpecies(BunnyControl bunny)
+	{
+		// Assign bunny to species
+		bool assigned = false;
+		foreach(Species s in species)
+		{
+			foreach(BunnyControl member in s.GetMembers())
+			{
+				int disjoint = 0;
+				int N = 1;
+                double weightedAverage = 0;
+                
+                bunny.brain.DistanceFrom(member.brain, out disjoint, out N, out weightedAverage);
+                
+                float d = (((float)disjoint*Constants.DISJOINT_MULTIPLIER)/(float)N) + ((float)weightedAverage*Constants.WEIGHT_AVERAGE_MULTIPLIER);
+                if (d <= Constants.COMPATABILITY_THRESHOLD)
+                {
+                	s.Add(bunny);
+                	assigned = true;
+                	break;
+                }
+			
+			}	
+		}
+		if(!assigned)
+		{
+			Species newSpecies = new Species();
+			newSpecies.Add(bunny);
+		}
+    }
+	
+	public BunnyControl RemoveWorstBunny()
+	{
+		float minFitness = float.MaxValue;
+		BunnyControl minBunny = null;
+		Species minBunnySpecies = null;
+	
+		// Find bunny with lowest adjusted fitness
+		foreach(Species s in species)
+		{
+			Dictionary<BunnyControl, float> adjustedFitnessMap = s.CalculateAdjustedFitness();
+			foreach(BunnyControl member in adjustedFitnessMap.Keys)
+			{
+				if (HasBeenAliveLongEnough(member) && adjustedFitnessMap[member] < minFitness)
+				{
+					minFitness = adjustedFitnessMap[member];
+					minBunny = member;
+					minBunnySpecies = s;
+				}
+			}
+		}
+		
+		if(minBunny != null)
+		{
+			// Remove bunny from it's species
+			minBunnySpecies.Remove(minBunny);
+		}
+				
+		return minBunny;
+	}
+	
+	public Species ChooseParentSpecies()
+	{
+		float prob = 0;
+		System.Random gen = new System.Random();
+		double i = gen.NextDouble();
+		
+		// Calculate total fitness of population
+		float totalFitness = 0f;
+		foreach(Species s in species)
+		{
+			totalFitness += s.GetAverageFitness();
+		}
+		
+		foreach(Species s in species)
+		{
+			float prob2 = (s.GetAverageFitness()/totalFitness);
+			if(i >= prob && i < prob2)
+			{
+				return s;
+			}
+			prob = prob2;
+        }
+        return null;
 	}
 
 	bool TimeUp() {

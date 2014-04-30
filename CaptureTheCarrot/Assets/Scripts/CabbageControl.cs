@@ -40,7 +40,6 @@ public class CabbageControl : MonoBehaviour {
 	
 	public void CollisionDetection() {
 		if(Vector3.Distance(control.transform.position,carrot.transform.position)<2){
-			Debug.Log("hit something");
 			Destroy(gameObject);
 		}	
 	}
