@@ -72,13 +72,24 @@ public class TestingScript : MonoBehaviour {
 				bunny.FireCabbageGun();
 			*/
 
-			GameObject carrot = GameObject.Find("Carrot");
-			if (carrot != null) {
-				List<GameObject> carrotArray = new List<GameObject>();
-				
-				carrotArray.Add (carrot);
-				//bunny.FindRadarValues(carrotArray);		
-			}
+			// Find all carrots, enemy bunnies, and mud pits
+			GameObject[] carrotArray;
+			GameObject[] enemyArray;
+			GameObject[] mudArray;
+			carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
+			enemyArray = (GameObject.FindGameObjectsWithTag("Enemy"));
+			mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
+			
+			// Fix null cases
+			if(carrotArray == null)
+				carrotArray = new GameObject[0];
+			if (enemyArray == null)
+				enemyArray = new GameObject[0];
+			if (mudArray == null)
+				mudArray = new GameObject[0];
+			
+			bunny.setInputArray(carrotArray, enemyArray);
+			
 			// For testing cabbage gun
 			/*
 			if (Input.GetKeyDown ("f"))
@@ -200,8 +211,8 @@ public class TestingScript : MonoBehaviour {
 			// Take two best bunnies, create new neural network combining both, and place in game
 			SimpleNeuralNetwork bestBrain = bestBunny.GetComponent<BunnyControl>().brain;
 			SimpleNeuralNetwork secondBestBrain = secondBestBunny.GetComponent<BunnyControl>().brain;
-			//SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
-			//worstBunny.GetComponent<BunnyControl>().brain = newBrain;
+			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
+			worstBunny.GetComponent<BunnyControl>().brain = newBrain;
 			worstBunny.GetComponent<BunnyControl>().birthday = Time.fixedTime;
 			RespawnBunny(worstBunny);
 		}			
