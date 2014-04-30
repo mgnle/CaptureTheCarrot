@@ -70,7 +70,6 @@ public class TrainingScript : MonoBehaviour {
 				RaycastHit hit = new RaycastHit();
 				if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
 					if (!hit.collider.name.Equals("Terrain")) {
-						Debug.Log (hit.collider.name);
 						foreach (GameObject obj in carrotArray) {
 							if (obj.GetInstanceID() == hit.transform.gameObject.GetInstanceID()) {
 								Destroy(obj);
@@ -250,14 +249,13 @@ public class TrainingScript : MonoBehaviour {
 			// Choose worst agent
 			BunnyControl worstBunny = RemoveWorstBunny();
 			if(worstBunny == null) return;
-			
-			Debug.Log ("Replacing bunny");
-			
+						
 			// Choose the best parent species
 			Species parentSpecies = ChooseParentSpecies();
+			if(parentSpecies == null) parentSpecies = species[0];
 
-			BunnyControl bestBunny = null;
-			BunnyControl secondBestBunny = null;			
+			BunnyControl bestBunny = worstBunny;
+			BunnyControl secondBestBunny = worstBunny;			
 			parentSpecies.ChooseParents(out bestBunny, out secondBestBunny);
 			
 			// Create a new brain from the best parents
@@ -333,6 +331,10 @@ public class TrainingScript : MonoBehaviour {
 		{
 			// Remove bunny from it's species
 			minBunnySpecies.Remove(minBunny);
+			if(minBunnySpecies.GetMembers().Count == 0)
+			{
+				species.Remove(minBunnySpecies);
+			}
 		}
 				
 		return minBunny;
@@ -343,7 +345,7 @@ public class TrainingScript : MonoBehaviour {
 		float prob = 0;
 		System.Random gen = new System.Random();
 		double i = gen.NextDouble();
-		
+				
 		// Calculate total fitness of population
 		float totalFitness = 0f;
 		foreach(Species s in species)

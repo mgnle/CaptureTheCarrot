@@ -15,9 +15,7 @@ public class FitnessEvaluator {
 		float nearFitness = 0;
 		float avoidFitness = 0;
 		float fireFitness = 0;
-		
-		Debug.Log ("Slider:" + nearSlider);
-				
+						
 		// Fitness for approaching a carrot
 		for (int i = 0; i < distance.Count; i++) {
 			nearSum += distance[i]; 
