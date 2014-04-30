@@ -18,7 +18,7 @@ public class TestingMenuGUI : MonoBehaviour {
 		
 		}
 		if (GUI.Button (new Rect(Screen.width/20, Screen.height/6 + 120, 150, 100), "Fight!")) {
-		
+			Application.LoadLevel("TestingScene");
 		}
 	}
 }
