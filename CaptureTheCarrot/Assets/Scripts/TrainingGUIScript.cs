@@ -6,7 +6,6 @@ public class TrainingGUIScript : MonoBehaviour {
 	public enum Item
 	{
 		Carrot,
-		Bunny,
 		EnemyBunny,
 		Mud
 	}
