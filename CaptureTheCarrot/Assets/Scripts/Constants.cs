@@ -9,6 +9,8 @@ namespace AssemblyCSharp
 				public const int NUM_BUNNIES = 30;
 		
 				public const int TIME_ALIVE_THRESHOLD = 25;
+				
+				public const double PROBABILITY_FIRE = 0.005;
 		
 				public const double PROBABILITY_MUTATE_WEIGHT = 1;
 				public const int AMOUNT_MUTATE_WEIGHT = 5;	// In hundredths

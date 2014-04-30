@@ -105,6 +105,18 @@ public class BunnyControl : MonoBehaviour {
 				{
 					action = (Action)(i*2 + 1);
 				}
+				if (i == 2)
+				{
+					System.Random gen = new System.Random();
+					if(gen.NextDouble() < Constants.PROBABILITY_FIRE)
+					{
+						action = Action.Fire;
+					}
+					else
+					{
+						action = Action.None;
+					}
+				}
 			}
 		}
 		
