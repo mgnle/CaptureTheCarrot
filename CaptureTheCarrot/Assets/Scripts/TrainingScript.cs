@@ -27,6 +27,9 @@ public class TrainingScript : MonoBehaviour {
 
 	// The seconds till we replace the worst bunny
 	private int SEC_TIL_REMOVE_BUNNY = 4;
+	
+	// Total number of bunnies spawned
+	private int bunniesSpawned = 0;
 
 	TrainingGUIScript gui;
 
@@ -46,11 +49,7 @@ public class TrainingScript : MonoBehaviour {
 		bunnies = new List<GameObject>();
 		time = Time.fixedTime;
 		gui = GameObject.Find("Terrain").GetComponent<TrainingGUIScript>();
-		
-		// Spawn the bunnies!
-		for (int i=0; i<numBunnies; i++) {
-			CreateBunny();
-		}
+		bunniesSpawned = 0;
 	}
 	
 	// Update is called once per frame
@@ -61,7 +60,13 @@ public class TrainingScript : MonoBehaviour {
 			CreateBunny();
 		}
 		*/
-		
+		// Spawn the bunnies!
+		float t = Time.fixedTime;
+		if (bunniesSpawned < numBunnies && t > 0 && t % 1 == 0) {
+			CreateBunny();
+			bunniesSpawned++;
+		}
+				
 		// Right click to add current selection to map
 		if (Input.GetMouseButtonDown(1)) {
 			// Delete object if LCtrl+Right Click (may have consequenses)
