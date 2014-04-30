@@ -105,6 +105,8 @@ public class TrainingScript : MonoBehaviour {
 			// just make public variables inside the BunnyControl class.
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
 			
+			bunny.setSliders(gui.carrotProximityReward ,gui.enemyAttackReward);
+			
 			if (bunny.CalculateOnTargetSensor() == 1)
 				bunny.FireCabbageGun();
 

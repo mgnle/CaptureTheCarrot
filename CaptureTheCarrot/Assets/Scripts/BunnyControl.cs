@@ -18,7 +18,7 @@ public class BunnyControl : MonoBehaviour {
 
 	// Data for fitness evaluator
 	private List<int> distance;
-	private List<int> firing;
+	private int firing;
 	
 	// Enum for the actions that can be taken
 	public enum Action
@@ -63,7 +63,7 @@ public class BunnyControl : MonoBehaviour {
 		bunnyPos = initialPosition;
 		
 		distance = new List<int>();
-		firing = new List<int>();
+		firing = 1;
 	}
 	
 	// Update is called once per frame
@@ -75,6 +75,7 @@ public class BunnyControl : MonoBehaviour {
 			// TODO: Do for multiple carrots
 			distance.Add((int)CalculateDistance(GameObject.Find("Carrot")));
 		}
+		firing += CalculateOnTargetSensor();
 				
 		if (distance.Count != 0) {
 			brain.UpdateEvaluator(distance, firing);
@@ -227,6 +228,9 @@ public class BunnyControl : MonoBehaviour {
         return 0;
     }
 	
+	public void setSliders(float near, float fire) {
+		brain.setSliders(near, fire);
+	}
 }
 
 

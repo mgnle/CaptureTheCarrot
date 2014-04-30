@@ -21,7 +21,7 @@ namespace AssemblyCSharp
             
 				private FitnessEvaluator fitEval;
 				private List<int> distance;
-				private List<int> firing;
+				private int firing;
 				
 				private Dictionary<int, List<ConnectionGene>> _adjacencyList;
 
@@ -455,7 +455,7 @@ namespace AssemblyCSharp
 				
 		/* Calculates the distance from a bunny and a value for if the
 	 	 * bunny is facing an enemy. Should be called on every move.*/
-		public void UpdateEvaluator(List<int> distance, List<int> firing) {
+		public void UpdateEvaluator(List<int> distance, int firing) {
 			this.distance = distance;
 			this.firing = firing;
 		}
@@ -465,6 +465,10 @@ namespace AssemblyCSharp
 				return fitEval.Evaluate(distance, firing);
 			return 0;
 		}
+		
+		public void setSliders(float near, float fire) {
+			fitEval.setSliders(near, fire);
+        }
 	}
 }
 
