@@ -65,8 +65,17 @@ public class TestingScript : MonoBehaviour {
 	void Update () {
 		// Spawn the bunnies!
 		float t = Time.fixedTime;
+		Debug.Log (GlobalVars.bunnies.Count);
 		if (bunniesSpawned < Constants.NUM_BUNNIES && t > 0 && t % 1 == 0) {
-			CreateBunny();
+			if (GlobalVars.bunnies != null) {
+				Debug.Log("Spawing global bunny!");
+				GameObject bunny = GlobalVars.bunnies[bunniesSpawned];
+				CreateBunny(bunny);
+			}
+			else {
+				CreateBunny();
+			}
+			
 			CreateEnemyBunny();
 			bunniesSpawned++;
 		}
@@ -168,6 +177,20 @@ public class TestingScript : MonoBehaviour {
 		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
 		bunny.brain = new SimpleNeuralNetwork(Constants.INPUTS, Constants.OUTPUTS);
 		bunny.birthday = Time.fixedTime;
+		
+		bunnies.Add(bunnyObj);
+	}
+	
+	// Spawns a specified bunny
+	void CreateBunny(GameObject bunnyData) {
+		GameObject bunnyObj = (GameObject)Instantiate(bunnyPrefab, new Vector3(spawnLoc.transform.position.x, 0.8f, spawnLoc.transform.position.z), Quaternion.identity);
+		
+		// Put specified brain in the bun
+		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
+		//bunny.brain = bunnyData.GetComponent<BunnyControl>().brain;
+		bunny.brain = new SimpleNeuralNetwork(Constants.INPUTS, Constants.OUTPUTS);
+		bunny.birthday = Time.fixedTime;
+		bunny.isTesting = true;
 		
 		bunnies.Add(bunnyObj);
 	}

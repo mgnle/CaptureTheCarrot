@@ -191,6 +191,7 @@ public class TrainingScript : MonoBehaviour {
 			
 		}
 		if (GUI.Button (new Rect(Screen.width/2 + 440, Screen.height - 80, 100, 70), "Fight!")) {
+			GlobalVars.bunnies = bunnies;
 			Application.LoadLevel("TestingMenu");
 		}
 		

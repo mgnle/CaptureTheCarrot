@@ -6,6 +6,8 @@ using System;
 [RequireComponent (typeof (CharacterController))]
 
 public class BunnyControl : MonoBehaviour {
+	// Whether or not we are in testing mode	
+	public bool isTesting;	
 		
 	// Neural Network bunny "brain"
 	public SimpleNeuralNetwork brain;
@@ -65,6 +67,7 @@ public class BunnyControl : MonoBehaviour {
 		enemyDistance = new List<int>();
 		mudDistance = new List<int>();
 		firing = 1;
+		isTesting = false;
 	}
 	
 	// Update is called once per frame
@@ -92,11 +95,10 @@ public class BunnyControl : MonoBehaviour {
 			
 		//DisplayInputs();
 				
-		//if (distance.Count != 0) {
+		if (!isTesting) {
 			brain.UpdateEvaluator(carrotDistance, enemyDistance, mudDistance, firing);
-		//}
-		
-		brain.changeWeights();
+			brain.changeWeights();
+		}
 				
 		brain.InputSignalArray = inputArray;
 		brain.Activate();
