@@ -245,11 +245,13 @@ public class TrainingScript : MonoBehaviour {
 	// Get the bunny with the lowest fitness and replace it with the two highest fitness bunnies
 	void ReplaceWorstBunny() {
 		if(bunnies.ToArray().Length > 0) {
-			Debug.Log ("Replacing bunny");
+			
 		
 			// Choose worst agent
 			BunnyControl worstBunny = RemoveWorstBunny();
 			if(worstBunny == null) return;
+			
+			Debug.Log ("Replacing bunny");
 			
 			// Choose the best parent species
 			Species parentSpecies = ChooseParentSpecies();
@@ -302,6 +304,7 @@ public class TrainingScript : MonoBehaviour {
 		{
 			Species newSpecies = new Species();
 			newSpecies.Add(bunny);
+			species.Add (newSpecies);
 		}
     }
 	

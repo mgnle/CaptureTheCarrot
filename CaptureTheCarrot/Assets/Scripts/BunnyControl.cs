@@ -190,7 +190,7 @@ public class BunnyControl : MonoBehaviour {
 		float[] radars = new float[5];
 		foreach(GameObject obj in objs) {
 			if (CalculateRadar(obj) != -1)
-				radars[CalculateRadar(obj)] += CalculateDistance(obj);
+				radars[CalculateRadar(obj)] += 1 - (1/CalculateDistance(obj));
 		}
 		return radars;
 	}
