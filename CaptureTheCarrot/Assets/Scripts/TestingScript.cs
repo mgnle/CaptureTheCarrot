@@ -77,7 +77,7 @@ public class TestingScript : MonoBehaviour {
 				List<GameObject> carrotArray = new List<GameObject>();
 				
 				carrotArray.Add (carrot);
-				bunny.FindRadarValues(carrotArray);		
+				//bunny.FindRadarValues(carrotArray);		
 			}
 			// For testing cabbage gun
 			/*
@@ -200,8 +200,8 @@ public class TestingScript : MonoBehaviour {
 			// Take two best bunnies, create new neural network combining both, and place in game
 			SimpleNeuralNetwork bestBrain = bestBunny.GetComponent<BunnyControl>().brain;
 			SimpleNeuralNetwork secondBestBrain = secondBestBunny.GetComponent<BunnyControl>().brain;
-			SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
-			worstBunny.GetComponent<BunnyControl>().brain = newBrain;
+			//SimpleNeuralNetwork newBrain = new SimpleNeuralNetwork(bestBrain, secondBestBrain);
+			//worstBunny.GetComponent<BunnyControl>().brain = newBrain;
 			worstBunny.GetComponent<BunnyControl>().birthday = Time.fixedTime;
 			RespawnBunny(worstBunny);
 		}			

@@ -562,7 +562,7 @@ namespace AssemblyCSharp
 			}
 					
 			public float Evaluate() {
-				if (distance != null)
+				//if (distance != null)
 					return fitEval.Evaluate(distance, firing);
 				return 0;
 			}

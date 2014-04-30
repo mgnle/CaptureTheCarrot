@@ -103,13 +103,31 @@ public class TrainingScript : MonoBehaviour {
 			//if (bunny.CalculateOnTargetSensor() == 1)
 				//bunny.FireCabbageGun();
 
-			GameObject carrot = GameObject.Find("Carrot");
-			if (carrot != null) {
-				List<GameObject> carrotArray = new List<GameObject>();
+			// Find all carrots, enemy bunnies, and mud pits
+			GameObject[] carrotArray;
+			GameObject[] enemyArray;
+			GameObject[] mudArray;
+			carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
+			enemyArray = (GameObject.FindGameObjectsWithTag("Enemy"));
+			mudArray = (GameObject.FindGameObjectsWithTag("Mud"));
+			
+			// Fix null cases
+			if(carrotArray == null)
+				carrotArray = new GameObject[0];
+			if (enemyArray == null)
+				enemyArray = new GameObject[0];
+			if (mudArray == null)
+				mudArray = new GameObject[0];
+			
+			bunny.setInputArray(carrotArray, enemyArray);
+			
+			
+			//if (carrot != null) {
+				//List<GameObject> carrotArray = new List<GameObject>();
 				
-				carrotArray.Add (carrot);
-				bunny.FindRadarValues(carrotArray);		
-			}
+				//carrotArray.Add (carrot);
+				//bunny.FindRadarValues(carrotArray);		
+			//}
 			// For testing cabbage gun
 			/*
 			if (Input.GetKeyDown ("f"))
@@ -210,6 +228,7 @@ public class TrainingScript : MonoBehaviour {
 	// Get the bunny with the lowest fitness and replace it with the two highest fitness bunnies
 	void ReplaceWorstBunny() {
 		if(bunnies.ToArray().Length > 0) {
+			Debug.Log ("Replacing bunny");
 		
 			// Choose worst agent
 			BunnyControl worstBunny = RemoveWorstBunny();

@@ -13,16 +13,21 @@ public class FitnessEvaluator {
 	public float Evaluate(List<int> distance, int firing) {
 		float nearSum = 0;
 		float nearFitness = 0;
+		float avoidFitness = 0;
 		float fireFitness = 0;
 				
+		// Fitness for approaching a carrot
 		for (int i = 0; i < distance.Count; i++) {
 			nearSum += distance[i]; 
 		}
-		
 		if (nearSum != 0 && distance.Count != 0)
 			nearFitness = 1f/(nearSum/distance.Count);
 		nearFitness = nearFitness * nearSlider;
 		//Debug.Log ("Near Fitness: " + nearFitness);
+		
+		// Fitness for avoiding enemies
+		
+		
 
 		// Fitness for firing
 		fireFitness = 1 - (1 / firing);

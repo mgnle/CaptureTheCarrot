@@ -14,7 +14,8 @@ public class BunnyControl : MonoBehaviour {
 	public float birthday;
 
 	// Data for fitness evaluator
-	private List<int> distance;
+	private List<int> carrotDistance;
+	private List<int> enemyDistance;
 	private int firing;
 	
 	// Enum for the actions that can be taken
@@ -59,32 +60,34 @@ public class BunnyControl : MonoBehaviour {
 		initialRotation = transform.rotation;
 		bunnyPos = initialPosition;
 		
-		distance = new List<int>();
+		carrotDistance = new List<int>();
+		enemyDistance = new List<int>();
 		firing = 1;
-				
-		inputArray[Constants.INPUTS-1] = 1; // bias node
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		bunnyPos = transform.position;
 		
-		GameObject carrot = GameObject.Find ("Carrot");
-		if (carrot != null) {
-			// TODO: Do for multiple carrots
-			distance.Add((int)CalculateDistance(GameObject.Find("Carrot")));
+		// Adjust Fitness Data
+		GameObject[] carrotArray = (GameObject.FindGameObjectsWithTag("Carrot"));
+		if (carrotArray != null) {
+			foreach (GameObject g in carrotArray)
+				carrotDistance.Add((int)CalculateDistance(g));
 		}
-		
+		GameObject[] enemyArray = (GameObject.FindGameObjectsWithTag("Enemy"));
+		if (enemyArray != null) {
+			foreach (GameObject g in enemyArray)
+				enemyDistance.Add((int)CalculateDistance(g));
+		}
 		if (CalculateOnTargetSensor() == 1)
 			firing += 1;
 			
 		//DisplayInputs();
 				
-		if (distance.Count != 0) {
-			brain.UpdateEvaluator(distance, firing);
-		}
-		
-		CalculateOnTargetSensor();
+		//if (distance.Count != 0) {
+			brain.UpdateEvaluator(carrotDistance, firing);
+		//}
 		
 		brain.changeWeights();
 				
@@ -183,15 +186,13 @@ public class BunnyControl : MonoBehaviour {
 		GameObject cabbageObj = (GameObject)Instantiate(cabbagePrefab, transform.position + transform.forward * 2f + new Vector3(0f, 1f, 0f), transform.rotation);
 	}
 
-	public void FindRadarValues(List<GameObject> objs) {
-		float[] radars = new float[6];
+	public float[] FindRadarValues(GameObject[] objs) {
+		float[] radars = new float[5];
 		foreach(GameObject obj in objs) {
 			if (CalculateRadar(obj) != -1)
 				radars[CalculateRadar(obj)] += CalculateDistance(obj);
 		}
-		for (int i = 0; i < 6; i++) {
-			inputArray[i] = radars[i];
-        }
+		return radars;
 	}
 	
 	public float CalculateDistance(GameObject obj) {
@@ -236,19 +237,17 @@ public class BunnyControl : MonoBehaviour {
 	/* Returns 1 (full activation) if the onTargetSensor collides with
 	   anything within 100 units. Return 0 otherwise. */
 	public float CalculateOnTargetSensor() {
+		LayerMask mask = 1 << 8;
 		float[] onTarget = new float[1];
 		Vector3 position = transform.position + transform.forward * 2f + new Vector3(0f, 1f, 0f);
 		RaycastHit hit = new RaycastHit();
-		if (Physics.Raycast(position, transform.forward, out hit, 100)) {
-			
+		if (Physics.Raycast(position, transform.forward, out hit, 100, mask)) {
 			if (hit.collider.name.Equals("EnemyBunny") || hit.collider.name.Equals("EnemyBunny(Clone)")) {
 				onTarget[0] = 1;
 			}
 		}
 		else
 			onTarget[0] = 0;
-		inputArray[5] = onTarget[0];
-		//AddInputs(onTarget);
 		return onTarget[0];
     }
 	
@@ -256,19 +255,33 @@ public class BunnyControl : MonoBehaviour {
 		brain.setSliders(near, fire);
 	}
 	
-	/*public void AddInputs(float[] input) {
-		for (int i = 0; i < inputArray.Length; i++) {
-			for (int j = 0; j < input.Length; j++) {
-				if (inputArray[i] != -1.0f)
-					inputArray[i] = input[j];
-			}
-		}
-	}*/
-	
 	public void DisplayInputs() {
 		for (int i = 0; i < inputArray.Length; i++) {
-			Debug.Log (inputArray[i]);
+			String text = i + ":" + inputArray[i];
+			Debug.Log (text);
 		}
+	}
+	
+	/* Sets all the inputs for the brain by calling all the correct methods.*/
+	public void setInputArray(GameObject[] carrots, GameObject[] enemies) {
+		inputArray[0] = 1; // bias node
+	
+		float[] cRadars = FindRadarValues(carrots);
+		int j = 0;
+		for (int i = 1; i < 6; i++) {
+			inputArray[i] = cRadars[j];
+			j++;
+		}
+		
+		float[] eRadars = FindRadarValues(enemies);
+		j = 0;
+		for (int i = 6; i < 11; i++) {
+			inputArray[i] = eRadars[j];
+			j++;
+		}
+		
+		inputArray[11] = CalculateOnTargetSensor();
+		
 	}
 }
 
