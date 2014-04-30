@@ -53,12 +53,6 @@ public class TrainingScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// Left click to create a bunny at spawn location
-		/*
-		if (Input.GetMouseButtonDown(0)) {
-			CreateBunny();
-		}
-		*/
 		// Spawn the bunnies!
 		float t = Time.fixedTime;
 		if (bunniesSpawned < Constants.NUM_BUNNIES && t > 0 && t % 1 == 0) {
@@ -103,6 +97,8 @@ public class TrainingScript : MonoBehaviour {
 			// Use this to access anything associated with a specific bunny. To add NEAT stuff, 
 			// just make public variables inside the BunnyControl class.
 			BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();
+			
+			bunny.setSliders(gui.carrotProximityReward ,gui.enemyAttackReward);
 			
 			if (bunny.CalculateOnTargetSensor() == 1)
 				bunny.FireCabbageGun();
@@ -152,7 +148,21 @@ public class TrainingScript : MonoBehaviour {
 			
 		}
 	}
-
+	
+	void OnGUI() {
+		// Check for Load/Save/Reset button
+		GUI.enabled = true;
+		if (GUI.Button (new Rect(Screen.width/2 + 200, Screen.height - 80, 100, 70), "Save")) {
+			
+		}
+		if (GUI.Button (new Rect(Screen.width/2 + 320, Screen.height - 80, 100, 70), "Load")) {
+			
+		}
+		if (GUI.Button (new Rect(Screen.width/2 + 440, Screen.height - 80, 100, 70), "Reset")) {
+			
+		}
+	}
+	
 	// Spawns a new bunny in the bunny hole and adds it to the bunnies list
 	void CreateBunny() {
 		GameObject bunnyObj = (GameObject)Instantiate(bunnyPrefab, new Vector3(spawnLoc.transform.position.x, 0.8f, spawnLoc.transform.position.z), Quaternion.identity);

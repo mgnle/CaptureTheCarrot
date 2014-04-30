@@ -11,6 +11,7 @@ namespace AssemblyCSharp
 			private static int nodeID;	
 			private static int innovationNum;
 
+<<<<<<< HEAD
 			readonly int _inputCount;
 			readonly int _outputCount;
 			public float[] _inputArray;
@@ -24,6 +25,21 @@ namespace AssemblyCSharp
 			private List<int> firing;
 			
 			private Dictionary<int, List<ConnectionGene>> _adjacencyList;
+=======
+				readonly int _inputCount;
+				readonly int _outputCount;
+				public float[] _inputArray;
+				public float[] _outputArray;
+				
+				private List<NodeGene> _nodeGenes;
+				private List<ConnectionGene> _connectionGenes;
+            
+				private FitnessEvaluator fitEval;
+				private List<int> distance;
+				private int firing;
+				
+				private Dictionary<int, List<ConnectionGene>> _adjacencyList;
+>>>>>>> 3df02c4ea02cf06f8c6355bb298392e014e167d0
 
 			public SimpleNeuralNetwork (int inputCount, int outputCount)
 			{ 
@@ -452,19 +468,6 @@ namespace AssemblyCSharp
 				return weights;
 			}
 			
-			/* Calculates the distance from a bunny and a value for if the
-		 	 * bunny is facing an enemy. Should be called on every move.*/
-			public void UpdateEvaluator(List<int> distance, List<int> firing) {
-				this.distance = distance;
-				this.firing = firing;
-			}
-					
-			public float Evaluate() {
-				if (distance != null)
-					return fitEval.Evaluate(distance, firing);
-				return 0;
-			}
-			
 			public void DistanceFrom(SimpleNeuralNetwork network2, out int disjoint, out int N, out double weightedAverage)
 			{	
 				List<NodeGene> nodes1 = this._nodeGenes;
@@ -565,6 +568,23 @@ namespace AssemblyCSharp
 			{
 	        	// TODO
 	        }
-    }
+
+			/* Calculates the distance from a bunny and a value for if the
+		 	 * bunny is facing an enemy. Should be called on every move.*/
+			public void UpdateEvaluator(List<int> distance, int firing) {
+				this.distance = distance;
+				this.firing = firing;
+			}
+					
+			public float Evaluate() {
+				if (distance != null)
+					return fitEval.Evaluate(distance, firing);
+				return 0;
+			}
+			
+			public void setSliders(float near, float fire) {
+				fitEval.setSliders(near, fire);
+	        }
+	}
 }
 
