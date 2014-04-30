@@ -102,8 +102,8 @@ public class TrainingScript : MonoBehaviour {
 			
 			bunny.setSliders(gui.carrotProximityReward ,gui.enemyAttackReward);
 			
-			if (bunny.CalculateOnTargetSensor() == 1)
-				bunny.FireCabbageGun();
+			//if (bunny.CalculateOnTargetSensor() == 1)
+				//bunny.FireCabbageGun();
 
 			GameObject carrot = GameObject.Find("Carrot");
 			if (carrot != null) {

@@ -46,6 +46,10 @@ namespace AssemblyCSharp
 												
 						this._adjacencyList = new Dictionary<int, List<ConnectionGene>>();
 												
+						// Initialize inputArray to -1
+						for (int i = 0; i < _inputArray.Length; i++)
+							_inputArray[i] = -1;
+												
 						// Create the input nodes
 						for(int i=0; i<inputCount; i++)
 						{

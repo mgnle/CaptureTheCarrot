@@ -72,7 +72,11 @@ public class BunnyControl : MonoBehaviour {
 			// TODO: Do for multiple carrots
 			distance.Add((int)CalculateDistance(GameObject.Find("Carrot")));
 		}
-		firing += CalculateOnTargetSensor();
+		
+		if (CalculateOnTargetSensor() == 1)
+			firing += 1;
+			
+		//DisplayInputs();
 				
 		if (distance.Count != 0) {
 			brain.UpdateEvaluator(distance, firing);
@@ -172,7 +176,9 @@ public class BunnyControl : MonoBehaviour {
 				radars[CalculateRadar(obj)] += CalculateDistance(obj);
 		}
 		radars[5] = 1; // bias node
-		inputArray = radars;
+		for (int i = 0; i < 5; i++) {
+			inputArray[i] = radars[i];
+        }
 	}
 	
 	public float CalculateDistance(GameObject obj) {
@@ -216,20 +222,40 @@ public class BunnyControl : MonoBehaviour {
 	
 	/* Returns 1 (full activation) if the onTargetSensor collides with
 	   anything within 100 units. Return 0 otherwise. */
-	public int CalculateOnTargetSensor() {
+	public float CalculateOnTargetSensor() {
+		float[] onTarget = new float[1];
 		Vector3 position = transform.position + transform.forward * 2f + new Vector3(0f, 1f, 0f);
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast(position, transform.forward, out hit, 100)) {
 			
 			if (hit.collider.name.Equals("EnemyBunny") || hit.collider.name.Equals("EnemyBunny(Clone)")) {
-				return 1;
+				onTarget[0] = 1;
 			}
 		}
-        return 0;
+		else
+			onTarget[0] = 0;
+		inputArray[5] = onTarget[0];
+		//AddInputs(onTarget);
+		return onTarget[0];
     }
 	
 	public void setSliders(float near, float fire) {
 		brain.setSliders(near, fire);
+	}
+	
+	/*public void AddInputs(float[] input) {
+		for (int i = 0; i < inputArray.Length; i++) {
+			for (int j = 0; j < input.Length; j++) {
+				if (inputArray[i] != -1.0f)
+					inputArray[i] = input[j];
+			}
+		}
+	}*/
+	
+	public void DisplayInputs() {
+		for (int i = 0; i < inputArray.Length; i++) {
+			Debug.Log (inputArray[i]);
+		}
 	}
 }
 

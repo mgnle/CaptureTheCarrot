@@ -3,7 +3,7 @@ namespace AssemblyCSharp
 {
 		public class Constants
 		{
-				public const int INPUTS = 5+1;	// 1 bias node
+				public const int INPUTS = 6+1;	// 1 bias node
 				public const int OUTPUTS = 3;
         
 				public const int NUM_BUNNIES = 30;

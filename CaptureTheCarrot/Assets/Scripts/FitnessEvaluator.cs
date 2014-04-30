@@ -27,7 +27,7 @@ public class FitnessEvaluator {
 		// Fitness for firing
 		fireFitness = 1 - (1 / firing);
 		fireFitness = fireFitness * fireSlider;
-		//Debug.Log ("Firing Fitness: " + firingFitness);
+		//Debug.Log ("Firing Fitness: " + fireFitness);
 			
 			
 		return nearFitness + fireFitness;
