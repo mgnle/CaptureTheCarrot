@@ -4,41 +4,35 @@ namespace AssemblyCSharp
 		public class Species
 		{
 				private List<BunnyControl> members;
-				private float averageFitness;
 		
 				public Species ()
 				{
 					members = new List<BunnyControl>();
-					averageFitness = 0;
 				}
 				
 				public void Add(BunnyControl bunny)
 				{
 					members.Add(bunny);
-					recalculateAverageFitness();
 				}
 				
 				public void Remove(BunnyControl bunny)
 				{
 					members.Remove(bunny);
-					recalculateAverageFitness();
 				}
 				
-				private void recalculateAverageFitness()
+				public float GetAverageFitness()
 				{
+					float averageFitness = 0;
 					float sum = 0;
 					foreach(BunnyControl bunny in members)
 					{
 						sum += bunny.brain.Evaluate();
 					}
 					if(members.Count > 0) averageFitness = sum/members.Count;
-				}
-				
-				public float GetAverageFitness()
-				{
 					return averageFitness;
-				}
-								
+					
+        		}
+        
 				public List<BunnyControl> GetMembers()
 				{
 					return members;
