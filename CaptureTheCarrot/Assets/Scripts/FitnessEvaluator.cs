@@ -54,7 +54,7 @@ public class FitnessEvaluator {
 		//Debug.Log ("Firing Fitness: " + fireFitness);
 			
 			
-		return nearFitness + avoidFitness + fireFitness;
+		return nearFitness + avoidFitness + mudFitness + fireFitness;
 	}
 	
 	public void setSliders(float near, float avoid, float mud, float fire) {
