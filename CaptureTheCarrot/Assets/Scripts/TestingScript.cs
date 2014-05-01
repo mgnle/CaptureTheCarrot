@@ -88,7 +88,7 @@ public class TestingScript : MonoBehaviour {
 			if (mudArray == null)
 				mudArray = new GameObject[0];
 			
-			bunny.setInputArray(carrotArray, enemyArray);
+			bunny.setInputArray(carrotArray, enemyArray, mudArray);
 			
 			// For testing cabbage gun
 			/*

@@ -133,7 +133,7 @@ public class TrainingScript : MonoBehaviour {
 			//if (bunny.CalculateOnTargetSensor() == 1)
 				//bunny.FireCabbageGun();
 
-			bunny.setInputArray(carrotArray, enemyArray);
+			bunny.setInputArray(carrotArray, enemyArray, mudArray);
 			
 			
 			//if (carrot != null) {

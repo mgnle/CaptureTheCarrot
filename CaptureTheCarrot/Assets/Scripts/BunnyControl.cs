@@ -287,35 +287,47 @@ public class BunnyControl : MonoBehaviour {
 	}
 	
 	/* Sets all the inputs for the brain by calling all the correct methods.*/
-	public void setInputArray(GameObject[] carrots, GameObject[] enemies) {
+	public void setInputArray(GameObject[] carrots, GameObject[] enemies, GameObject[] mudpits) {
 		float[] cRadars;
 		float[] eRadars;
+		float[] mRadars;
 	
 		inputArray[0] = 1; // bias node
 	
+		// Approaching/Avoiding carrots
 		if (near > 0)
 			cRadars = FindPosRadarValues(carrots);
 		else
 			cRadars = FindNegRadarValues(carrots);
-	
 		int j = 0;
 		for (int i = 1; i < 6; i++) {
 			inputArray[i] = cRadars[j];
 			j++;
 		}
 		
+		// Approaching/Avoiding enemies
 		if (avoid > 0)
 			eRadars = FindPosRadarValues(enemies);
 		else
 			eRadars = FindNegRadarValues(enemies);
-			
 		j = 0;
 		for (int i = 6; i < 11; i++) {
 			inputArray[i] = eRadars[j];
 			j++;
 		}
 		
-		inputArray[11] = CalculateOnTargetSensor();
+		// Approaching/Avoiding mud pits
+		if (mud > 0)
+			mRadars = FindPosRadarValues(mudpits);
+		else
+			mRadars = FindNegRadarValues(mudpits);
+		j = 0;
+		for (int i = 11; i < 16; i++) {
+            inputArray[i] = mRadars[j];
+            j++;
+        }
+		
+		inputArray[16] = CalculateOnTargetSensor();
 		
 	}
 }
