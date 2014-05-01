@@ -53,6 +53,7 @@ public class TrainingScript : MonoBehaviour {
 
 		bunniesSpawned = 0;
 		GlobalVars.isTesting = false;
+		Time.timeScale = 1;
 	}
 	
 	// Update is called once per frame
@@ -185,19 +186,21 @@ public class TrainingScript : MonoBehaviour {
 	void OnGUI() {
 		// Check for Load/Save/Reset button
 		GUI.enabled = true;
+		/*
 		if (GUI.Button (new Rect(Screen.width/2 + 200, Screen.height - 80, 100, 70), "Save")) {
 			
 		}
 		if (GUI.Button (new Rect(Screen.width/2 + 320, Screen.height - 80, 100, 70), "Load")) {
 			
 		}
+		*/
 		if (GUI.Button (new Rect(Screen.width/2 + 440, Screen.height - 80, 100, 70), "Fight!")) {
 			foreach (GameObject bunny in bunnies) {
 				BunnyControl bc = bunny.GetComponent<BunnyControl>();
 				SimpleNeuralNetwork brain = bc.brain;
 				GlobalVars.bunnyBrains.Add(brain);
 			}
-			Application.LoadLevel("TestingMenu");
+			Application.LoadLevel("TestingScene");
 		}
 		
 		GUI.Box(new Rect(5, 5, 1020, 30), "Click on desired icon to select that Item, then spawn in desired location with Right Click. Use LCtrl + Right Click to delete any object. WASD to pan camera, =/- to zoom in/out");
