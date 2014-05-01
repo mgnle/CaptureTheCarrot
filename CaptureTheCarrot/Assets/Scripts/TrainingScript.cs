@@ -52,6 +52,7 @@ public class TrainingScript : MonoBehaviour {
 		gui = GameObject.Find("Terrain").GetComponent<TrainingGUIScript>();
 
 		bunniesSpawned = 0;
+		GlobalVars.isTesting = false;
 	}
 	
 	// Update is called once per frame
@@ -191,7 +192,11 @@ public class TrainingScript : MonoBehaviour {
 			
 		}
 		if (GUI.Button (new Rect(Screen.width/2 + 440, Screen.height - 80, 100, 70), "Fight!")) {
-			GlobalVars.bunnies = bunnies;
+			foreach (GameObject bunny in bunnies) {
+				BunnyControl bc = bunny.GetComponent<BunnyControl>();
+				SimpleNeuralNetwork brain = bc.brain;
+				GlobalVars.bunnyBrains.Add(brain);
+			}
 			Application.LoadLevel("TestingMenu");
 		}
 		

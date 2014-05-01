@@ -56,6 +56,7 @@ public class TestingScript : MonoBehaviour {
 		time = Time.fixedTime;
 		//gui = GameObject.Find("Terrain").GetComponent<TrainingGUIScript>();
 
+		GlobalVars.isTesting = true;
 		bunniesSpawned = 0;
 		winVal = 0;
 		gameOver = false;
@@ -63,14 +64,14 @@ public class TestingScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (gameOver) return;
+		
 		// Spawn the bunnies!
 		float t = Time.fixedTime;
-		Debug.Log (GlobalVars.bunnies.Count);
 		if (bunniesSpawned < Constants.NUM_BUNNIES && t > 0 && t % 1 == 0) {
-			if (GlobalVars.bunnies != null) {
-				Debug.Log("Spawing global bunny!");
-				GameObject bunny = GlobalVars.bunnies[bunniesSpawned];
-				CreateBunny(bunny);
+			if (GlobalVars.bunnyBrains != null) {
+				//Debug.Log("Spawing global bunny!");
+				CreateBunny(GlobalVars.bunnyBrains[bunniesSpawned]);
 			}
 			else {
 				CreateBunny();
@@ -142,6 +143,7 @@ public class TestingScript : MonoBehaviour {
 			}*/
 			
 		}
+		CheckForWin();
 	}
 	
 	void OnGUI() {
@@ -149,22 +151,14 @@ public class TestingScript : MonoBehaviour {
 			Application.LoadLevel("MainMenu");
 		}
 		
-		if (gameOver) {
+		if (true) {
 			if (winVal == 1) {
 				GUI.Box (new Rect(Screen.width/2 - 100, Screen.height/2, 200, 50), "YOU WIN");
+				Time.timeScale = 0;
 			}
 			else if (winVal == 2) {
 				GUI.Box (new Rect(Screen.width/2 - 100, Screen.height/2, 200, 50), "YOU LOSE");
-			}
-		}
-		
-		else {
-			winVal = CheckForWin();
-			if (winVal == 1) {
-				GUI.Box (new Rect(Screen.width/2 - 100, Screen.height/2, 200, 50), "YOU WIN");
-			}
-			else if (winVal == 2) {
-				GUI.Box (new Rect(Screen.width/2 - 100, Screen.height/2, 200, 50), "YOU LOSE");
+				Time.timeScale = 0;
 			}
 		}
 	}
@@ -181,18 +175,21 @@ public class TestingScript : MonoBehaviour {
 		bunnies.Add(bunnyObj);
 	}
 	
-	// Spawns a specified bunny
-	void CreateBunny(GameObject bunnyData) {
+	// Spawns a bunny with a specified brain.
+	void CreateBunny(SimpleNeuralNetwork bunnyData) {
 		GameObject bunnyObj = (GameObject)Instantiate(bunnyPrefab, new Vector3(spawnLoc.transform.position.x, 0.8f, spawnLoc.transform.position.z), Quaternion.identity);
 		
 		// Put specified brain in the bun
 		BunnyControl bunny = bunnyObj.GetComponent<BunnyControl>();		
-		//bunny.brain = bunnyData.GetComponent<BunnyControl>().brain;
-		bunny.brain = new SimpleNeuralNetwork(Constants.INPUTS, Constants.OUTPUTS);
-		bunny.birthday = Time.fixedTime;
 		bunny.isTesting = true;
+		//Debug.Log (bunnyData.GetComponent<BunnyControl>().brain.InputCount);
+		//bunny.brain = bunnyData.GetComponent<BunnyControl>().brain;
+		bunny.brain = bunnyData;
+		bunny.birthday = Time.fixedTime;
+		
 		
 		bunnies.Add(bunnyObj);
+		//Debug.Log(bunnies.Count);
 	}
 
 	// Spawns an enemy bunny
@@ -277,8 +274,7 @@ public class TestingScript : MonoBehaviour {
 	}
 	
 	int CheckForWin() {
-		int winVal = 0;
-		foreach (GameObject obj in bunnies) {
+		foreach (GameObject obj in bunnies) {;
 			//Debug.Log (Vector3.Distance(obj.transform.position, GameObject.Find("Carrot").transform.position));
 			if (Vector3.Distance(obj.transform.position, GameObject.Find("Carrot").transform.position) < 2f) {
 				winVal = 1;

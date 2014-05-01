@@ -95,7 +95,7 @@ public class BunnyControl : MonoBehaviour {
 			
 		//DisplayInputs();
 				
-		if (!isTesting) {
+		if (!GlobalVars.isTesting) {
 			brain.UpdateEvaluator(carrotDistance, enemyDistance, mudDistance, firing);
 			brain.changeWeights();
 		}
