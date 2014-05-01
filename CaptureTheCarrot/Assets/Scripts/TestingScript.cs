@@ -104,7 +104,7 @@ public class TestingScript : MonoBehaviour {
 				bunny.FireCabbageGun();
 			*/
 			
-			bunny.setInputArray(carrotArray, enemyArray);
+			bunny.setInputArray(carrotArray, enemyArray, mudArray);
 			
 			// For testing cabbage gun
 			/*

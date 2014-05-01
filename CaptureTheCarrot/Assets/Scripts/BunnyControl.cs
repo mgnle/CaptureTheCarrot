@@ -55,6 +55,11 @@ public class BunnyControl : MonoBehaviour {
 	Vector3 initialPosition;
 	Quaternion initialRotation;
 	
+	// Sliders
+	float near;
+	float avoid;
+	float mud;
+	
 	// Use this for initialization
 	void Start () {
 		controller = gameObject.GetComponent<CharacterController>();
@@ -195,14 +200,23 @@ public class BunnyControl : MonoBehaviour {
 		GameObject cabbageObj = (GameObject)Instantiate(cabbagePrefab, transform.position + transform.forward * 2f + new Vector3(0f, 1f, 0f), transform.rotation);
 	}
 
-	public float[] FindRadarValues(GameObject[] objs) {
+	public float[] FindNegRadarValues(GameObject[] objs) {
+		float[] radars = new float[5];
+		foreach(GameObject obj in objs) {
+			if (CalculateRadar(obj) != -1)
+				radars[CalculateRadar(obj)] += (1/CalculateDistance(obj));
+		}
+		return radars;
+	}
+	
+	public float[] FindPosRadarValues(GameObject[] objs) {
 		float[] radars = new float[5];
 		foreach(GameObject obj in objs) {
 			if (CalculateRadar(obj) != -1)
 				radars[CalculateRadar(obj)] += 1 - (1/CalculateDistance(obj));
-		}
-		return radars;
-	}
+        }
+        return radars;
+    }
 	
 	public float CalculateDistance(GameObject obj) {
 		Vector3 vector = obj.transform.position - transform.position;
@@ -261,6 +275,9 @@ public class BunnyControl : MonoBehaviour {
     }
 	
 	public void setSliders(float near, float avoid, float fire, float mud) {
+		this.near = near;
+		this.avoid = avoid;
+		this.mud = mud;
 		brain.setSliders(near, avoid, fire, mud);
 	}
 	
@@ -272,24 +289,47 @@ public class BunnyControl : MonoBehaviour {
 	}
 	
 	/* Sets all the inputs for the brain by calling all the correct methods.*/
-	public void setInputArray(GameObject[] carrots, GameObject[] enemies) {
+	public void setInputArray(GameObject[] carrots, GameObject[] enemies, GameObject[] mudpits) {
+		float[] cRadars;
+		float[] eRadars;
+		float[] mRadars;
+	
 		inputArray[0] = 1; // bias node
 	
-		float[] cRadars = FindRadarValues(carrots);
+		// Approaching/Avoiding carrots
+		if (near > 0)
+			cRadars = FindPosRadarValues(carrots);
+		else
+			cRadars = FindNegRadarValues(carrots);
 		int j = 0;
 		for (int i = 1; i < 6; i++) {
 			inputArray[i] = cRadars[j];
 			j++;
 		}
 		
-		float[] eRadars = FindRadarValues(enemies);
+		// Approaching/Avoiding enemies
+		if (avoid > 0)
+			eRadars = FindPosRadarValues(enemies);
+		else
+			eRadars = FindNegRadarValues(enemies);
 		j = 0;
 		for (int i = 6; i < 11; i++) {
 			inputArray[i] = eRadars[j];
 			j++;
 		}
 		
-		inputArray[11] = CalculateOnTargetSensor();
+		// Approaching/Avoiding mud pits
+		if (mud > 0)
+			mRadars = FindPosRadarValues(mudpits);
+		else
+			mRadars = FindNegRadarValues(mudpits);
+		j = 0;
+		for (int i = 11; i < 16; i++) {
+            inputArray[i] = mRadars[j];
+            j++;
+        }
+		
+		inputArray[16] = CalculateOnTargetSensor();
 		
 	}
 }
