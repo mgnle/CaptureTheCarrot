@@ -103,6 +103,7 @@ public class TestingScript : MonoBehaviour {
 			if (bunny.CalculateOnTargetSensor() == 1)
 				bunny.FireCabbageGun();
 			*/
+			bunny.setSliders(GlobalVars.near, GlobalVars.avoid, GlobalVars.fire, GlobalVars.mud);
 			
 			bunny.setInputArray(carrotArray, enemyArray, mudArray);
 			

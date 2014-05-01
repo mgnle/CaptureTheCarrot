@@ -279,6 +279,10 @@ public class BunnyControl : MonoBehaviour {
 		this.avoid = avoid;
 		this.mud = mud;
 		brain.setSliders(near, avoid, fire, mud);
+		GlobalVars.near = near;
+		GlobalVars.avoid = avoid;
+		GlobalVars.fire = fire;
+		GlobalVars.mud = mud;
 	}
 	
 	public void DisplayInputs() {
